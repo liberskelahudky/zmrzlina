@@ -102,6 +102,8 @@ const PRODEJNY = [
   { id: "ipp",        label: "I.P. Pavlova" },
 ];
 
+const PETIPAKA = ['dbk', 'krc'];
+
 function getImgUrl(imgFile) {
   if (!imgFile) return null;
   return BASE_URL + '/' + imgFile;
@@ -144,7 +146,9 @@ function renderApp() {
 
   document.title = `${store.label} – zmrzlina`;
 
-  const slotCards = [1,2,3].map(n => {
+  const isPetipaka = PETIPAKA.includes(STORE_ID);
+  const slotNums = isPetipaka ? [1,2,3] : [1,2];
+  const slotCards = slotNums.map(n => {
     const flavorId = currentSlots[`slot${n}`];
     const flavor = flavorId ? PRICHUTE.find(f => f.id === flavorId) : null;
     const imgSrc = getImgSrc(flavor);
@@ -154,7 +158,7 @@ function renderApp() {
       ? (imgSrc ? `<img class="slot-img" src="${imgSrc}" />` : `<div class="slot-img-placeholder">🍦</div>`)
       : `<div class="slot-img-placeholder">＋</div>`;
 
-    const flavorBtns = PRICHUTE.map(f => {
+    const flavorBtns = PRICHUTE.filter(f => f.id !== 'misana').map(f => {
       const fImg = getImgSrc(f);
       const imgEl = fImg ? `<img src="${fImg}" />` : `<span class="no-img-icon">🍦</span>`;
       return `<button class="flavor-btn${f.id === flavorId ? ' selected' : ''}" onclick="selectFlavor(${n}, '${f.id}')">${imgEl}${f.label}</button>`;
@@ -165,7 +169,7 @@ function renderApp() {
         <div class="slot-top" onclick="toggleSlot(${n})">
           <div class="slot-num">${n}</div>
           <div class="slot-info">
-            <div class="slot-label">Příchuť ${n}${n===3?' (volitelná)':''}</div>
+            <div class="slot-label">Příchuť ${n}${n===3 && !isPetipaka?' (volitelná)':''}</div>
             <div class="slot-selected${!flavor?' empty':''}">
               ${flavor ? flavor.label : '— klikni pro výběr —'}
             </div>
