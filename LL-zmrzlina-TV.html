@@ -393,20 +393,13 @@ function renderTop(storeId, data) {
   }
 
   if (petipaka) {
-    // 5-páka: f1, f2, f3, míšená(f1+f2), míšená(f2+f3)
-    const slots = [f1, f2, f3].filter(Boolean);
-    slots.forEach((f, i) => {
-      if (i > 0) addDivider();
-      addSlot(normalSlot(f));
-    });
-    if (f1 && f2) {
-      addDivider();
-      addSlot(renderMichana(f1, f2, nameSize));
-    }
-    if (f2 && f3) {
-      addDivider();
-      addSlot(renderMichana(f2, f3, nameSize));
-    }
+    // 5-páka: f1, f2, f3 jsou základní příchutě (nikdy míšená)
+    // zobrazení: f1, f2, f3, míšená(f1+f2), míšená(f2+f3)
+    if (f1) addSlot(normalSlot(f1));
+    if (f2) { addDivider(); addSlot(normalSlot(f2)); }
+    if (f3) { addDivider(); addSlot(normalSlot(f3)); }
+    if (f1 && f2) { addDivider(); addSlot(renderMichana(f1, f2, nameSize)); }
+    if (f2 && f3) { addDivider(); addSlot(renderMichana(f2, f3, nameSize)); }
   } else {
     // 3-páka: f1, f2, míšená(f1+f2)
     if (f1) addSlot(normalSlot(f1));
