@@ -6,304 +6,62 @@
 <title>Zmrzlina – příchuť</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500;600&display=swap');
-
   :root {
-    --brown: #2c1a0e;
-    --brown-mid: #3d2410;
-    --gold: #dfbd95;
-    --orange: #d14b1f;
-    --cream: #f1e5d7;
-    --green: #27ae60;
-    --green-light: rgba(39,174,96,0.15);
+    --brown: #2c1a0e; --brown-mid: #3d2410; --gold: #dfbd95;
+    --orange: #d14b1f; --cream: #f1e5d7; --green: #27ae60;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    background: var(--brown);
-    color: var(--cream);
-    font-family: 'Barlow', sans-serif;
-    min-height: 100vh;
-    padding-bottom: 120px;
-  }
-
-  header {
-    background: var(--brown-mid);
-    border-bottom: 2px solid var(--gold);
-    padding: 18px 20px 14px;
-    text-align: center;
-  }
-
-  .store-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 1.6rem;
-    color: var(--gold);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .header-sub {
-    font-size: 0.8rem;
-    color: rgba(223,189,149,0.6);
-    margin-top: 2px;
-    letter-spacing: 0.08em;
-  }
-
-  .section {
-    padding: 20px 16px 0;
-  }
-
-  .section-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(223,189,149,0.6);
-    margin-bottom: 12px;
-  }
-
-  /* Flavor picker slots */
-  .slots {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .slot-card {
-    background: var(--brown-mid);
-    border: 1px solid rgba(223,189,149,0.2);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: border-color 0.2s;
-  }
+  body { background: var(--brown); color: var(--cream); font-family: 'Barlow', sans-serif; min-height: 100vh; padding-bottom: 120px; }
+  header { background: var(--brown-mid); border-bottom: 2px solid var(--gold); padding: 18px 20px 14px; text-align: center; }
+  .store-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--gold); letter-spacing: 0.05em; text-transform: uppercase; }
+  .header-sub { font-size: 0.8rem; color: rgba(223,189,149,0.6); margin-top: 2px; letter-spacing: 0.08em; }
+  .section { padding: 20px 16px 0; }
+  .section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(223,189,149,0.6); margin-bottom: 12px; }
+  .slots { display: flex; flex-direction: column; gap: 12px; }
+  .slot-card { background: var(--brown-mid); border: 1px solid rgba(223,189,149,0.2); border-radius: 14px; overflow: hidden; transition: border-color 0.2s; }
   .slot-card.active { border-color: var(--gold); }
-
-  .slot-top {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    gap: 14px;
-  }
-
-  .slot-num {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 1.8rem;
-    color: rgba(223,189,149,0.3);
-    line-height: 1;
-    min-width: 28px;
-  }
+  .slot-top { display: flex; align-items: center; padding: 12px 16px; gap: 14px; }
+  .slot-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.8rem; color: rgba(223,189,149,0.3); line-height: 1; min-width: 28px; }
   .slot-card.active .slot-num { color: var(--gold); }
-
   .slot-info { flex: 1; }
-
-  .slot-label {
-    font-size: 0.75rem;
-    color: rgba(223,189,149,0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 2px;
-  }
-
-  .slot-selected {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 1.3rem;
-    color: var(--cream);
-  }
+  .slot-label { font-size: 0.75rem; color: rgba(223,189,149,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
+  .slot-selected { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.3rem; color: var(--cream); }
   .slot-selected.empty { color: rgba(223,189,149,0.3); font-weight: 400; font-size: 1rem; }
-
-  .slot-img {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    mix-blend-mode: lighten;
-  }
-
-  .slot-img-placeholder {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    opacity: 0.3;
-  }
-
-  /* Flavor grid */
-  .flavor-grid {
-    display: none;
-    padding: 0 12px 14px;
-    border-top: 1px solid rgba(223,189,149,0.1);
-  }
+  .slot-img { width: 60px; height: 60px; object-fit: contain; mix-blend-mode: lighten; }
+  .slot-img-placeholder { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 2rem; opacity: 0.3; }
+  .flavor-grid { display: none; padding: 0 12px 14px; border-top: 1px solid rgba(223,189,149,0.1); }
   .flavor-grid.open { display: block; }
-
-  .flavor-search {
-    width: 100%;
-    background: var(--brown);
-    border: 1px solid rgba(223,189,149,0.25);
-    color: var(--cream);
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 1rem;
-    margin: 10px 0 10px;
-  }
-  .flavor-search::placeholder { color: rgba(223,189,149,0.3); }
+  .flavor-search { width: 100%; background: var(--brown); border: 1px solid rgba(223,189,149,0.25); color: var(--cream); padding: 10px 14px; border-radius: 8px; font-family: 'Barlow', sans-serif; font-size: 1rem; margin: 10px 0; }
   .flavor-search:focus { outline: none; border-color: var(--gold); }
-
-  .flavor-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .flavor-btn {
-    background: var(--brown);
-    border: 1px solid rgba(223,189,149,0.2);
-    color: var(--cream);
-    padding: 12px 10px;
-    border-radius: 10px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.95rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.15s;
-    text-align: left;
-  }
+  .flavor-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .flavor-btn { background: var(--brown); border: 1px solid rgba(223,189,149,0.2); color: var(--cream); padding: 12px 10px; border-radius: 10px; font-family: 'Barlow', sans-serif; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.15s; text-align: left; }
   .flavor-btn:active { transform: scale(0.97); }
-  .flavor-btn.selected {
-    background: rgba(223,189,149,0.15);
-    border-color: var(--gold);
-    color: var(--gold);
-  }
-  .flavor-btn img {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
-    mix-blend-mode: lighten;
-    flex-shrink: 0;
-  }
+  .flavor-btn.selected { background: rgba(223,189,149,0.15); border-color: var(--gold); color: var(--gold); }
+  .flavor-btn img { width: 36px; height: 36px; object-fit: contain; mix-blend-mode: lighten; flex-shrink: 0; }
   .flavor-btn .no-img-icon { width: 36px; text-align: center; font-size: 1.4rem; opacity: 0.4; }
-
-  .clear-btn {
-    grid-column: 1 / -1;
-    background: none;
-    border: 1px dashed rgba(209,75,31,0.4);
-    color: rgba(209,75,31,0.7);
-    padding: 10px;
-    border-radius: 10px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
-
-  /* Save button */
-  .save-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 16px;
-    background: linear-gradient(transparent, var(--brown) 30%);
-    z-index: 100;
-  }
-
-  .save-btn {
-    width: 100%;
-    background: var(--orange);
-    color: white;
-    border: none;
-    padding: 18px;
-    border-radius: 14px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 1.4rem;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 20px rgba(209,75,31,0.4);
-  }
+  .clear-btn { grid-column: 1 / -1; background: none; border: 1px dashed rgba(209,75,31,0.4); color: rgba(209,75,31,0.7); padding: 10px; border-radius: 10px; font-family: 'Barlow', sans-serif; font-size: 0.9rem; cursor: pointer; }
+  .save-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(transparent, var(--brown) 30%); z-index: 100; }
+  .save-btn { width: 100%; background: var(--orange); color: white; border: none; padding: 18px; border-radius: 14px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.4rem; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 20px rgba(209,75,31,0.4); }
   .save-btn:active { transform: scale(0.98); }
-  .save-btn.success {
-    background: var(--green);
-    box-shadow: 0 4px 20px rgba(39,174,96,0.4);
-  }
+  .save-btn.success { background: var(--green); box-shadow: 0 4px 20px rgba(39,174,96,0.4); }
   .save-btn:disabled { opacity: 0.6; }
-
-  /* Preview strip */
-  .preview-strip {
-    margin: 20px 16px 0;
-    background: #1a0c04;
-    border-radius: 14px;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    min-height: 100px;
-    border: 1px solid rgba(223,189,149,0.1);
-  }
-
-  .preview-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    flex: 1;
-  }
-  .preview-item img {
-    height: 70px;
-    object-fit: contain;
-    mix-blend-mode: lighten;
-  }
-  .preview-item .preview-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: var(--gold);
-    text-align: center;
-    text-transform: uppercase;
-  }
-  .preview-empty {
-    color: rgba(223,189,149,0.2);
-    font-size: 0.85rem;
-    text-align: center;
-  }
-
-  .last-saved {
-    text-align: center;
-    font-size: 0.8rem;
-    color: rgba(223,189,149,0.4);
-    padding: 12px 16px 0;
-  }
-
-  .error-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 80vh;
-    padding: 32px;
-    text-align: center;
-    gap: 16px;
-  }
+  .preview-strip { margin: 20px 16px 0; background: #1a0c04; border-radius: 14px; padding: 16px; display: flex; align-items: center; justify-content: center; gap: 20px; min-height: 100px; border: 1px solid rgba(223,189,149,0.1); }
+  .preview-item { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+  .preview-item img { height: 70px; object-fit: contain; mix-blend-mode: lighten; }
+  .preview-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--gold); text-align: center; text-transform: uppercase; }
+  .preview-empty { color: rgba(223,189,149,0.2); font-size: 0.85rem; text-align: center; }
+  .last-saved { text-align: center; font-size: 0.8rem; color: rgba(223,189,149,0.4); padding: 12px 16px 0; }
+  .error-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; padding: 32px; text-align: center; gap: 16px; }
   .error-screen h2 { color: var(--gold); font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; }
   .error-screen p { color: rgba(223,189,149,0.6); font-size: 0.95rem; line-height: 1.6; }
 </style>
 </head>
 <body>
-
 <div id="app"></div>
-
 <script>
-
+ 
 const BASE_URL = "https://liberskelahudky.github.io/zmrzlina";
-
+ 
 const PRICHUTE = [
   { id: "vanilka",        label: "Vanilka",           img: "Vanilka.png" },
   { id: "cokolada",       label: "Čokoláda",          img: "Cokolada.png" },
@@ -326,7 +84,7 @@ const PRICHUTE = [
   { id: "pistacie",       label: "Pistácie",           img: "Pistacie.png" },
   { id: "misana",         label: "Míšená",             img: null },
 ];
-
+ 
 const PRODEJNY = [
   { id: "naporic",    label: "Na Poříčí" },
   { id: "holesovice", label: "Holešovice" },
@@ -342,21 +100,37 @@ const PRODEJNY = [
   { id: "cb",         label: "České Budějovice" },
   { id: "ipp",        label: "I.P. Pavlova" },
 ];
-
+ 
 function getImgUrl(imgFile) {
   if (!imgFile) return null;
   return BASE_URL + '/' + imgFile;
 }
-
-function getFlavorById(id) {
-  return id ? PRICHUTE.find(f => f.id === id) : null;
+ 
+ 
+// Init variables from URL
+const urlParams = new URLSearchParams(window.location.search);
+const GIST_ID = urlParams.get('gist');
+const STORE_ID = urlParams.get('store');
+const GH_TOKEN_KEY = 'll_gh_token';
+ 
+// Save token from URL if present
+const urlToken = urlParams.get('token');
+if (urlToken) localStorage.setItem(GH_TOKEN_KEY, urlToken);
+ 
+// State
+let currentSlots = { slot1: null, slot2: null, slot3: null };
+let openSlot = null;
+let allStoreData = {};
+ 
+function getStore() {
+  return PRODEJNY.find(p => p.id === STORE_ID);
 }
-
+ 
 function getImgSrc(flavor) {
   if (!flavor || !flavor.img) return null;
-  return getImgUrl(flavor.img) || null;
+  return getImgUrl(flavor.img);
 }
-
+ 
 function renderApp() {
   const store = getStore();
   if (!store || !GIST_ID) {
@@ -367,45 +141,39 @@ function renderApp() {
       </div>`;
     return;
   }
-
+ 
   document.title = `${store.label} – zmrzlina`;
-
+ 
   const slotCards = [1,2,3].map(n => {
     const flavorId = currentSlots[`slot${n}`];
-    const flavor = getFlavorById(flavorId);
+    const flavor = flavorId ? PRICHUTE.find(f => f.id === flavorId) : null;
     const imgSrc = getImgSrc(flavor);
     const isOpen = openSlot === n;
-    const isOptional = n === 3;
-
+ 
     const imgHTML = flavor
       ? (imgSrc ? `<img class="slot-img" src="${imgSrc}" />` : `<div class="slot-img-placeholder">🍦</div>`)
       : `<div class="slot-img-placeholder">＋</div>`;
-
-    // Build flavor buttons
-    let searchId = `search_slot${n}`;
-    let flavorBtns = PRICHUTE.map(f => {
+ 
+    const flavorBtns = PRICHUTE.map(f => {
       const fImg = getImgSrc(f);
-      const imgEl = fImg
-        ? `<img src="${fImg}" />`
-        : `<span class="no-img-icon">🍦</span>`;
-      const isSelected = f.id === flavorId;
-      return `<button class="flavor-btn${isSelected?' selected':''}" onclick="selectFlavor(${n}, '${f.id}')">${imgEl}${f.label}</button>`;
+      const imgEl = fImg ? `<img src="${fImg}" />` : `<span class="no-img-icon">🍦</span>`;
+      return `<button class="flavor-btn${f.id === flavorId ? ' selected' : ''}" onclick="selectFlavor(${n}, '${f.id}')">${imgEl}${f.label}</button>`;
     }).join('');
-
+ 
     return `
-      <div class="slot-card${flavor?' active':''}" id="slot_card_${n}">
+      <div class="slot-card${flavor ? ' active' : ''}">
         <div class="slot-top" onclick="toggleSlot(${n})">
           <div class="slot-num">${n}</div>
           <div class="slot-info">
-            <div class="slot-label">Příchuť ${n}${isOptional?' (volitelná)':''}</div>
+            <div class="slot-label">Příchuť ${n}${n===3?' (volitelná)':''}</div>
             <div class="slot-selected${!flavor?' empty':''}">
               ${flavor ? flavor.label : '— klikni pro výběr —'}
             </div>
           </div>
           ${imgHTML}
         </div>
-        <div class="flavor-grid${isOpen?' open':''}" id="flavor_grid_${n}">
-          <input class="flavor-search" type="search" placeholder="Hledat příchuť..." id="${searchId}" oninput="filterFlavors(${n})" />
+        <div class="flavor-grid${isOpen ? ' open' : ''}" id="flavor_grid_${n}">
+          <input class="flavor-search" type="search" placeholder="Hledat příchuť..." oninput="filterFlavors(${n}, this.value)" />
           <div class="flavor-buttons" id="flavor_btns_${n}">
             ${flavorBtns}
             <button class="clear-btn" onclick="selectFlavor(${n}, null)">✕ Odebrat příchuť</button>
@@ -413,10 +181,9 @@ function renderApp() {
         </div>
       </div>`;
   }).join('');
-
-  // Preview
+ 
   const previewItems = [1,2,3].map(n => {
-    const flavor = getFlavorById(currentSlots[`slot${n}`]);
+    const flavor = currentSlots[`slot${n}`] ? PRICHUTE.find(f => f.id === currentSlots[`slot${n}`]) : null;
     if (!flavor) return '';
     const imgSrc = getImgSrc(flavor);
     return `<div class="preview-item">
@@ -424,34 +191,28 @@ function renderApp() {
       <div class="preview-name">${flavor.label}</div>
     </div>`;
   }).filter(Boolean).join('');
-
+ 
   const lastSaved = localStorage.getItem('ll_last_saved_' + STORE_ID);
-
+ 
   document.getElementById('app').innerHTML = `
     <header>
       <div class="store-name">🍦 ${store.label}</div>
       <div class="header-sub">ZMRZLINA TOČENÁ – nastavení příchutí</div>
     </header>
-
     <div class="section">
       <div class="section-title">Dnešní příchutě</div>
       <div class="slots">${slotCards}</div>
     </div>
-
-    ${previewItems ? `
-    <div class="preview-strip">${previewItems}</div>
-    ` : `<div class="preview-strip"><div class="preview-empty">Žádná příchuť není vybrána</div></div>`}
-
+    ${previewItems
+      ? `<div class="preview-strip">${previewItems}</div>`
+      : `<div class="preview-strip"><div class="preview-empty">Žádná příchuť není vybrána</div></div>`}
     ${lastSaved ? `<div class="last-saved">Naposledy uloženo: ${lastSaved}</div>` : ''}
-
     <div class="save-bar">
-      <button class="save-btn" id="save-btn" onclick="saveData()">
-        ULOŽIT NA TV
-      </button>
+      <button class="save-btn" id="save-btn" onclick="saveData()">ULOŽIT NA TV</button>
     </div>
   `;
 }
-
+ 
 function toggleSlot(n) {
   openSlot = openSlot === n ? null : n;
   renderApp();
@@ -462,31 +223,27 @@ function toggleSlot(n) {
     }, 100);
   }
 }
-
+ 
 function selectFlavor(slotNum, flavorId) {
-  currentSlots[`slot${slotNum}`] = flavorId;
+  currentSlots[`slot${slotNum}`] = flavorId || null;
   openSlot = null;
   renderApp();
 }
-
-function filterFlavors(slotNum) {
-  const search = document.getElementById(`search_slot${slotNum}`).value.toLowerCase();
+ 
+function filterFlavors(slotNum, search) {
   const btns = document.querySelectorAll(`#flavor_btns_${slotNum} .flavor-btn`);
   btns.forEach(btn => {
-    const text = btn.textContent.toLowerCase();
-    btn.style.display = text.includes(search) ? '' : 'none';
+    btn.style.display = btn.textContent.toLowerCase().includes(search.toLowerCase()) ? '' : 'none';
   });
 }
-
+ 
 async function saveData() {
   const btn = document.getElementById('save-btn');
   btn.textContent = 'Ukládám...';
   btn.disabled = true;
-
-  // Update store data
+ 
   allStoreData[STORE_ID] = { ...currentSlots };
-
-  // Save to gist
+ 
   const token = localStorage.getItem(GH_TOKEN_KEY);
   if (!token) {
     btn.textContent = '⚠️ Chybí přihlášení';
@@ -494,30 +251,20 @@ async function saveData() {
     alert('Nejste přihlášeni. Kontaktujte marketing.');
     return;
   }
-
+ 
   try {
     const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
       method: 'PATCH',
-      headers: {
-        Authorization: `token ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        files: { 'lbrzlina.json': { content: JSON.stringify(allStoreData, null, 2) } }
-      })
+      headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ files: { 'lbrzlina.json': { content: JSON.stringify(allStoreData, null, 2) } } })
     });
-
+ 
     if (res.ok) {
       const now = new Date().toLocaleTimeString('cs-CZ', {hour:'2-digit', minute:'2-digit'});
       localStorage.setItem('ll_last_saved_' + STORE_ID, now);
       btn.textContent = '✓ ULOŽENO!';
       btn.className = 'save-btn success';
-      setTimeout(() => {
-        btn.textContent = 'ULOŽIT NA TV';
-        btn.className = 'save-btn';
-        btn.disabled = false;
-        renderApp();
-      }, 2000);
+      setTimeout(() => { btn.textContent = 'ULOŽIT NA TV'; btn.className = 'save-btn'; btn.disabled = false; renderApp(); }, 2000);
     } else {
       throw new Error('HTTP ' + res.status);
     }
@@ -527,13 +274,12 @@ async function saveData() {
     btn.disabled = false;
   }
 }
-
+ 
 async function loadFromGist() {
   try {
     const token = localStorage.getItem(GH_TOKEN_KEY);
-    const headers = { Accept: 'application/vnd.github.v3+json' };
+    const headers = {};
     if (token) headers.Authorization = `token ${token}`;
-    
     const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, { headers });
     const data = await res.json();
     const file = data.files['lbrzlina.json'];
@@ -541,11 +287,7 @@ async function loadFromGist() {
       allStoreData = JSON.parse(file.content);
       const myData = allStoreData[STORE_ID];
       if (myData) {
-        currentSlots = {
-          slot1: myData.slot1 || null,
-          slot2: myData.slot2 || null,
-          slot3: myData.slot3 || null,
-        };
+        currentSlots = { slot1: myData.slot1 || null, slot2: myData.slot2 || null, slot3: myData.slot3 || null };
       }
     }
   } catch(e) {
@@ -553,13 +295,7 @@ async function loadFromGist() {
   }
   renderApp();
 }
-
-// Init – check for token in URL (for first-time setup)
-const urlToken = new URLSearchParams(window.location.search).get('token');
-if (urlToken) {
-  localStorage.setItem(GH_TOKEN_KEY, urlToken);
-}
-
+ 
 loadFromGist();
 </script>
 </body>
