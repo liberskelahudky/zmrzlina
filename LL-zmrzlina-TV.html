@@ -39,18 +39,14 @@
     font-size: 4.5vw; color: #dfbd95; line-height: 1.2;
   }
 
-  .price-bubble {
-    position: absolute; z-index: 20;
-    width: 14vw; height: 14vw;
-    min-width: 120px; min-height: 120px;
-    background: white; border-radius: 50% 50% 50% 10%;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-    top: 50%; transform: translateY(-50%);
-  }
-  .price-text {
+  .slot-price {
+    position: absolute; bottom: 6vh; right: 2vw;
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 5.5vw; color: #2a1508; white-space: nowrap; letter-spacing: 0.02em;
+    font-size: 3.5vw; color: white;
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    z-index: 10;
+    line-height: 1;
   }
 
   .ice-creams {
@@ -111,17 +107,14 @@
   .layout-1 .ice-creams { width: 68vw; left: 24vw; }
   .layout-1 .ice-cream-slot { width: 100%; }
   .layout-1 .flavor-name { font-size: 6.5vw; }
-  .layout-1 .price-bubble { left: 20vw; }
 
   .layout-2 .ice-creams { width: 72vw; left: 20vw; }
   .layout-2 .ice-cream-slot { width: 50%; }
   .layout-2 .flavor-name { font-size: 4.2vw; }
-  .layout-2 .price-bubble { left: 20vw; }
 
   .layout-3 .ice-creams { width: 76vw; left: 17vw; }
   .layout-3 .ice-cream-slot { width: 33.33%; }
   .layout-3 .flavor-name { font-size: 2.6vw; }
-  .layout-3 .price-bubble { left: 17vw; }
 
   /* BOTTOM ZONE */
   .bottom-zone {
@@ -188,7 +181,6 @@
     to   { opacity: 1; transform: scale(1) translateY(-50%); }
   }
   .text-block  { animation: fadeInUp 0.8s ease forwards; }
-  .price-bubble { animation: scaleIn 0.6s 0.3s ease both; }
   .ice-cream-slot:nth-child(1) { animation: fadeInUp 0.7s 0.1s ease both; }
   .ice-cream-slot:nth-child(3) { animation: fadeInUp 0.7s 0.2s ease both; }
   .ice-cream-slot:nth-child(5) { animation: fadeInUp 0.7s 0.3s ease both; }
@@ -320,7 +312,6 @@ function renderTop(flavors) {
       <div class="label-zmrzlina">ZMRZLINA</div>
       <div class="label-tocena">točená</div>
     </div>
-    <div class="price-bubble"><span class="price-text">45,– Kč</span></div>
   `;
 
   const iceCreams = document.createElement('div');
@@ -345,6 +336,7 @@ function renderTop(flavors) {
           ? `<img class="ice-img" src="${imgSrc}" alt="${flavor.label}" />`
           : '<div style="font-size:5rem;opacity:0.3">🍦</div>'}
       </div>
+      <div class="slot-price">45,-</div>
     `;
     iceCreams.appendChild(slot);
   });
