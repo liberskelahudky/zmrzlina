@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -9,23 +8,21 @@
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Ms+Madi&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 100%; height: 100%; overflow: hidden; background: #2a1508; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #3d1e08; }
 
   .bg {
     position: fixed; inset: 0;
-    background: radial-gradient(ellipse at 70% 50%, #4a2310 0%, #2a1508 45%, #1a0c04 100%);
+    background: radial-gradient(ellipse at 65% 40%, #7a3515 0%, #4a2010 30%, #2a1008 70%, #1a0804 100%);
   }
 
-  /* MAIN LAYOUT */
   .wrapper {
     position: relative; width: 100vw; height: 100vh;
     display: flex; flex-direction: column; z-index: 1;
   }
 
-  /* TOP ZONE – točená zmrzlina */
+  /* TOP ZONE */
   .top-zone {
-    flex: 1; position: relative; display: flex; align-items: stretch;
-    min-height: 0;
+    flex: 1; position: relative; display: flex; align-items: stretch; min-height: 0;
   }
 
   .text-block {
@@ -33,26 +30,26 @@
   }
   .label-zmrzlina {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 5vw; color: #fff;
+    font-size: 5.5vw; color: #fff;
     line-height: 0.9; white-space: nowrap; letter-spacing: 0.05em;
   }
   .label-tocena {
     font-family: 'Ms Madi', cursive;
-    font-size: 4vw; color: #dfbd95; line-height: 1.2;
+    font-size: 4.5vw; color: #dfbd95; line-height: 1.2;
   }
 
   .price-bubble {
     position: absolute; z-index: 20;
-    width: 10vw; height: 10vw;
-    min-width: 90px; min-height: 90px;
+    width: 14vw; height: 14vw;
+    min-width: 120px; min-height: 120px;
     background: white; border-radius: 50% 50% 50% 10%;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
     top: 50%; transform: translateY(-50%);
   }
   .price-text {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 3vw; color: #2a1508; white-space: nowrap;
+    font-size: 4vw; color: #2a1508; white-space: nowrap; letter-spacing: 0.02em;
   }
 
   .ice-creams {
@@ -81,10 +78,31 @@
   .flavor-sub::before, .flavor-sub::after {
     content: ''; display: block; height: 1px; width: 20px; background: rgba(255,255,255,0.5);
   }
+
+  /* ICE CREAM FLIP ANIMATION */
+  .ice-img-wrap {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    perspective: 800px;
+  }
   .ice-img {
     width: 100%; height: 100%; object-fit: contain;
-    mix-blend-mode: lighten; filter: drop-shadow(0 10px 40px rgba(0,0,0,0.3));
+    mix-blend-mode: lighten;
+    filter: drop-shadow(0 10px 40px rgba(0,0,0,0.3));
+    animation: iceBounce 6s ease-in-out infinite;
+    transform-origin: center bottom;
   }
+  @keyframes iceBounce {
+    0%   { transform: rotate(-2deg) scale(1); }
+    25%  { transform: rotate(2deg) scale(1.03); }
+    50%  { transform: rotate(-1deg) scale(1); }
+    75%  { transform: rotate(1.5deg) scale(1.02); }
+    100% { transform: rotate(-2deg) scale(1); }
+  }
+  .ice-cream-slot:nth-child(1) .ice-img { animation-delay: 0s; }
+  .ice-cream-slot:nth-child(3) .ice-img { animation-delay: -2s; }
+  .ice-cream-slot:nth-child(5) .ice-img { animation-delay: -4s; }
+
   .divider-v {
     width: 1px; height: 55vh; background: rgba(223,189,149,0.2); align-self: center; flex-shrink: 0;
   }
@@ -104,46 +122,55 @@
   .layout-3 .flavor-name { font-size: 2.6vw; }
   .layout-3 .price-bubble { left: 17vw; }
 
-  /* BOTTOM ZONE – pohárky */
+  /* BOTTOM ZONE */
   .bottom-zone {
-    height: 28vh; flex-shrink: 0;
-    display: flex;
+    height: 28vh; flex-shrink: 0; display: flex;
     border-top: 1px solid rgba(223,189,149,0.25);
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.35);
+    position: relative;
   }
 
   .pohar-slot {
     flex: 1; display: flex; align-items: center;
-    padding: 0 3vw; gap: 2vw; position: relative;
+    padding: 0 2.5vw; gap: 2vw;
+    position: relative; overflow: hidden;
   }
-  .pohar-slot:first-child {
-    border-right: 1px solid rgba(223,189,149,0.2);
-  }
+  .pohar-slot:first-child { border-right: 1px solid rgba(223,189,149,0.2); }
 
   .pohar-img {
     height: 22vh; object-fit: contain; mix-blend-mode: lighten;
     filter: drop-shadow(0 4px 15px rgba(0,0,0,0.4));
-    flex-shrink: 0;
+    flex-shrink: 0; position: relative; z-index: 2;
   }
-
-  .pohar-info { flex: 1; }
+  .pohar-info { flex: 1; position: relative; z-index: 2; }
   .pohar-name {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 3vw; color: #dfbd95; letter-spacing: 0.05em;
-    line-height: 1;
+    font-size: 3vw; color: #dfbd95; letter-spacing: 0.05em; line-height: 1;
   }
   .pohar-desc {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.4vw; color: rgba(255,255,255,0.6);
-    letter-spacing: 0.1em; margin-top: 4px; line-height: 1.4;
+    letter-spacing: 0.08em; margin-top: 6px; line-height: 1.5;
   }
   .pohar-price {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.8vw; color: white;
-    background: rgba(209,75,31,0.8);
-    padding: 4px 16px; border-radius: 6px;
-    margin-top: 8px; display: inline-block;
+    font-size: 3vw; color: white;
+    background: rgba(209,75,31,0.9);
+    padding: 4px 18px; border-radius: 6px;
+    margin-top: 10px; display: inline-block;
     letter-spacing: 0.05em;
+  }
+
+  /* FALLING CANDIES */
+  .candy {
+    position: absolute; pointer-events: none; z-index: 1;
+    animation: fallCandy linear infinite;
+  }
+  @keyframes fallCandy {
+    0%   { transform: translateY(-30px) rotate(0deg); opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { transform: translateY(30vh) rotate(600deg); opacity: 0; }
   }
 
   .empty-msg {
@@ -153,13 +180,13 @@
 
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
   }
   @keyframes scaleIn {
     from { opacity: 0; transform: scale(0.8) translateY(-50%); }
-    to { opacity: 1; transform: scale(1) translateY(-50%); }
+    to   { opacity: 1; transform: scale(1) translateY(-50%); }
   }
-  .text-block { animation: fadeInUp 0.8s ease forwards; }
+  .text-block  { animation: fadeInUp 0.8s ease forwards; }
   .price-bubble { animation: scaleIn 0.6s 0.3s ease both; }
   .ice-cream-slot:nth-child(1) { animation: fadeInUp 0.7s 0.1s ease both; }
   .ice-cream-slot:nth-child(3) { animation: fadeInUp 0.7s 0.2s ease both; }
@@ -172,7 +199,7 @@
 <div class="wrapper">
   <div class="top-zone" id="top-zone"></div>
   <div class="bottom-zone">
-    <div class="pohar-slot">
+    <div class="pohar-slot" id="pohar-lentilky">
       <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Poharek_lentilka.png" alt="Pohár lentilky" />
       <div class="pohar-info">
         <div class="pohar-name">POHÁR LENTILKY</div>
@@ -180,7 +207,7 @@
         <div class="pohar-price">79 Kč</div>
       </div>
     </div>
-    <div class="pohar-slot">
+    <div class="pohar-slot" id="pohar-orisky">
       <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Poharek_orisky.png" alt="Pohár oříšky" />
       <div class="pohar-info">
         <div class="pohar-name">POHÁR OŘÍŠKY</div>
@@ -196,25 +223,25 @@
 const BASE_URL = "https://liberskelahudky.github.io/zmrzlina";
 
 const PRICHUTE = [
-  { id: "vanilka",        label: "Vanilka",           img: "Vanilka.png" },
-  { id: "cokolada",       label: "Čokoláda",          img: "Cokolada.png" },
-  { id: "jogurt",         label: "Jogurt",             img: "Jogurt.png" },
-  { id: "meloun",         label: "Červený meloun",     img: "Meloun.png" },
-  { id: "mandarinka",     label: "Mandarinka",         img: "Mandarinka.png" },
-  { id: "boruvka",        label: "Kan. borůvka",       img: "Kanadska-Boruvka.png" },
-  { id: "jablko",         label: "Zelené jablko",      img: "Zelene-Jablko.png" },
-  { id: "mango",          label: "Mango",              img: "Mango.png" },
-  { id: "yuzu",           label: "Yuzu",               img: null },
-  { id: "visen",          label: "Višeň",              img: "Visen.png" },
-  { id: "jahoda",         label: "Jahoda",             img: "Jahoda.png" },
-  { id: "rybiz",          label: "Černý rybíz",        img: "Cerny-Rybiz.png" },
-  { id: "rakytnik",       label: "Rakytník",           img: "Rakytnik.png" },
-  { id: "malina",         label: "Malina",             img: "Malina.png" },
-  { id: "pomeranc",       label: "Pomeranč",           img: "Pomeranc.png" },
-  { id: "ostružina",      label: "Modrá ostružina",    img: "Modra_ostruzina.png" },
-  { id: "mrkev",          label: "Mrkev",              img: "Mrkev.png" },
-  { id: "slany_karamel",  label: "Slaný karamel",      img: "Slany-Karamel.png" },
-  { id: "pistacie",       label: "Pistácie",           img: "Pistacie.png" },
+  { id: "vanilka",        label: "Vanilka",           img: "15_vanilka.png" },
+  { id: "cokolada",       label: "Čokoláda",          img: "16_cokolady.png" },
+  { id: "jogurt",         label: "Jogurt",             img: "17_jogurt.png" },
+  { id: "meloun",         label: "Červený meloun",     img: "1_meloun.png" },
+  { id: "mandarinka",     label: "Mandarinka",         img: "2_mandarinka.png" },
+  { id: "boruvka",        label: "Kan. borůvka",       img: "3_boruvka.png" },
+  { id: "jablko",         label: "Zelené jablko",      img: "18_zelenejablko.png" },
+  { id: "mango",          label: "Mango",              img: "4_mango.png" },
+  { id: "yuzu",           label: "Yuzu",               img: "5_yuzu.png" },
+  { id: "visen",          label: "Višeň",              img: "6_visen.png" },
+  { id: "jahoda",         label: "Jahoda",             img: "7_jahoda.png" },
+  { id: "rybiz",          label: "Černý rybíz",        img: "8_cernyrybiz.png" },
+  { id: "malina",         label: "Malina",             img: "9_malina.png" },
+  { id: "pomeranc",       label: "Pomeranč",           img: "10_pomeranc.png" },
+  { id: "ostružina",      label: "Modrá ostružina",    img: "11_ostruzina.png" },
+  { id: "mrkev",          label: "Mrkev",              img: "12_mrkev.png" },
+  { id: "slany_karamel",  label: "Slaný karamel",      img: "13_slanykaramel.png" },
+  { id: "pistacie",       label: "Pistácie",           img: "14_pistacie.png" },
+  { id: "rakytnik",       label: "Rakytník",           img: null },
   { id: "misana",         label: "Míšená",             img: null },
 ];
 
@@ -241,18 +268,39 @@ function getImgUrl(imgFile) {
 
 
 const GIST_ID_KEY = 'll_gist_id';
-const REFRESH_MS = 300000;
+const CACHE_KEY = 'll_flavor_cache';
+const REFRESH_MS = 300000; // 5 minut
 
-// Cache – při chybě API zobrazíme poslední známé příchutě
-let lastKnownFlavors = null;
+let refreshTimer = null;
 
 function getURLParams() {
   const p = new URLSearchParams(window.location.search);
   return { store: p.get('store'), gistId: p.get('gist') || localStorage.getItem(GIST_ID_KEY) };
 }
 
+function getToken() {
+  const t = new URLSearchParams(window.location.search).get('token');
+  if (t) localStorage.setItem('ll_gh_token', t);
+  return localStorage.getItem('ll_gh_token');
+}
+
 function getFlavorById(id) { return id ? PRICHUTE.find(f => f.id === id) : null; }
 function getImgSrc(flavor) { return (flavor && flavor.img) ? getImgUrl(flavor.img) : null; }
+
+function saveCache(storeId, data) {
+  try {
+    const all = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+    all[storeId] = data;
+    localStorage.setItem(CACHE_KEY, JSON.stringify(all));
+  } catch(e) {}
+}
+
+function loadCache(storeId) {
+  try {
+    const all = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+    return all[storeId] || null;
+  } catch(e) { return null; }
+}
 
 function renderTop(flavors) {
   const zone = document.getElementById('top-zone');
@@ -261,7 +309,7 @@ function renderTop(flavors) {
 
   if (count === 0) {
     zone.className = 'top-zone';
-    zone.innerHTML = '<div class="empty-msg">ŽÁDNÁ PŘÍCHUŤ NENÍ NASTAVENA</div>';
+    zone.innerHTML = '<div class="empty-msg">NASTAVTE PŘÍCHUTĚ V ADMIN PANELU</div>';
     return;
   }
 
@@ -271,7 +319,7 @@ function renderTop(flavors) {
       <div class="label-zmrzlina">ZMRZLINA</div>
       <div class="label-tocena">točená</div>
     </div>
-    <div class="price-bubble"><span class="price-text">45,–</span></div>
+    <div class="price-bubble"><span class="price-text">45,– Kč</span></div>
   `;
 
   const iceCreams = document.createElement('div');
@@ -291,7 +339,11 @@ function renderTop(flavors) {
         <div class="flavor-name">${flavor.label.toUpperCase()}</div>
         <div class="flavor-sub">PŘÍCHUŤ</div>
       </div>
-      ${imgSrc ? `<img class="ice-img" src="${imgSrc}" alt="${flavor.label}" />` : '<div style="font-size:5rem;opacity:0.3">🍦</div>'}
+      <div class="ice-img-wrap">
+        ${imgSrc
+          ? `<img class="ice-img" src="${imgSrc}" alt="${flavor.label}" />`
+          : '<div style="font-size:5rem;opacity:0.3">🍦</div>'}
+      </div>
     `;
     iceCreams.appendChild(slot);
   });
@@ -299,47 +351,80 @@ function renderTop(flavors) {
   zone.appendChild(iceCreams);
 }
 
+// Falling candies
+function spawnCandies(containerId, type) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const COUNT = 25;
+  const lentilkyColors = ['#e74c3c','#f1c40f','#3498db','#2ecc71','#e67e22','#9b59b6','#ff69b4','#00bfff','#ff4500','#32cd32'];
+
+  for (let i = 0; i < COUNT; i++) {
+    const el = document.createElement('div');
+    el.className = 'candy';
+
+    if (type === 'orisky') {
+      el.textContent = Math.random() < 0.6 ? '🥜' : '🌰';
+      el.style.fontSize = (0.8 + Math.random() * 0.7) + 'rem';
+    } else {
+      // lentilky = barevné kroužky
+      const color = lentilkyColors[Math.floor(Math.random() * lentilkyColors.length)];
+      const size = (7 + Math.random() * 9) + 'px';
+      el.style.width = size;
+      el.style.height = size;
+      el.style.background = color;
+      el.style.borderRadius = '50%';
+      el.style.boxShadow = '0 1px 4px rgba(0,0,0,0.5)';
+    }
+
+    el.style.left = (Math.random() * 95) + '%';
+    el.style.animationDuration = (2.5 + Math.random() * 4) + 's';
+    el.style.animationDelay = (Math.random() * -7) + 's';
+    container.appendChild(el);
+  }
+}
+
 async function loadFromGist(gistId, storeId) {
   try {
-    const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`);
+    const token = getToken();
+    const headers = token ? { Authorization: `token ${token}` } : {};
+    const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`, { headers });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     const file = data.files['lbrzlina.json'];
     if (!file) return null;
-    return JSON.parse(file.content)[storeId] || null;
+    const parsed = JSON.parse(file.content)[storeId];
+    if (parsed) saveCache(storeId, parsed); // uloz do cache
+    return parsed || null;
   } catch(e) {
-    console.warn('Gist error, using cache:', e);
-    return null;
+    console.warn('API error, using cache');
+    return null; // vrati null -> pouzije se cache
   }
+}
+
+async function refresh(store, gistId) {
+  const fresh = await loadFromGist(gistId, store);
+  const data = fresh || loadCache(store); // pri chybe pouzij cache
+
+  renderTop([
+    getFlavorById(data?.slot1),
+    getFlavorById(data?.slot2),
+    getFlavorById(data?.slot3),
+  ]);
 }
 
 async function init() {
   const { store, gistId } = getURLParams();
   if (gistId) localStorage.setItem(GIST_ID_KEY, gistId);
 
-  async function refresh() {
-    if (!gistId || !store) return;
-    const storeData = await loadFromGist(gistId, store);
-    
-    if (storeData) {
-      // Ulož do cache
-      lastKnownFlavors = [
-        getFlavorById(storeData.slot1),
-        getFlavorById(storeData.slot2),
-        getFlavorById(storeData.slot3),
-      ];
-    }
-    
-    // Zobraz cache nebo prázdno
-    if (lastKnownFlavors) {
-      renderTop(lastKnownFlavors);
-    } else {
-      renderTop([]);
-    }
-  }
+  // Spawn candies
+  spawnCandies('pohar-lentilky', 'lentilky');
+  spawnCandies('pohar-orisky', 'orisky');
 
-  await refresh();
-  setInterval(refresh, REFRESH_MS);
+  // First load
+  await refresh(store, gistId);
+
+  // Refresh every 5 minutes
+  setInterval(() => refresh(store, gistId), REFRESH_MS);
 }
 
 init();
