@@ -652,10 +652,11 @@ function updatePreview(storeId, slotNum) {
 }
 
 function buildStoreCard(store) {
-  const slots = [1, 2, 3];
+  const isPetipaka = ['dbk', 'krc'].includes(store.id);
+  const slots = isPetipaka ? [1, 2, 3] : [1, 2];
   const slotsHTML = slots.map(n => `
     <div class="slot">
-      <label>Příchuť ${n}${n===3?' (volitelná)':''}</label>
+      <label>Příchuť ${n}${n===3 && !isPetipaka?' (volitelná)':''}</label>
       <select id="${store.id}_slot${n}" onchange="updatePreview('${store.id}', ${n})">
         <option value="">— žádná —</option>
         ${PRICHUTE.map(p => `<option value="${p.id}">${p.label}${!p.img?' *':''}</option>`).join('')}
