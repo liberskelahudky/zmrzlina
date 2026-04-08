@@ -38,16 +38,6 @@
     font-size: 4.5vw; color: #dfbd95; line-height: 1.2;
   }
 
-  .slot-price {
-    position: absolute; bottom: 6vh; right: 2vw;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3.5vw; color: white;
-    letter-spacing: 0.05em;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-    z-index: 10;
-    line-height: 1;
-  }
-
   .ice-creams {
     position: absolute; top: 0; right: 0; height: 100%;
     display: flex; align-items: stretch;
@@ -58,7 +48,7 @@
     height: 100%; position: relative;
   }
   .flavor-label {
-    position: absolute; top: 3vh; text-align: center; z-index: 10; width: 100%; padding: 0 10px;
+    position: absolute; top: 3vh; text-align: center; z-index: 10; width: 100%; padding: 0 5px;
   }
   .flavor-name {
     font-family: 'Bebas Neue', sans-serif; color: white;
@@ -67,19 +57,18 @@
   }
   .flavor-sub {
     font-family: 'Bebas Neue', sans-serif; color: rgba(255,255,255,0.7);
-    letter-spacing: 0.2em; text-transform: uppercase; margin-top: 4px;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-size: 1.1vw;
+    letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-size: 0.9vw; white-space: nowrap;
   }
   .flavor-sub::before, .flavor-sub::after {
-    content: ''; display: block; height: 1px; width: 20px; background: rgba(255,255,255,0.5);
+    content: ''; display: block; height: 1px; width: 15px; background: rgba(255,255,255,0.5);
   }
 
-  /* ICE CREAM FLIP ANIMATION */
+  /* ICE CREAM */
   .ice-img-wrap {
     width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
-    perspective: 800px;
   }
   .ice-img {
     width: 80%; height: 80%; object-fit: contain;
@@ -98,22 +87,57 @@
   .ice-cream-slot:nth-child(1) .ice-img { animation-delay: 0s; }
   .ice-cream-slot:nth-child(3) .ice-img { animation-delay: -2s; }
   .ice-cream-slot:nth-child(5) .ice-img { animation-delay: -4s; }
+  .ice-cream-slot:nth-child(7) .ice-img { animation-delay: -1s; }
+  .ice-cream-slot:nth-child(9) .ice-img { animation-delay: -3s; }
+
+  /* MICHANA – půl na půl */
+  .michana-wrap {
+    position: relative; overflow: hidden;
+    width: 80%; height: 80%;
+  }
+  .michana-half {
+    position: absolute; top: 0; width: 50%; height: 100%;
+    overflow: hidden;
+  }
+  .michana-left { left: 0; }
+  .michana-right { right: 0; }
+  .michana-img {
+    position: absolute; top: 0; height: 100%; object-fit: contain;
+    mix-blend-mode: lighten;
+    filter: drop-shadow(0 10px 40px rgba(0,0,0,0.3));
+    animation: iceBounce 6s ease-in-out infinite;
+    width: 200% !important;
+  }
+  .michana-left .michana-img { left: 0; }
+  .michana-right .michana-img { right: 0; }
+
+  .slot-price {
+    position: absolute; bottom: 5vh; right: 1.5vw;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3vw; color: white;
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    z-index: 10;
+  }
 
   .divider-v {
     width: 1px; height: 55vh; background: rgba(223,189,149,0.2); align-self: center; flex-shrink: 0;
   }
 
-  .layout-1 .ice-creams { width: 68vw; left: 24vw; }
-  .layout-1 .ice-cream-slot { width: 100%; }
-  .layout-1 .flavor-name { font-size: 6.5vw; }
-
-  .layout-2 .ice-creams { width: 72vw; left: 20vw; }
-  .layout-2 .ice-cream-slot { width: 50%; }
-  .layout-2 .flavor-name { font-size: 4.2vw; }
-
-  .layout-3 .ice-creams { width: 76vw; left: 17vw; }
+  /* LAYOUTS – 3-páka */
+  .layout-3 .ice-creams { width: 72vw; left: 20vw; }
   .layout-3 .ice-cream-slot { width: 33.33%; }
-  .layout-3 .flavor-name { font-size: 2.6vw; }
+  .layout-3 .flavor-name { font-size: 3.2vw; }
+  .layout-3 .slot-price { font-size: 2.5vw; }
+
+  /* LAYOUTS – 5-páka */
+  .layout-5 .ice-creams { width: 80vw; left: 16vw; }
+  .layout-5 .ice-cream-slot { width: 20%; }
+  .layout-5 .flavor-name { font-size: 2vw; }
+  .layout-5 .slot-price { font-size: 1.8vw; bottom: 3vh; }
+  .layout-5 .ice-img { width: 90%; height: 90%; }
+  .layout-5 .michana-wrap { width: 90%; height: 90%; }
+  .layout-5 .flavor-sub { font-size: 0.7vw; }
 
   /* BOTTOM ZONE */
   .bottom-zone {
@@ -122,14 +146,12 @@
     background: rgba(0,0,0,0.35);
     position: relative;
   }
-
   .pohar-slot {
     flex: 1; display: flex; align-items: center;
     padding: 0 2.5vw; gap: 2vw;
     position: relative; overflow: hidden;
   }
   .pohar-slot:first-child { border-right: 1px solid rgba(223,189,149,0.2); }
-
   .pohar-img {
     height: 22vh; object-fit: contain; mix-blend-mode: lighten;
     filter: drop-shadow(0 4px 15px rgba(0,0,0,0.4));
@@ -175,14 +197,8 @@
     from { opacity: 0; transform: translateY(30px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.8) translateY(-50%); }
-    to   { opacity: 1; transform: scale(1) translateY(-50%); }
-  }
   .text-block  { animation: fadeInUp 0.8s ease forwards; }
-  .ice-cream-slot:nth-child(1) { animation: fadeInUp 0.7s 0.1s ease both; }
-  .ice-cream-slot:nth-child(3) { animation: fadeInUp 0.7s 0.2s ease both; }
-  .ice-cream-slot:nth-child(5) { animation: fadeInUp 0.7s 0.3s ease both; }
+  .ice-cream-slot { animation: fadeInUp 0.7s ease both; }
   .bottom-zone { animation: fadeInUp 0.8s 0.4s ease both; }
 </style>
 </head>
@@ -258,12 +274,39 @@ function getImgUrl(imgFile) {
   return BASE_URL + '/' + imgFile;
 }
 
+const PETIPAKA = ['dbk', 'krc']; // 5-páka prodejny
+
+function isPetipaka(storeId) {
+  return PETIPAKA.includes(storeId);
+}
+
+// Michana slot = combined image of two flavors
+function renderMichana(flavor1, flavor2, size) {
+  const img1 = getImgSrc(flavor1);
+  const img2 = getImgSrc(flavor2);
+  const label = `${flavor1 ? flavor1.label : '?'} + ${flavor2 ? flavor2.label : '?'}`;
+  
+  return `
+    <div class="flavor-label">
+      <div class="flavor-name" style="font-size:${size}">MÍŠENÁ</div>
+      <div class="flavor-sub">${label.toUpperCase()}</div>
+    </div>
+    <div class="ice-img-wrap michana-wrap">
+      <div class="michana-half michana-left">
+        ${img1 ? `<img class="ice-img michana-img" src="${img1}" />` : '<div class="no-img">🍦</div>'}
+      </div>
+      <div class="michana-half michana-right">
+        ${img2 ? `<img class="ice-img michana-img" src="${img2}" />` : '<div class="no-img">🍦</div>'}
+      </div>
+    </div>
+    <div class="slot-price">45,-</div>
+  `;
+}
+
 
 const GIST_ID_KEY = 'll_gist_id';
 const CACHE_KEY = 'll_flavor_cache';
-const REFRESH_MS = 300000; // 5 minut
-
-let refreshTimer = null;
+const REFRESH_MS = 300000;
 
 function getURLParams() {
   const p = new URLSearchParams(window.location.search);
@@ -294,18 +337,24 @@ function loadCache(storeId) {
   } catch(e) { return null; }
 }
 
-function renderTop(flavors) {
+function renderTop(storeId, data) {
   const zone = document.getElementById('top-zone');
-  const valid = flavors.filter(Boolean);
-  const count = valid.length;
+  const petipaka = isPetipaka(storeId);
 
-  if (count === 0) {
+  const f1 = getFlavorById(data?.slot1);
+  const f2 = getFlavorById(data?.slot2);
+  const f3 = getFlavorById(data?.slot3);
+
+  if (!f1 && !f2) {
     zone.className = 'top-zone';
     zone.innerHTML = '<div class="empty-msg">NASTAVTE PŘÍCHUTĚ V ADMIN PANELU</div>';
     return;
   }
 
-  zone.className = `top-zone layout-${count}`;
+  const nameSize = petipaka ? '2vw' : '3.2vw';
+  const priceSize = petipaka ? '1.8vw' : '2.5vw';
+
+  zone.className = `top-zone layout-${petipaka ? 5 : 3}`;
   zone.innerHTML = `
     <div class="text-block">
       <div class="label-zmrzlina">ZMRZLINA</div>
@@ -316,58 +365,75 @@ function renderTop(flavors) {
   const iceCreams = document.createElement('div');
   iceCreams.className = 'ice-creams';
 
-  valid.forEach((flavor, i) => {
-    if (i > 0) {
-      const d = document.createElement('div');
-      d.className = 'divider-v';
-      iceCreams.appendChild(d);
-    }
+  function addDivider() {
+    const d = document.createElement('div');
+    d.className = 'divider-v';
+    iceCreams.appendChild(d);
+  }
+
+  function addSlot(html) {
     const slot = document.createElement('div');
     slot.className = 'ice-cream-slot';
+    slot.innerHTML = html;
+    iceCreams.appendChild(slot);
+  }
+
+  function normalSlot(flavor) {
     const imgSrc = getImgSrc(flavor);
-    slot.innerHTML = `
+    return `
       <div class="flavor-label">
-        <div class="flavor-name">${flavor.label.toUpperCase()}</div>
+        <div class="flavor-name" style="font-size:${nameSize}">${flavor.label.toUpperCase()}</div>
         <div class="flavor-sub">PŘÍCHUŤ</div>
       </div>
       <div class="ice-img-wrap">
-        ${imgSrc
-          ? `<img class="ice-img" src="${imgSrc}" alt="${flavor.label}" />`
-          : '<div style="font-size:5rem;opacity:0.3">🍦</div>'}
+        ${imgSrc ? `<img class="ice-img" src="${imgSrc}" alt="${flavor.label}" />` : '<div style="font-size:4rem;opacity:0.3">🍦</div>'}
       </div>
-      <div class="slot-price">45,-</div>
+      <div class="slot-price" style="font-size:${priceSize}">45,-</div>
     `;
-    iceCreams.appendChild(slot);
-  });
+  }
+
+  if (petipaka) {
+    // 5-páka: f1, f2, f3, míšená(f1+f2), míšená(f2+f3)
+    const slots = [f1, f2, f3].filter(Boolean);
+    slots.forEach((f, i) => {
+      if (i > 0) addDivider();
+      addSlot(normalSlot(f));
+    });
+    if (f1 && f2) {
+      addDivider();
+      addSlot(renderMichana(f1, f2, nameSize));
+    }
+    if (f2 && f3) {
+      addDivider();
+      addSlot(renderMichana(f2, f3, nameSize));
+    }
+  } else {
+    // 3-páka: f1, f2, míšená(f1+f2)
+    if (f1) addSlot(normalSlot(f1));
+    if (f2) { addDivider(); addSlot(normalSlot(f2)); }
+    if (f1 && f2) { addDivider(); addSlot(renderMichana(f1, f2, nameSize)); }
+  }
 
   zone.appendChild(iceCreams);
 }
 
-// Falling candies
 function spawnCandies(containerId, type) {
   const container = document.getElementById(containerId);
   if (!container) return;
-  const COUNT = 25;
   const lentilkyColors = ['#e74c3c','#f1c40f','#3498db','#2ecc71','#e67e22','#9b59b6','#ff69b4','#00bfff','#ff4500','#32cd32'];
-
-  for (let i = 0; i < COUNT; i++) {
+  for (let i = 0; i < 25; i++) {
     const el = document.createElement('div');
     el.className = 'candy';
-
     if (type === 'orisky') {
       el.textContent = Math.random() < 0.6 ? '🥜' : '🌰';
       el.style.fontSize = (0.8 + Math.random() * 0.7) + 'rem';
     } else {
-      // lentilky = barevné kroužky
       const color = lentilkyColors[Math.floor(Math.random() * lentilkyColors.length)];
       const size = (7 + Math.random() * 9) + 'px';
-      el.style.width = size;
-      el.style.height = size;
-      el.style.background = color;
-      el.style.borderRadius = '50%';
+      el.style.width = size; el.style.height = size;
+      el.style.background = color; el.style.borderRadius = '50%';
       el.style.boxShadow = '0 1px 4px rgba(0,0,0,0.5)';
     }
-
     el.style.left = (Math.random() * 95) + '%';
     el.style.animationDuration = (2.5 + Math.random() * 4) + 's';
     el.style.animationDelay = (Math.random() * -7) + 's';
@@ -385,38 +451,30 @@ async function loadFromGist(gistId, storeId) {
     const file = data.files['lbrzlina.json'];
     if (!file) return null;
     const parsed = JSON.parse(file.content)[storeId];
-    if (parsed) saveCache(storeId, parsed); // uloz do cache
+    if (parsed) saveCache(storeId, parsed);
     return parsed || null;
   } catch(e) {
     console.warn('API error, using cache');
-    return null; // vrati null -> pouzije se cache
+    return null;
   }
-}
-
-async function refresh(store, gistId) {
-  const fresh = await loadFromGist(gistId, store);
-  const data = fresh || loadCache(store); // pri chybe pouzij cache
-
-  renderTop([
-    getFlavorById(data?.slot1),
-    getFlavorById(data?.slot2),
-    getFlavorById(data?.slot3),
-  ]);
 }
 
 async function init() {
   const { store, gistId } = getURLParams();
   if (gistId) localStorage.setItem(GIST_ID_KEY, gistId);
 
-  // Spawn candies
   spawnCandies('pohar-lentilky', 'lentilky');
   spawnCandies('pohar-orisky', 'orisky');
 
-  // First load
-  await refresh(store, gistId);
+  async function refresh() {
+    if (!gistId || !store) return;
+    const fresh = await loadFromGist(gistId, store);
+    const data = fresh || loadCache(store);
+    renderTop(store, data);
+  }
 
-  // Refresh every 5 minutes
-  setInterval(() => refresh(store, gistId), REFRESH_MS);
+  await refresh();
+  setInterval(refresh, REFRESH_MS);
 }
 
 init();
