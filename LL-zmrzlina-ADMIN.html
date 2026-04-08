@@ -290,6 +290,221 @@
     text-align: center;
     margin-top: 6px;
   }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding: 0 32px;
+    background: var(--brown-mid);
+    border-bottom: 1px solid rgba(223,189,149,0.2);
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: rgba(223,189,149,0.5);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--gold); }
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--orange);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* FLAVOR MANAGEMENT */
+  .flavor-mgmt {
+    padding: 24px 32px;
+  }
+  .flavor-mgmt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .flavor-mgmt-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--gold);
+  }
+  .add-flavor-btn {
+    background: var(--orange);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+  }
+  .add-flavor-btn:hover { background: #b53d15; }
+
+  .flavor-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+
+  .flavor-card {
+    background: var(--brown-mid);
+    border: 1px solid rgba(223,189,149,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: border-color 0.2s;
+  }
+  .flavor-card:hover { border-color: var(--gold); }
+  .flavor-card.disabled { opacity: 0.4; }
+
+  .flavor-card-img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    mix-blend-mode: lighten;
+    background: #1a0c04;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .flavor-card-img-placeholder {
+    width: 56px; height: 56px;
+    background: #1a0c04;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; opacity: 0.4;
+    flex-shrink: 0;
+  }
+
+  .flavor-card-info { flex: 1; min-width: 0; }
+  .flavor-card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--cream);
+  }
+  .flavor-card-file {
+    font-size: 0.75rem;
+    color: rgba(223,189,149,0.5);
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .flavor-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .fc-btn {
+    background: none;
+    border: 1px solid rgba(223,189,149,0.3);
+    color: var(--gold);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .fc-btn:hover { background: rgba(223,189,149,0.15); }
+  .fc-btn.danger { border-color: rgba(231,76,60,0.4); color: var(--red); }
+  .fc-btn.danger:hover { background: rgba(231,76,60,0.15); }
+  .fc-btn.toggle-off { border-color: rgba(231,76,60,0.4); color: rgba(231,76,60,0.7); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--brown-mid);
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+    padding: 28px 32px;
+    width: 420px;
+    max-width: 90vw;
+  }
+  .modal h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .modal-field { margin-bottom: 16px; }
+  .modal-field label {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(223,189,149,0.7);
+    margin-bottom: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .modal-field input {
+    width: 100%;
+    background: var(--brown);
+    border: 1px solid rgba(223,189,149,0.3);
+    color: var(--cream);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+  }
+  .modal-field input:focus { outline: none; border-color: var(--gold); }
+  .modal-field small {
+    display: block;
+    font-size: 0.72rem;
+    color: rgba(223,189,149,0.4);
+    margin-top: 4px;
+  }
+  .modal-preview {
+    height: 80px;
+    background: #1a0c04;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 8px;
+  }
+  .modal-preview img {
+    max-height: 100%; max-width: 100%;
+    object-fit: contain; mix-blend-mode: lighten;
+  }
+  .modal-actions {
+    display: flex; gap: 12px; margin-top: 20px;
+  }
+  .modal-save {
+    flex: 1; background: var(--orange); color: white;
+    border: none; padding: 12px; border-radius: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    cursor: pointer; letter-spacing: 0.06em;
+  }
+  .modal-cancel {
+    background: none; border: 1px solid rgba(223,189,149,0.3);
+    color: var(--gold); padding: 12px 20px; border-radius: 6px;
+    font-family: 'Barlow', sans-serif; cursor: pointer;
+  }
+
 </style>
 </head>
 <body>
@@ -300,6 +515,12 @@
   <button class="save-all-btn" onclick="saveAll()">💾 Uložit vše</button>
 </header>
 
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('prodejny')">🏪 Prodejny</button>
+  <button class="tab-btn" onclick="switchTab('prichute')">🍦 Správa příchutí</button>
+</div>
+
+<div id="tab-prodejny" class="tab-content active">
 <div class="gist-setup">
   <label>GitHub Token:</label>
   <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx" />
@@ -311,6 +532,45 @@
 </div>
 
 <div class="grid" id="store-grid"></div>
+
+</div><!-- end tab-prodejny -->
+
+<div id="tab-prichute" class="tab-content">
+  <div class="flavor-mgmt">
+    <div class="flavor-mgmt-header">
+      <h2>🍦 Správa příchutí</h2>
+      <button class="add-flavor-btn" onclick="newFlavor()">+ Přidat příchuť</button>
+    </div>
+    <div class="flavor-list" id="flavor-list"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="flavor-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="modal-title">Příchuť</h3>
+    <div class="modal-field">
+      <label>ID (bez háčků, bez mezer)</label>
+      <input type="text" id="modal-id" placeholder="napr. boruvka" />
+    </div>
+    <div class="modal-field">
+      <label>Název (zobrazí se na TV)</label>
+      <input type="text" id="modal-label" placeholder="napr. Borůvka" />
+    </div>
+    <div class="modal-field">
+      <label>Název souboru obrázku na GitHubu</label>
+      <input type="text" id="modal-img" placeholder="napr. 3_boruvka.png" oninput="updateModalPreview()" />
+      <small>Soubor musí být nahraný na GitHub ve složce zmrzlina</small>
+      <div class="modal-preview" id="modal-preview">
+        <span style="color:rgba(223,189,149,0.3);font-size:0.8rem">Náhled obrázku</span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">Zrušit</button>
+      <button class="modal-save" onclick="saveFlavor()">Uložit</button>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -594,6 +854,161 @@ async function saveAll() {
   } else {
     showToast('Uloženo lokálně (Gist nedostupný)', true);
   }
+}
+
+
+// ===== FLAVOR MANAGEMENT =====
+const CUSTOM_FLAVORS_KEY = 'll_custom_flavors';
+let editingFlavor = null;
+
+function loadCustomFlavors() {
+  try {
+    return JSON.parse(localStorage.getItem(CUSTOM_FLAVORS_KEY) || '[]');
+  } catch(e) { return []; }
+}
+
+function saveCustomFlavors(flavors) {
+  localStorage.setItem(CUSTOM_FLAVORS_KEY, JSON.stringify(flavors));
+}
+
+function getAllFlavors() {
+  const custom = loadCustomFlavors();
+  const base = PRICHUTE.map(f => ({...f, builtin: true}));
+  return [...base, ...custom.filter(c => !base.find(b => b.id === c.id))];
+}
+
+function renderFlavorMgmt() {
+  const flavors = getAllFlavors();
+  const list = document.getElementById('flavor-list');
+  list.innerHTML = flavors.map(f => {
+    const imgSrc = f.img ? getImgUrl(f.img) : null;
+    const imgEl = imgSrc
+      ? `<img class="flavor-card-img" src="${imgSrc}" />`
+      : `<div class="flavor-card-img-placeholder">🍦</div>`;
+    return `
+      <div class="flavor-card${f.disabled?' disabled':''}" id="fcard_${f.id}">
+        ${imgEl}
+        <div class="flavor-card-info">
+          <div class="flavor-card-name">${f.label}</div>
+          <div class="flavor-card-file">${f.img || '— bez obrázku —'}</div>
+        </div>
+        <div class="flavor-card-actions">
+          <button class="fc-btn" onclick="editFlavor('${f.id}')">✏️ Upravit</button>
+          <button class="fc-btn ${f.disabled?'':'toggle-off'}" onclick="toggleFlavor('${f.id}')">
+            ${f.disabled ? '✓ Zapnout' : '✕ Skrýt'}
+          </button>
+          ${!f.builtin ? `<button class="fc-btn danger" onclick="deleteFlavor('${f.id}')">🗑 Smazat</button>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function editFlavor(id) {
+  const flavors = getAllFlavors();
+  const f = flavors.find(x => x.id === id);
+  if (!f) return;
+  editingFlavor = f;
+  document.getElementById('modal-title').textContent = f.builtin ? 'Upravit příchuť' : 'Upravit příchuť';
+  document.getElementById('modal-id').value = f.id;
+  document.getElementById('modal-id').disabled = true;
+  document.getElementById('modal-label').value = f.label;
+  document.getElementById('modal-img').value = f.img || '';
+  updateModalPreview();
+  openModal();
+}
+
+function newFlavor() {
+  editingFlavor = null;
+  document.getElementById('modal-title').textContent = 'Přidat příchuť';
+  document.getElementById('modal-id').value = '';
+  document.getElementById('modal-id').disabled = false;
+  document.getElementById('modal-label').value = '';
+  document.getElementById('modal-img').value = '';
+  updateModalPreview();
+  openModal();
+}
+
+function openModal() {
+  document.getElementById('flavor-modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('flavor-modal').classList.remove('open');
+}
+
+function updateModalPreview() {
+  const img = document.getElementById('modal-img').value.trim();
+  const prev = document.getElementById('modal-preview');
+  if (img) {
+    prev.innerHTML = `<img src="${getImgUrl(img)}" onerror="this.style.display='none'" />`;
+  } else {
+    prev.innerHTML = '<span style="color:rgba(223,189,149,0.3);font-size:0.8rem">Zadej název souboru pro náhled</span>';
+  }
+}
+
+function saveFlavor() {
+  const id = document.getElementById('modal-id').value.trim().toLowerCase().replace(/\s+/g, '_');
+  const label = document.getElementById('modal-label').value.trim();
+  const img = document.getElementById('modal-img').value.trim() || null;
+  
+  if (!id || !label) { alert('Zadej ID a název'); return; }
+
+  const custom = loadCustomFlavors();
+  
+  if (editingFlavor) {
+    // Update - find in custom or update builtin override
+    const idx = custom.findIndex(f => f.id === editingFlavor.id);
+    if (idx >= 0) {
+      custom[idx] = { ...custom[idx], label, img };
+    } else {
+      // Override builtin
+      custom.push({ id: editingFlavor.id, label, img, override: true });
+    }
+  } else {
+    // New flavor
+    if (getAllFlavors().find(f => f.id === id)) { alert('Příchuť s tímto ID už existuje'); return; }
+    custom.push({ id, label, img });
+  }
+  
+  saveCustomFlavors(custom);
+  closeModal();
+  renderFlavorMgmt();
+  renderGrid(); // refresh store grid too
+}
+
+function toggleFlavor(id) {
+  const custom = loadCustomFlavors();
+  const existing = custom.find(f => f.id === id);
+  if (existing) {
+    existing.disabled = !existing.disabled;
+  } else {
+    custom.push({ id, disabled: true, override: true });
+  }
+  saveCustomFlavors(custom);
+  renderFlavorMgmt();
+}
+
+function deleteFlavor(id) {
+  if (!confirm('Opravdu smazat tuto příchuť?')) return;
+  const custom = loadCustomFlavors().filter(f => f.id !== id);
+  saveCustomFlavors(custom);
+  renderFlavorMgmt();
+}
+
+// Override PRICHUTE getter to include custom
+const _origPRICHUTE = PRICHUTE;
+function getActivePrichute() {
+  return getAllFlavors().filter(f => !f.disabled);
+}
+
+
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+  if (tab === 'prichute') renderFlavorMgmt();
 }
 
 // Init
