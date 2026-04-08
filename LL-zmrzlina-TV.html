@@ -6,122 +6,195 @@
 <title>Zmrzlina točená – TV</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=Dancing+Script:wght@700&display=swap');
-
+ 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 100%; height: 100%; overflow: hidden; background: #2a1508; }
-
+  html, body { width: 100vw; height: 100vh; overflow: hidden; background: #1a0c04; }
+ 
   .bg {
     position: fixed; inset: 0;
-    background: radial-gradient(ellipse at 70% 50%, #4a2310 0%, #2a1508 45%, #1a0c04 100%);
+    background: radial-gradient(ellipse at 60% 50%, #4a2310 0%, #2a1508 50%, #1a0c04 100%);
   }
-
+ 
   .scene {
-    position: relative; width: 100vw; height: 100vh;
-    display: flex; align-items: center;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: stretch;
   }
-
-  .text-block { position: absolute; left: 5vw; bottom: 8vh; z-index: 10; }
+ 
+  /* LEFT PANEL */
+  .left-panel {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 5vh 3vw 6vh 4vw;
+    flex-shrink: 0;
+    width: 22vw;
+  }
+ 
   .label-zmrzlina {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
-    font-size: clamp(3.5rem, 7vw, 6rem); color: #fff;
-    line-height: 0.9; text-transform: uppercase;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3rem, 5.5vw, 7rem);
+    color: #fff;
+    line-height: 0.88;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
   }
   .label-tocena {
-    font-family: 'Dancing Script', cursive; font-weight: 700;
-    font-size: clamp(2.5rem, 5vw, 4.2rem); color: #dfbd95; line-height: 1;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 700;
+    font-size: clamp(2rem, 3.5vw, 4.5rem);
+    color: #dfbd95;
+    line-height: 1.1;
   }
-
+ 
+  /* PRICE */
   .price-bubble {
-    position: absolute; top: 50%; transform: translate(-50%, -50%);
-    width: clamp(90px, 10vw, 130px); height: clamp(90px, 10vw, 130px);
-    background: white; border-radius: 50% 50% 50% 10%;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 20; box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    position: absolute;
+    left: 20vw;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(80px, 9vw, 120px);
+    height: clamp(80px, 9vw, 120px);
+    background: white;
+    border-radius: 50% 50% 50% 8%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 30;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    flex-shrink: 0;
   }
   .price-text {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
-    font-size: clamp(1.8rem, 3.5vw, 3rem); color: #2a1508;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.6rem, 3vw, 2.8rem);
+    color: #1a0c04;
+    line-height: 1;
   }
-
+ 
+  /* ICE CREAM AREA */
   .ice-creams {
-    position: absolute; right: 0; top: 0; height: 100%;
-    display: flex; align-items: center; justify-content: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+    padding: 2vh 2vw;
+    gap: 0;
   }
+ 
   .ice-cream-slot {
-    display: flex; flex-direction: column; align-items: center;
-    justify-content: center; height: 100%; position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    position: relative;
+    padding: 0 1vw;
   }
-  .flavor-label { position: absolute; top: 7vh; text-align: center; z-index: 10; }
+ 
+  .flavor-label {
+    position: absolute;
+    top: 6vh;
+    text-align: center;
+    width: 100%;
+    z-index: 10;
+    padding: 0 10px;
+  }
   .flavor-name {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
-    color: white; text-transform: uppercase; letter-spacing: 0.05em;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 0.95;
+    text-shadow: 0 2px 15px rgba(0,0,0,0.8);
   }
   .flavor-sub {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 400;
-    color: rgba(255,255,255,0.7); font-size: clamp(0.9rem, 1.5vw, 1.3rem);
-    letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px;
-    display: flex; align-items: center; gap: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    color: rgba(255,255,255,0.65);
+    font-size: clamp(0.7rem, 1.2vw, 1.1rem);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
   .flavor-sub::before, .flavor-sub::after {
-    content: ''; display: block; height: 1px; width: 30px;
-    background: rgba(255,255,255,0.5);
+    content: ''; display: block; height: 1px; width: 20px;
+    background: rgba(255,255,255,0.4);
   }
+ 
   .ice-img {
-    max-height: 75vh; max-width: 100%; object-fit: contain;
-    mix-blend-mode: lighten; filter: drop-shadow(0 10px 40px rgba(0,0,0,0.5));
+    width: 100%;
+    height: 80vh;
+    object-fit: contain;
+    mix-blend-mode: lighten;
   }
+ 
   .no-img-placeholder {
-    width: 200px; height: 300px; display: flex; align-items: center;
-    justify-content: center; font-size: 5rem; opacity: 0.4;
+    font-size: 8rem;
+    opacity: 0.3;
   }
+ 
   .divider {
-    width: 1px; height: 50vh; background: rgba(223,189,149,0.2); margin: 0 10px;
+    width: 1px;
+    height: 55vh;
+    background: rgba(223,189,149,0.2);
+    flex-shrink: 0;
   }
-
-  .layout-1 .ice-creams { width: 65vw; left: 25vw; }
-  .layout-1 .ice-cream-slot { width: 100%; }
-  .layout-1 .flavor-name { font-size: clamp(3rem, 7vw, 6rem); }
-  .layout-1 .ice-img { max-height: 80vh; }
-  .layout-1 .price-bubble { left: 22vw; }
-
-  .layout-2 .ice-creams { width: 70vw; left: 22vw; }
-  .layout-2 .ice-cream-slot { width: 50%; }
-  .layout-2 .flavor-name { font-size: clamp(2rem, 4.5vw, 4rem); }
-  .layout-2 .ice-img { max-height: 72vh; }
-  .layout-2 .price-bubble { left: 24vw; }
-
-  .layout-3 .ice-creams { width: 75vw; left: 20vw; }
-  .layout-3 .ice-cream-slot { width: 33.33%; }
-  .layout-3 .flavor-name { font-size: clamp(1.4rem, 2.8vw, 2.6rem); }
-  .layout-3 .ice-img { max-height: 65vh; }
-  .layout-3 .price-bubble { left: 20vw; }
-
+ 
+  /* Font sizes per layout */
+  .layout-1 .flavor-name { font-size: clamp(3rem, 6vw, 7rem); }
+  .layout-1 .ice-img { height: 88vh; }
+ 
+  .layout-2 .flavor-name { font-size: clamp(2.2rem, 4vw, 5rem); }
+  .layout-2 .ice-img { height: 80vh; }
+ 
+  .layout-3 .flavor-name { font-size: clamp(1.5rem, 2.8vw, 3.5rem); }
+  .layout-3 .ice-img { height: 72vh; }
+ 
   .empty-msg {
-    color: rgba(255,255,255,0.3); font-family: 'Barlow Condensed', sans-serif;
-    font-size: 2rem; margin: auto; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.25);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.15em;
+    margin: auto;
   }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
+ 
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.85); }
-    to { opacity: 1; transform: scale(1); }
+  @keyframes popIn {
+    from { opacity: 0; transform: translate(-50%,-50%) scale(0.7); }
+    to { opacity: 1; transform: translate(-50%,-50%) scale(1); }
   }
-  .text-block { animation: fadeInUp 0.8s ease forwards; }
-  .price-bubble { animation: scaleIn 0.6s 0.3s ease both; }
+  .left-panel { animation: fadeUp 0.9s ease both; }
+  .price-bubble { animation: popIn 0.6s 0.3s ease both; }
+  .ice-cream-slot { animation: fadeUp 0.8s ease both; }
+  .ice-cream-slot:nth-child(1) { animation-delay: 0.1s; }
+  .ice-cream-slot:nth-child(3) { animation-delay: 0.2s; }
+  .ice-cream-slot:nth-child(5) { animation-delay: 0.3s; }
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="scene" id="scene"></div>
-
+ 
 <script>
-
+ 
 const BASE_URL = "https://liberskelahudky.github.io/zmrzlina";
-
+ 
 const PRICHUTE = [
   { id: "vanilka",        label: "Vanilka",           img: "Vanilka.png" },
   { id: "cokolada",       label: "Čokoláda",          img: "Cokolada.png" },
@@ -144,7 +217,7 @@ const PRICHUTE = [
   { id: "pistacie",       label: "Pistácie",           img: "Pistacie.png" },
   { id: "misana",         label: "Míšená",             img: null },
 ];
-
+ 
 const PRODEJNY = [
   { id: "naporic",    label: "Na Poříčí" },
   { id: "holesovice", label: "Holešovice" },
@@ -160,134 +233,101 @@ const PRODEJNY = [
   { id: "cb",         label: "České Budějovice" },
   { id: "ipp",        label: "I.P. Pavlova" },
 ];
-
+ 
 function getImgUrl(imgFile) {
   if (!imgFile) return null;
   return BASE_URL + '/' + imgFile;
 }
-
-
+ 
+ 
 const GIST_ID_KEY = 'll_gist_id';
 const REFRESH_MS = 60000;
-
+ 
 function getURLParams() {
   const p = new URLSearchParams(window.location.search);
   return {
     store: p.get('store'),
     gistId: p.get('gist') || localStorage.getItem(GIST_ID_KEY),
-    p1: p.get('p1'),
-    p2: p.get('p2'),
-    p3: p.get('p3'),
   };
 }
-
+ 
 function getFlavorById(id) {
   return id ? PRICHUTE.find(f => f.id === id) : null;
 }
-
-function getImgSrc(flavor) {
-  if (!flavor || !flavor.img) return null;
-  return getImgUrl(flavor.img);
-}
-
+ 
 function renderScene(flavors) {
   const scene = document.getElementById('scene');
-  const count = flavors.filter(Boolean).length;
-
+  const valid = flavors.filter(Boolean);
+  const count = valid.length;
+ 
   if (count === 0) {
+    scene.className = 'scene';
     scene.innerHTML = '<div class="empty-msg">ŽÁDNÁ PŘÍCHUŤ NENÍ NASTAVENA</div>';
     return;
   }
-
+ 
   scene.className = `scene layout-${count}`;
-  scene.innerHTML = '';
-
-  // Text block
-  scene.innerHTML += `
-    <div class="text-block">
-      <div class="label-zmrzlina">ZMRZLINA</div>
+ 
+  let html = `
+    <div class="left-panel">
+      <div class="label-zmrzlina">ZMRZ<br>LINA</div>
       <div class="label-tocena">točená</div>
     </div>
     <div class="price-bubble"><span class="price-text">45,–</span></div>
+    <div class="ice-creams">
   `;
-
-  const iceCreams = document.createElement('div');
-  iceCreams.className = 'ice-creams';
-
-  flavors.filter(Boolean).forEach((flavor, i) => {
-    if (i > 0) {
-      const div = document.createElement('div');
-      div.className = 'divider';
-      iceCreams.appendChild(div);
-    }
-    const slot = document.createElement('div');
-    slot.className = 'ice-cream-slot';
-    const imgSrc = getImgSrc(flavor);
-    slot.innerHTML = `
-      <div class="flavor-label">
-        <div class="flavor-name">${flavor.label.toUpperCase()}</div>
-        <div class="flavor-sub">PŘÍCHUŤ</div>
+ 
+  valid.forEach((flavor, i) => {
+    if (i > 0) html += `<div class="divider"></div>`;
+    const imgUrl = flavor.img ? getImgUrl(flavor.img) : null;
+    html += `
+      <div class="ice-cream-slot">
+        <div class="flavor-label">
+          <div class="flavor-name">${flavor.label.toUpperCase()}</div>
+          <div class="flavor-sub">PŘÍCHUŤ</div>
+        </div>
+        ${imgUrl
+          ? `<img class="ice-img" src="${imgUrl}" alt="${flavor.label}" />`
+          : `<div class="no-img-placeholder">🍦</div>`}
       </div>
-      ${imgSrc
-        ? `<img class="ice-img" src="${imgSrc}" alt="${flavor.label}" />`
-        : `<div class="no-img-placeholder">🍦</div>`}
     `;
-    iceCreams.appendChild(slot);
   });
-
-  scene.appendChild(iceCreams);
+ 
+  html += `</div>`;
+  scene.innerHTML = html;
 }
-
+ 
 async function loadFromGist(gistId, storeId) {
   try {
     const res = await fetch(`https://api.github.com/gists/${gistId}`);
     const data = await res.json();
     const file = data.files['lbrzlina.json'];
     if (!file) return null;
-    const parsed = JSON.parse(file.content);
-    return parsed[storeId] || null;
+    return JSON.parse(file.content)[storeId] || null;
   } catch(e) {
     console.error('Gist error:', e);
     return null;
   }
 }
-
+ 
 async function init() {
-  const { store, gistId, p1, p2, p3 } = getURLParams();
+  const { store, gistId } = getURLParams();
   if (gistId) localStorage.setItem(GIST_ID_KEY, gistId);
-
-  let slot1 = p1, slot2 = p2, slot3 = p3;
-
-  if (gistId && store) {
+ 
+  async function refresh() {
+    if (!gistId || !store) { renderScene([]); return; }
     const storeData = await loadFromGist(gistId, store);
-    if (storeData) {
-      slot1 = storeData.slot1;
-      slot2 = storeData.slot2;
-      slot3 = storeData.slot3;
-    }
+    renderScene([
+      getFlavorById(storeData?.slot1),
+      getFlavorById(storeData?.slot2),
+      getFlavorById(storeData?.slot3),
+    ]);
   }
-
-  renderScene([
-    getFlavorById(slot1),
-    getFlavorById(slot2),
-    getFlavorById(slot3),
-  ]);
-
-  // Auto-refresh
-  if (gistId && store) {
-    setInterval(async () => {
-      const storeData = await loadFromGist(gistId, store);
-      if (storeData) {
-        renderScene([
-          getFlavorById(storeData.slot1),
-          getFlavorById(storeData.slot2),
-          getFlavorById(storeData.slot3),
-        ]);
-      }
-    }, REFRESH_MS);
-  }
+ 
+  await refresh();
+  setInterval(refresh, REFRESH_MS);
 }
-
+ 
 init();
 </script>
 </body>
