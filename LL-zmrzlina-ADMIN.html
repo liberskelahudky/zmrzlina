@@ -599,7 +599,7 @@ const PRICHUTE = [
   { id: "slany_karamel",  label: "Slaný karamel",      img: "13_slanykaramel.png" },
   { id: "pistacie",       label: "Pistácie",           img: "14_pistacie.png" },
   { id: "rakytnik",       label: "Rakytník",           img: null },
-  { id: "misana",         label: "Míšená",             img: null },
+  { id: "misana",         label: "Míchaná",            img: null }  // hidden,
 ];
 
 const PRODEJNY = [
@@ -874,8 +874,15 @@ function saveCustomFlavors(flavors) {
 
 function getAllFlavors() {
   const custom = loadCustomFlavors();
-  const base = PRICHUTE.map(f => ({...f, builtin: true}));
-  return [...base, ...custom.filter(c => !base.find(b => b.id === c.id))];
+  // Apply overrides to builtin flavors
+  const base = PRICHUTE.map(f => {
+    const override = custom.find(c => c.id === f.id);
+    if (override) return { ...f, ...override, builtin: true };
+    return { ...f, builtin: true };
+  });
+  // Add completely new custom flavors (not in builtins)
+  const newCustom = custom.filter(c => !PRICHUTE.find(b => b.id === c.id));
+  return [...base, ...newCustom];
 }
 
 function renderFlavorMgmt() {
