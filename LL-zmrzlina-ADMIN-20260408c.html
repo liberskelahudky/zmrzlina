@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LL Zmrzlina – Admin</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+
+  :root {
+    --brown: #2c1a0e;
+    --brown-mid: #3d2410;
+    --brown-light: #6b3d1e;
+    --gold: #dfbd95;
+    --orange: #d14b1f;
+    --cream: #f1e5d7;
+    --navy: #282e59;
+    --white: #ffffff;
+    --green: #2ecc71;
+    --red: #e74c3c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--brown);
+    color: var(--cream);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--brown-mid);
+    border-bottom: 2px solid var(--gold);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+  }
+
+  header span {
+    font-size: 0.85rem;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+
+  .save-all-btn {
+    margin-left: auto;
+    background: var(--orange);
+    color: white;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .save-all-btn:hover { background: #b53d15; transform: scale(1.02); }
+
+  .gist-setup {
+    background: var(--navy);
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    margin: 20px 32px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .gist-setup label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    color: var(--gold);
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  .gist-setup input {
+    flex: 1;
+    min-width: 200px;
+    background: var(--brown);
+    border: 1px solid var(--gold);
+    color: var(--cream);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+  }
+  .gist-setup input::placeholder { opacity: 0.5; }
+  .gist-btn {
+    background: var(--gold);
+    color: var(--brown);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+  }
+  .gist-status {
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+  .status-ok { background: rgba(46,204,113,0.2); color: var(--green); }
+  .status-err { background: rgba(231,76,60,0.2); color: var(--red); }
+  .status-none { background: rgba(223,189,149,0.15); color: var(--gold); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+    padding: 24px 32px;
+  }
+
+  .store-card {
+    background: var(--brown-mid);
+    border: 1px solid rgba(223,189,149,0.25);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .store-card:hover { border-color: var(--gold); }
+
+  .store-header {
+    background: rgba(223,189,149,0.1);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(223,189,149,0.2);
+  }
+  .store-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .store-preview-btn {
+    background: none;
+    border: 1px solid rgba(223,189,149,0.4);
+    color: var(--gold);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .store-preview-btn:hover {
+    background: rgba(223,189,149,0.15);
+  }
+
+  .store-body { padding: 16px 18px; }
+
+  .slots-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .slot {
+    flex: 1;
+    position: relative;
+  }
+
+  .slot label {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 5px;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .slot select {
+    width: 100%;
+    background: var(--brown);
+    border: 1px solid rgba(223,189,149,0.3);
+    color: var(--cream);
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23dfbd95' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+    transition: border-color 0.2s;
+  }
+  .slot select:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+  .slot select option { background: var(--brown); }
+
+  .slot-preview {
+    margin-top: 6px;
+    height: 70px;
+    background: #1a0f07;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .slot-preview img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    mix-blend-mode: lighten;
+  }
+  .slot-preview .no-img {
+    font-size: 0.7rem;
+    color: rgba(223,189,149,0.3);
+  }
+
+  .save-store-btn {
+    width: 100%;
+    background: rgba(209,75,31,0.15);
+    border: 1px solid rgba(209,75,31,0.4);
+    color: var(--orange);
+    padding: 8px;
+    border-radius: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: all 0.2s;
+  }
+  .save-store-btn:hover {
+    background: var(--orange);
+    color: white;
+  }
+  .save-store-btn.saved {
+    background: rgba(46,204,113,0.2);
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--green);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s;
+    z-index: 999;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .toast.error { background: var(--red); }
+
+  .last-saved {
+    font-size: 0.75rem;
+    color: rgba(223,189,149,0.5);
+    text-align: center;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍦 ZMRZLINA – správa TV</h1>
+  <span>Libeřské lahůdky</span>
+  <button class="save-all-btn" onclick="saveAll()">💾 Uložit vše</button>
+</header>
+
+<div class="gist-setup">
+  <label>GitHub Token:</label>
+  <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx" />
+  <label>Gist ID:</label>
+  <input type="text" id="gist-id" placeholder="abc123def456..." style="max-width:260px" />
+  <button class="gist-btn" onclick="testConnection()">Připojit</button>
+  <button class="gist-btn" onclick="createGist()" style="background:var(--cream)">Vytvořit nový Gist</button>
+  <span class="gist-status status-none" id="gist-status">Nepřipojeno</span>
+</div>
+
+<div class="grid" id="store-grid"></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+const BASE_URL = "https://liberskelahudky.github.io/zmrzlina";
+
+const PRICHUTE = [
+  { id: "vanilka",        label: "Vanilka",           img: "Vanilka.png" },
+  { id: "cokolada",       label: "Čokoláda",          img: "Cokolada.png" },
+  { id: "jogurt",         label: "Jogurt",             img: "Jogurt.png" },
+  { id: "meloun",         label: "Červený meloun",     img: "Meloun.png" },
+  { id: "mandarinka",     label: "Mandarinka",         img: "Mandarinka.png" },
+  { id: "boruvka",        label: "Kan. borůvka",       img: "Kanadska-Boruvka.png" },
+  { id: "jablko",         label: "Zelené jablko",      img: "Zelene-Jablko.png" },
+  { id: "mango",          label: "Mango",              img: "Mango.png" },
+  { id: "yuzu",           label: "Yuzu",               img: null },
+  { id: "visen",          label: "Višeň",              img: "Visen.png" },
+  { id: "jahoda",         label: "Jahoda",             img: "Jahoda.png" },
+  { id: "rybiz",          label: "Černý rybíz",        img: "Cerny-Rybiz.png" },
+  { id: "rakytnik",       label: "Rakytník",           img: "Rakytnik.png" },
+  { id: "malina",         label: "Malina",             img: "Malina.png" },
+  { id: "pomeranc",       label: "Pomeranč",           img: "Pomeranc.png" },
+  { id: "ostružina",      label: "Modrá ostružina",    img: "Modra_ostruzina.png" },
+  { id: "mrkev",          label: "Mrkev",              img: "Mrkev.png" },
+  { id: "slany_karamel",  label: "Slaný karamel",      img: "Slany-Karamel.png" },
+  { id: "pistacie",       label: "Pistácie",           img: "Pistacie.png" },
+  { id: "misana",         label: "Míšená",             img: null },
+];
+
+const PRODEJNY = [
+  { id: "naporic",    label: "Na Poříčí" },
+  { id: "holesovice", label: "Holešovice" },
+  { id: "vodicova",   label: "Vodičkova" },
+  { id: "krc",        label: "Krč" },
+  { id: "letna",      label: "Letná" },
+  { id: "palmovka",   label: "Palmovka" },
+  { id: "palmovka_c", label: "Palmovka – cukrárna" },
+  { id: "smichov",    label: "Smíchov" },
+  { id: "haje",       label: "Háje" },
+  { id: "dbk",        label: "DBK" },
+  { id: "dejvice",    label: "Dejvice" },
+  { id: "cb",         label: "České Budějovice" },
+  { id: "ipp",        label: "I.P. Pavlova" },
+];
+
+function getImgUrl(imgFile) {
+  if (!imgFile) return null;
+  return BASE_URL + '/' + imgFile;
+}
+
+// State
+let storeData = {};
+PRODEJNY.forEach(p => {
+  storeData[p.id] = { slot1: null, slot2: null, slot3: null };
+});
+
+function getFlavorImg(id) {
+  if (!id) return null;
+  const f = PRICHUTE.find(p => p.id === id);
+  if (!f || !f.img) return null;
+  return getImgUrl(f.img) || null;
+}
+
+function updatePreview(storeId, slotNum) {
+  const sel = document.getElementById(`${storeId}_slot${slotNum}`);
+  const prev = document.getElementById(`${storeId}_prev${slotNum}`);
+  const val = sel.value;
+  const img = getFlavorImg(val);
+  if (img) {
+    prev.innerHTML = `<img src="${img}" />`;
+  } else if (val) {
+    prev.innerHTML = `<span class="no-img">📷 bez obr.</span>`;
+  } else {
+    prev.innerHTML = `<span class="no-img">—</span>`;
+  }
+  storeData[storeId][`slot${slotNum}`] = val || null;
+}
+
+function buildStoreCard(store) {
+  const slots = [1, 2, 3];
+  const slotsHTML = slots.map(n => `
+    <div class="slot">
+      <label>Příchuť ${n}${n===3?' (volitelná)':''}</label>
+      <select id="${store.id}_slot${n}" onchange="updatePreview('${store.id}', ${n})">
+        <option value="">— žádná —</option>
+        ${PRICHUTE.map(p => `<option value="${p.id}">${p.label}${!p.img?' *':''}</option>`).join('')}
+      </select>
+      <div class="slot-preview" id="${store.id}_prev${n}">
+        <span class="no-img">—</span>
+      </div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="store-card" id="card_${store.id}">
+      <div class="store-header">
+        <span class="store-name">${store.label}</span>
+        <a href="#" class="store-preview-btn" onclick="openTVPreview('${store.id}'); return false;">📺 Náhled TV</a>
+      </div>
+      <div class="store-body">
+        <div class="slots-row">${slotsHTML}</div>
+        <button class="save-store-btn" id="savebtn_${store.id}" onclick="saveStore('${store.id}')">
+          Uložit prodejnu
+        </button>
+        <div class="last-saved" id="saved_${store.id}"></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderGrid() {
+  const grid = document.getElementById('store-grid');
+  grid.innerHTML = PRODEJNY.map(p => buildStoreCard(p)).join('');
+}
+
+function openTVPreview(storeId) {
+  const data = storeData[storeId];
+  const params = new URLSearchParams();
+  params.set('store', storeId);
+  if (data.slot1) params.set('p1', data.slot1);
+  if (data.slot2) params.set('p2', data.slot2);
+  if (data.slot3) params.set('p3', data.slot3);
+  // Open TV page - user needs to have TV html in same folder
+  window.open(`LL-zmrzlina-TV.html?${params.toString()}`, '_blank');
+}
+
+function showToast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => { t.className = 'toast'; }, 3000);
+}
+
+function getGistConfig() {
+  const token = document.getElementById('gh-token').value.trim();
+  const gistId = document.getElementById('gist-id').value.trim();
+  return { token, gistId };
+}
+
+function saveConfig() {
+  localStorage.setItem('ll_gh_token', document.getElementById('gh-token').value.trim());
+  localStorage.setItem('ll_gist_id', document.getElementById('gist-id').value.trim());
+}
+
+function loadConfig() {
+  const token = localStorage.getItem('ll_gh_token');
+  const gistId = localStorage.getItem('ll_gist_id');
+  if (token) document.getElementById('gh-token').value = token;
+  if (gistId) document.getElementById('gist-id').value = gistId;
+}
+
+async function testConnection() {
+  const { token, gistId } = getGistConfig();
+  if (!token || !gistId) { showToast('Zadej token i Gist ID', true); return; }
+  saveConfig();
+  const status = document.getElementById('gist-status');
+  status.textContent = 'Testuji...';
+  status.className = 'gist-status status-none';
+  try {
+    const res = await fetch(`https://api.github.com/gists/${gistId}`, {
+      headers: { Authorization: `token ${token}` }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      // Load existing store data
+      const file = data.files['ll-zmrzlina.json'];
+      if (file && file.content) {
+        const loaded = JSON.parse(file.content);
+        Object.assign(storeData, loaded);
+        applyLoadedData();
+      }
+      status.textContent = '✓ Připojeno';
+      status.className = 'gist-status status-ok';
+      showToast('Připojeno! Data načtena.');
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  } catch(e) {
+    status.textContent = '✗ Chyba: ' + e.message;
+    status.className = 'gist-status status-err';
+    showToast('Chyba připojení: ' + e.message, true);
+  }
+}
+
+async function createGist() {
+  const { token } = getGistConfig();
+  if (!token) { showToast('Zadej GitHub token', true); return; }
+  try {
+    const res = await fetch('https://api.github.com/gists', {
+      method: 'POST',
+      headers: {
+        Authorization: `token ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        description: 'Libeřské lahůdky – zmrzlina TV data',
+        public: false,
+        files: {
+          'lbrzlina.json': { content: JSON.stringify(storeData, null, 2) }
+        }
+      })
+    });
+    const data = await res.json();
+    document.getElementById('gist-id').value = data.id;
+    saveConfig();
+    document.getElementById('gist-status').textContent = '✓ Vytvořeno';
+    document.getElementById('gist-status').className = 'gist-status status-ok';
+    showToast('Gist vytvořen! ID: ' + data.id);
+  } catch(e) {
+    showToast('Chyba: ' + e.message, true);
+  }
+}
+
+function applyLoadedData() {
+  PRODEJNY.forEach(p => {
+    const d = storeData[p.id];
+    if (!d) return;
+    [1,2,3].forEach(n => {
+      const sel = document.getElementById(`${p.id}_slot${n}`);
+      if (sel) {
+        sel.value = d[`slot${n}`] || '';
+        updatePreview(p.id, n);
+      }
+    });
+  });
+}
+
+async function pushToGist(data) {
+  const { token, gistId } = getGistConfig();
+  if (!token || !gistId) {
+    showToast('Nastavení Gist chybí – data uložena jen lokálně', true);
+    return false;
+  }
+  const res = await fetch(`https://api.github.com/gists/${gistId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `token ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      files: {
+        'lbrzlina.json': { content: JSON.stringify(data, null, 2) }
+      }
+    })
+  });
+  return res.ok;
+}
+
+async function saveStore(storeId) {
+  const btn = document.getElementById(`savebtn_${storeId}`);
+  const info = document.getElementById(`saved_${storeId}`);
+  btn.textContent = 'Ukládám...';
+  
+  localStorage.setItem('ll_zmrzlina', JSON.stringify(storeData));
+  const ok = await pushToGist(storeData);
+  
+  const now = new Date().toLocaleTimeString('cs-CZ', {hour:'2-digit', minute:'2-digit'});
+  btn.className = 'save-store-btn saved';
+  btn.textContent = '✓ Uloženo';
+  info.textContent = `Uloženo v ${now}`;
+  setTimeout(() => {
+    btn.className = 'save-store-btn';
+    btn.textContent = 'Uložit prodejnu';
+  }, 2000);
+  
+  if (ok) showToast('✓ Uloženo na GitHub');
+}
+
+async function saveAll() {
+  localStorage.setItem('ll_zmrzlina', JSON.stringify(storeData));
+  const ok = await pushToGist(storeData);
+  if (ok) {
+    showToast('✓ Vše uloženo na GitHub');
+    const now = new Date().toLocaleTimeString('cs-CZ', {hour:'2-digit', minute:'2-digit'});
+    PRODEJNY.forEach(p => {
+      const info = document.getElementById(`saved_${p.id}`);
+      if (info) info.textContent = `Uloženo v ${now}`;
+    });
+  } else {
+    showToast('Uloženo lokálně (Gist nedostupný)', true);
+  }
+}
+
+// Init
+loadConfig();
+renderGrid();
+
+// Auto-refresh from Gist every 30 seconds
+async function refreshFromGist() {
+  const { token, gistId } = getGistConfig();
+  if (!token || !gistId) return;
+  try {
+    const res = await fetch(`https://api.github.com/gists/${gistId}`, {
+      headers: { Authorization: `token ${token}` }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const file = data.files['lbrzlina.json'];
+      if (file && file.content) {
+        const loaded = JSON.parse(file.content);
+        Object.assign(storeData, loaded);
+        applyLoadedData();
+      }
+    }
+  } catch(e) {}
+}
+
+// Load on start
+const local = localStorage.getItem('ll_zmrzlina');
+if (local) {
+  try {
+    Object.assign(storeData, JSON.parse(local));
+    applyLoadedData();
+  } catch(e) {}
+}
+
+// Also load from Gist immediately + every 30s
+refreshFromGist();
+setInterval(refreshFromGist, 30000);
+</script>
+</body>
+</html>
