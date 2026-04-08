@@ -59,32 +59,33 @@
 <body>
 <div id="app"></div>
 <script>
- 
+
+
 const BASE_URL = "https://liberskelahudky.github.io/zmrzlina";
- 
+
 const PRICHUTE = [
-  { id: "vanilka",        label: "Vanilka",           img: "Vanilka.png" },
-  { id: "cokolada",       label: "Čokoláda",          img: "Cokolada.png" },
-  { id: "jogurt",         label: "Jogurt",             img: "Jogurt.png" },
-  { id: "meloun",         label: "Červený meloun",     img: "Meloun.png" },
-  { id: "mandarinka",     label: "Mandarinka",         img: "Mandarinka.png" },
-  { id: "boruvka",        label: "Kan. borůvka",       img: "Kanadska-Boruvka.png" },
-  { id: "jablko",         label: "Zelené jablko",      img: "Zelene-Jablko.png" },
-  { id: "mango",          label: "Mango",              img: "Mango.png" },
-  { id: "yuzu",           label: "Yuzu",               img: null },
-  { id: "visen",          label: "Višeň",              img: "Visen.png" },
-  { id: "jahoda",         label: "Jahoda",             img: "Jahoda.png" },
-  { id: "rybiz",          label: "Černý rybíz",        img: "Cerny-Rybiz.png" },
-  { id: "rakytnik",       label: "Rakytník",           img: "Rakytnik.png" },
-  { id: "malina",         label: "Malina",             img: "Malina.png" },
-  { id: "pomeranc",       label: "Pomeranč",           img: "Pomeranc.png" },
-  { id: "ostružina",      label: "Modrá ostružina",    img: "Modra_ostruzina.png" },
-  { id: "mrkev",          label: "Mrkev",              img: "Mrkev.png" },
-  { id: "slany_karamel",  label: "Slaný karamel",      img: "Slany-Karamel.png" },
-  { id: "pistacie",       label: "Pistácie",           img: "Pistacie.png" },
+  { id: "vanilka",        label: "Vanilka",           img: "15_vanilka.png" },
+  { id: "cokolada",       label: "Čokoláda",          img: "16_cokolady.png" },
+  { id: "jogurt",         label: "Jogurt",             img: "17_jogurt.png" },
+  { id: "meloun",         label: "Červený meloun",     img: "1_meloun.png" },
+  { id: "mandarinka",     label: "Mandarinka",         img: "2_mandarinka.png" },
+  { id: "boruvka",        label: "Kan. borůvka",       img: "3_boruvka.png" },
+  { id: "jablko",         label: "Zelené jablko",      img: "18_zelenejablko.png" },
+  { id: "mango",          label: "Mango",              img: "4_mango.png" },
+  { id: "yuzu",           label: "Yuzu",               img: "5_yuzu.png" },
+  { id: "visen",          label: "Višeň",              img: "6_visen.png" },
+  { id: "jahoda",         label: "Jahoda",             img: "7_jahoda.png" },
+  { id: "rybiz",          label: "Černý rybíz",        img: "8_cernyrybiz.png" },
+  { id: "malina",         label: "Malina",             img: "9_malina.png" },
+  { id: "pomeranc",       label: "Pomeranč",           img: "10_pomeranc.png" },
+  { id: "ostružina",      label: "Modrá ostružina",    img: "11_ostruzina.png" },
+  { id: "mrkev",          label: "Mrkev",              img: "12_mrkev.png" },
+  { id: "slany_karamel",  label: "Slaný karamel",      img: "13_slanykaramel.png" },
+  { id: "pistacie",       label: "Pistácie",           img: "14_pistacie.png" },
+  { id: "rakytnik",       label: "Rakytník",           img: null },
   { id: "misana",         label: "Míšená",             img: null },
 ];
- 
+
 const PRODEJNY = [
   { id: "naporic",    label: "Na Poříčí" },
   { id: "holesovice", label: "Holešovice" },
@@ -100,37 +101,36 @@ const PRODEJNY = [
   { id: "cb",         label: "České Budějovice" },
   { id: "ipp",        label: "I.P. Pavlova" },
 ];
- 
+
 function getImgUrl(imgFile) {
   if (!imgFile) return null;
   return BASE_URL + '/' + imgFile;
 }
- 
- 
+
 // Init variables from URL
 const urlParams = new URLSearchParams(window.location.search);
 const GIST_ID = urlParams.get('gist');
 const STORE_ID = urlParams.get('store');
 const GH_TOKEN_KEY = 'll_gh_token';
- 
+
 // Save token from URL if present
 const urlToken = urlParams.get('token');
 if (urlToken) localStorage.setItem(GH_TOKEN_KEY, urlToken);
- 
+
 // State
 let currentSlots = { slot1: null, slot2: null, slot3: null };
 let openSlot = null;
 let allStoreData = {};
- 
+
 function getStore() {
   return PRODEJNY.find(p => p.id === STORE_ID);
 }
- 
+
 function getImgSrc(flavor) {
   if (!flavor || !flavor.img) return null;
   return getImgUrl(flavor.img);
 }
- 
+
 function renderApp() {
   const store = getStore();
   if (!store || !GIST_ID) {
@@ -141,25 +141,25 @@ function renderApp() {
       </div>`;
     return;
   }
- 
+
   document.title = `${store.label} – zmrzlina`;
- 
+
   const slotCards = [1,2,3].map(n => {
     const flavorId = currentSlots[`slot${n}`];
     const flavor = flavorId ? PRICHUTE.find(f => f.id === flavorId) : null;
     const imgSrc = getImgSrc(flavor);
     const isOpen = openSlot === n;
- 
+
     const imgHTML = flavor
       ? (imgSrc ? `<img class="slot-img" src="${imgSrc}" />` : `<div class="slot-img-placeholder">🍦</div>`)
       : `<div class="slot-img-placeholder">＋</div>`;
- 
+
     const flavorBtns = PRICHUTE.map(f => {
       const fImg = getImgSrc(f);
       const imgEl = fImg ? `<img src="${fImg}" />` : `<span class="no-img-icon">🍦</span>`;
       return `<button class="flavor-btn${f.id === flavorId ? ' selected' : ''}" onclick="selectFlavor(${n}, '${f.id}')">${imgEl}${f.label}</button>`;
     }).join('');
- 
+
     return `
       <div class="slot-card${flavor ? ' active' : ''}">
         <div class="slot-top" onclick="toggleSlot(${n})">
@@ -181,7 +181,7 @@ function renderApp() {
         </div>
       </div>`;
   }).join('');
- 
+
   const previewItems = [1,2,3].map(n => {
     const flavor = currentSlots[`slot${n}`] ? PRICHUTE.find(f => f.id === currentSlots[`slot${n}`]) : null;
     if (!flavor) return '';
@@ -191,9 +191,9 @@ function renderApp() {
       <div class="preview-name">${flavor.label}</div>
     </div>`;
   }).filter(Boolean).join('');
- 
+
   const lastSaved = localStorage.getItem('ll_last_saved_' + STORE_ID);
- 
+
   document.getElementById('app').innerHTML = `
     <header>
       <div class="store-name">🍦 ${store.label}</div>
@@ -212,7 +212,7 @@ function renderApp() {
     </div>
   `;
 }
- 
+
 function toggleSlot(n) {
   openSlot = openSlot === n ? null : n;
   renderApp();
@@ -223,27 +223,27 @@ function toggleSlot(n) {
     }, 100);
   }
 }
- 
+
 function selectFlavor(slotNum, flavorId) {
   currentSlots[`slot${slotNum}`] = flavorId || null;
   openSlot = null;
   renderApp();
 }
- 
+
 function filterFlavors(slotNum, search) {
   const btns = document.querySelectorAll(`#flavor_btns_${slotNum} .flavor-btn`);
   btns.forEach(btn => {
     btn.style.display = btn.textContent.toLowerCase().includes(search.toLowerCase()) ? '' : 'none';
   });
 }
- 
+
 async function saveData() {
   const btn = document.getElementById('save-btn');
   btn.textContent = 'Ukládám...';
   btn.disabled = true;
- 
+
   allStoreData[STORE_ID] = { ...currentSlots };
- 
+
   const token = localStorage.getItem(GH_TOKEN_KEY);
   if (!token) {
     btn.textContent = '⚠️ Chybí přihlášení';
@@ -251,14 +251,14 @@ async function saveData() {
     alert('Nejste přihlášeni. Kontaktujte marketing.');
     return;
   }
- 
+
   try {
     const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
       method: 'PATCH',
       headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ files: { 'lbrzlina.json': { content: JSON.stringify(allStoreData, null, 2) } } })
     });
- 
+
     if (res.ok) {
       const now = new Date().toLocaleTimeString('cs-CZ', {hour:'2-digit', minute:'2-digit'});
       localStorage.setItem('ll_last_saved_' + STORE_ID, now);
@@ -274,7 +274,7 @@ async function saveData() {
     btn.disabled = false;
   }
 }
- 
+
 async function loadFromGist() {
   try {
     const token = localStorage.getItem(GH_TOKEN_KEY);
@@ -295,7 +295,7 @@ async function loadFromGist() {
   }
   renderApp();
 }
- 
+
 loadFromGist();
 </script>
 </body>
