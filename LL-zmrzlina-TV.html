@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zmrzlina točená – TV</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=Dancing+Script:wght@700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Ms+Madi&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 100%; height: 100%; overflow: hidden; background: #2a1508; }
@@ -16,110 +16,143 @@
     background: radial-gradient(ellipse at 70% 50%, #4a2310 0%, #2a1508 45%, #1a0c04 100%);
   }
 
-  .scene {
+  /* MAIN LAYOUT */
+  .wrapper {
     position: relative; width: 100vw; height: 100vh;
-    display: flex; align-items: stretch;
+    display: flex; flex-direction: column; z-index: 1;
   }
 
-  /* LEFT TEXT BLOCK */
+  /* TOP ZONE – točená zmrzlina */
+  .top-zone {
+    flex: 1; position: relative; display: flex; align-items: stretch;
+    min-height: 0;
+  }
+
   .text-block {
-    position: absolute; left: 4vw; bottom: 6vh; z-index: 10;
+    position: absolute; left: 3vw; bottom: 2vh; z-index: 10;
   }
   .label-zmrzlina {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
-    font-size: clamp(3rem, 6vw, 5.5rem); color: #fff;
-    line-height: 0.9; text-transform: uppercase;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5vw; color: #fff;
+    line-height: 0.9; white-space: nowrap; letter-spacing: 0.05em;
   }
   .label-tocena {
-    font-family: 'Dancing Script', cursive; font-weight: 700;
-    font-size: clamp(2rem, 4vw, 3.5rem); color: #dfbd95; line-height: 1.1;
+    font-family: 'Ms Madi', cursive;
+    font-size: 4vw; color: #dfbd95; line-height: 1.2;
   }
 
-  /* PRICE BUBBLE */
   .price-bubble {
     position: absolute; z-index: 20;
-    width: clamp(80px, 9vw, 120px); height: clamp(80px, 9vw, 120px);
+    width: 10vw; height: 10vw;
+    min-width: 90px; min-height: 90px;
     background: white; border-radius: 50% 50% 50% 10%;
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    top: 50%; transform: translateY(-50%);
   }
   .price-text {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
-    font-size: clamp(1.5rem, 3vw, 2.5rem); color: #2a1508;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3vw; color: #2a1508; white-space: nowrap;
   }
 
-  /* ICE CREAM AREA */
   .ice-creams {
     position: absolute; top: 0; right: 0; height: 100%;
     display: flex; align-items: stretch;
   }
-
   .ice-cream-slot {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    height: 100%; position: relative; overflow: hidden;
+    height: 100%; position: relative;
   }
-
   .flavor-label {
-    position: absolute; top: 5vh; text-align: center; z-index: 10; width: 100%;
+    position: absolute; top: 3vh; text-align: center; z-index: 10; width: 100%; padding: 0 10px;
   }
   .flavor-name {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
-    color: white; text-transform: uppercase; letter-spacing: 0.05em;
-    text-shadow: 0 2px 15px rgba(0,0,0,0.8);
+    font-family: 'Bebas Neue', sans-serif; color: white;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    text-shadow: 0 2px 15px rgba(0,0,0,0.8); white-space: nowrap;
   }
   .flavor-sub {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 400;
-    color: rgba(255,255,255,0.7); letter-spacing: 0.15em;
-    text-transform: uppercase; margin-top: 6px;
+    font-family: 'Bebas Neue', sans-serif; color: rgba(255,255,255,0.7);
+    letter-spacing: 0.2em; text-transform: uppercase; margin-top: 4px;
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-size: clamp(0.8rem, 1.2vw, 1.1rem);
+    font-size: 1.1vw;
   }
   .flavor-sub::before, .flavor-sub::after {
-    content: ''; display: block; height: 1px; width: 25px;
-    background: rgba(255,255,255,0.5);
+    content: ''; display: block; height: 1px; width: 20px; background: rgba(255,255,255,0.5);
   }
-
   .ice-img {
-    width: 90%;
-    height: 85vh;
-    object-fit: contain;
-    mix-blend-mode: lighten;
-    filter: drop-shadow(0 10px 40px rgba(0,0,0,0.3));
+    width: 100%; height: 100%; object-fit: contain;
+    mix-blend-mode: lighten; filter: drop-shadow(0 10px 40px rgba(0,0,0,0.3));
+  }
+  .divider-v {
+    width: 1px; height: 55vh; background: rgba(223,189,149,0.2); align-self: center; flex-shrink: 0;
   }
 
-  .no-img-placeholder {
-    font-size: 8rem; opacity: 0.3;
-  }
-
-  .divider {
-    width: 1px; height: 60vh; background: rgba(223,189,149,0.2);
-    align-self: center; flex-shrink: 0;
-  }
-
-  /* LAYOUTS */
-  .layout-1 .ice-creams { width: 70vw; left: 22vw; }
+  .layout-1 .ice-creams { width: 68vw; left: 24vw; }
   .layout-1 .ice-cream-slot { width: 100%; }
-  .layout-1 .flavor-name { font-size: clamp(3.5rem, 8vw, 7rem); }
-  .layout-1 .price-bubble { left: 18vw; top: 50%; transform: translateY(-50%); }
+  .layout-1 .flavor-name { font-size: 6.5vw; }
+  .layout-1 .price-bubble { left: 20vw; }
 
   .layout-2 .ice-creams { width: 72vw; left: 20vw; }
   .layout-2 .ice-cream-slot { width: 50%; }
-  .layout-2 .flavor-name { font-size: clamp(2rem, 5vw, 4.5rem); }
-  .layout-2 .price-bubble { left: 21vw; top: 50%; transform: translateY(-50%); }
+  .layout-2 .flavor-name { font-size: 4.2vw; }
+  .layout-2 .price-bubble { left: 20vw; }
 
-  .layout-3 .ice-creams { width: 78vw; left: 18vw; }
+  .layout-3 .ice-creams { width: 76vw; left: 17vw; }
   .layout-3 .ice-cream-slot { width: 33.33%; }
-  .layout-3 .flavor-name { font-size: clamp(1.5rem, 3vw, 3rem); }
-  .layout-3 .price-bubble { left: 18vw; top: 50%; transform: translateY(-50%); }
+  .layout-3 .flavor-name { font-size: 2.6vw; }
+  .layout-3 .price-bubble { left: 17vw; }
+
+  /* BOTTOM ZONE – pohárky */
+  .bottom-zone {
+    height: 28vh; flex-shrink: 0;
+    display: flex;
+    border-top: 1px solid rgba(223,189,149,0.25);
+    background: rgba(0,0,0,0.3);
+  }
+
+  .pohar-slot {
+    flex: 1; display: flex; align-items: center;
+    padding: 0 3vw; gap: 2vw; position: relative;
+  }
+  .pohar-slot:first-child {
+    border-right: 1px solid rgba(223,189,149,0.2);
+  }
+
+  .pohar-img {
+    height: 22vh; object-fit: contain; mix-blend-mode: lighten;
+    filter: drop-shadow(0 4px 15px rgba(0,0,0,0.4));
+    flex-shrink: 0;
+  }
+
+  .pohar-info { flex: 1; }
+  .pohar-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3vw; color: #dfbd95; letter-spacing: 0.05em;
+    line-height: 1;
+  }
+  .pohar-desc {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4vw; color: rgba(255,255,255,0.6);
+    letter-spacing: 0.1em; margin-top: 4px; line-height: 1.4;
+  }
+  .pohar-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8vw; color: white;
+    background: rgba(209,75,31,0.8);
+    padding: 4px 16px; border-radius: 6px;
+    margin-top: 8px; display: inline-block;
+    letter-spacing: 0.05em;
+  }
 
   .empty-msg {
-    color: rgba(255,255,255,0.3); font-family: 'Barlow Condensed', sans-serif;
+    color: rgba(255,255,255,0.3); font-family: 'Bebas Neue', sans-serif;
     font-size: 2rem; margin: auto; letter-spacing: 0.1em; position: relative; z-index: 10;
   }
 
   @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(40px); }
+    from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
   }
   @keyframes scaleIn {
@@ -128,15 +161,35 @@
   }
   .text-block { animation: fadeInUp 0.8s ease forwards; }
   .price-bubble { animation: scaleIn 0.6s 0.3s ease both; }
-  .ice-cream-slot { animation: fadeInUp 0.7s ease both; }
-  .ice-cream-slot:nth-child(1) { animation-delay: 0.1s; }
-  .ice-cream-slot:nth-child(3) { animation-delay: 0.2s; }
-  .ice-cream-slot:nth-child(5) { animation-delay: 0.3s; }
+  .ice-cream-slot:nth-child(1) { animation: fadeInUp 0.7s 0.1s ease both; }
+  .ice-cream-slot:nth-child(3) { animation: fadeInUp 0.7s 0.2s ease both; }
+  .ice-cream-slot:nth-child(5) { animation: fadeInUp 0.7s 0.3s ease both; }
+  .bottom-zone { animation: fadeInUp 0.8s 0.4s ease both; }
 </style>
 </head>
 <body>
 <div class="bg"></div>
-<div class="scene" id="scene"></div>
+<div class="wrapper">
+  <div class="top-zone" id="top-zone"></div>
+  <div class="bottom-zone">
+    <div class="pohar-slot">
+      <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/poharek_lentilka.png" alt="Pohár lentilky" />
+      <div class="pohar-info">
+        <div class="pohar-name">POHÁR LENTILKY</div>
+        <div class="pohar-desc">Zmrzlina · poleva čokoláda · lentilky</div>
+        <div class="pohar-price">79 Kč</div>
+      </div>
+    </div>
+    <div class="pohar-slot">
+      <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/poharek_orisky.png" alt="Pohár oříšky" />
+      <div class="pohar-info">
+        <div class="pohar-name">POHÁR OŘÍŠKY</div>
+        <div class="pohar-desc">Zmrzlina · poleva pistácie · lískové oříšky</div>
+        <div class="pohar-price">89 Kč</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 
@@ -188,38 +241,32 @@ function getImgUrl(imgFile) {
 
 
 const GIST_ID_KEY = 'll_gist_id';
-const REFRESH_MS = 30000;
+const REFRESH_MS = 60000;
+
+// Cache – při chybě API zobrazíme poslední známé příchutě
+let lastKnownFlavors = null;
 
 function getURLParams() {
   const p = new URLSearchParams(window.location.search);
-  return {
-    store: p.get('store'),
-    gistId: p.get('gist') || localStorage.getItem(GIST_ID_KEY),
-  };
+  return { store: p.get('store'), gistId: p.get('gist') || localStorage.getItem(GIST_ID_KEY) };
 }
 
-function getFlavorById(id) {
-  return id ? PRICHUTE.find(f => f.id === id) : null;
-}
+function getFlavorById(id) { return id ? PRICHUTE.find(f => f.id === id) : null; }
+function getImgSrc(flavor) { return (flavor && flavor.img) ? getImgUrl(flavor.img) : null; }
 
-function getImgSrc(flavor) {
-  if (!flavor || !flavor.img) return null;
-  return getImgUrl(flavor.img);
-}
-
-function renderScene(flavors) {
-  const scene = document.getElementById('scene');
+function renderTop(flavors) {
+  const zone = document.getElementById('top-zone');
   const valid = flavors.filter(Boolean);
   const count = valid.length;
 
   if (count === 0) {
-    scene.className = 'scene';
-    scene.innerHTML = '<div class="empty-msg">ŽÁDNÁ PŘÍCHUŤ NENÍ NASTAVENA</div>';
+    zone.className = 'top-zone';
+    zone.innerHTML = '<div class="empty-msg">ŽÁDNÁ PŘÍCHUŤ NENÍ NASTAVENA</div>';
     return;
   }
 
-  scene.className = `scene layout-${count}`;
-  scene.innerHTML = `
+  zone.className = `top-zone layout-${count}`;
+  zone.innerHTML = `
     <div class="text-block">
       <div class="label-zmrzlina">ZMRZLINA</div>
       <div class="label-tocena">točená</div>
@@ -232,9 +279,9 @@ function renderScene(flavors) {
 
   valid.forEach((flavor, i) => {
     if (i > 0) {
-      const div = document.createElement('div');
-      div.className = 'divider';
-      iceCreams.appendChild(div);
+      const d = document.createElement('div');
+      d.className = 'divider-v';
+      iceCreams.appendChild(d);
     }
     const slot = document.createElement('div');
     slot.className = 'ice-cream-slot';
@@ -244,25 +291,24 @@ function renderScene(flavors) {
         <div class="flavor-name">${flavor.label.toUpperCase()}</div>
         <div class="flavor-sub">PŘÍCHUŤ</div>
       </div>
-      ${imgSrc
-        ? `<img class="ice-img" src="${imgSrc}" alt="${flavor.label}" />`
-        : `<div class="no-img-placeholder">🍦</div>`}
+      ${imgSrc ? `<img class="ice-img" src="${imgSrc}" alt="${flavor.label}" />` : '<div style="font-size:5rem;opacity:0.3">🍦</div>'}
     `;
     iceCreams.appendChild(slot);
   });
 
-  scene.appendChild(iceCreams);
+  zone.appendChild(iceCreams);
 }
 
 async function loadFromGist(gistId, storeId) {
   try {
     const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     const file = data.files['lbrzlina.json'];
     if (!file) return null;
     return JSON.parse(file.content)[storeId] || null;
   } catch(e) {
-    console.error('Gist error:', e);
+    console.warn('Gist error, using cache:', e);
     return null;
   }
 }
@@ -272,13 +318,23 @@ async function init() {
   if (gistId) localStorage.setItem(GIST_ID_KEY, gistId);
 
   async function refresh() {
-    if (gistId && store) {
-      const storeData = await loadFromGist(gistId, store);
-      renderScene([
-        getFlavorById(storeData?.slot1),
-        getFlavorById(storeData?.slot2),
-        getFlavorById(storeData?.slot3),
-      ]);
+    if (!gistId || !store) return;
+    const storeData = await loadFromGist(gistId, store);
+    
+    if (storeData) {
+      // Ulož do cache
+      lastKnownFlavors = [
+        getFlavorById(storeData.slot1),
+        getFlavorById(storeData.slot2),
+        getFlavorById(storeData.slot3),
+      ];
+    }
+    
+    // Zobraz cache nebo prázdno
+    if (lastKnownFlavors) {
+      renderTop(lastKnownFlavors);
+    } else {
+      renderTop([]);
     }
   }
 
