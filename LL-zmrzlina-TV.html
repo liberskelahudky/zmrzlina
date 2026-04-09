@@ -74,21 +74,7 @@
     width: 80%; height: 80%; object-fit: contain;
     mix-blend-mode: lighten;
     filter: drop-shadow(0 10px 40px rgba(0,0,0,0.3));
-    animation: iceBounce 6s ease-in-out infinite;
-    transform-origin: center bottom;
   }
-  @keyframes iceBounce {
-    0%   { transform: rotate(-2deg) scale(1); }
-    25%  { transform: rotate(2deg) scale(1.03); }
-    50%  { transform: rotate(-1deg) scale(1); }
-    75%  { transform: rotate(1.5deg) scale(1.02); }
-    100% { transform: rotate(-2deg) scale(1); }
-  }
-  .ice-cream-slot:nth-child(1) .ice-img { animation-delay: 0s; }
-  .ice-cream-slot:nth-child(3) .ice-img { animation-delay: -2s; }
-  .ice-cream-slot:nth-child(5) .ice-img { animation-delay: -4s; }
-  .ice-cream-slot:nth-child(7) .ice-img { animation-delay: -1s; }
-  .ice-cream-slot:nth-child(9) .ice-img { animation-delay: -3s; }
 
   /* MICHANA – půl na půl */
   .michana-wrap {
@@ -105,7 +91,6 @@
     position: absolute; top: 0; height: 100%; object-fit: contain;
     mix-blend-mode: lighten;
     filter: drop-shadow(0 10px 40px rgba(0,0,0,0.3));
-    animation: iceBounce 6s ease-in-out infinite;
     width: 200% !important;
   }
   .michana-left .michana-img { left: 0; }
@@ -200,6 +185,52 @@
   .text-block  { animation: fadeInUp 0.8s ease forwards; }
   .ice-cream-slot { animation: fadeInUp 0.7s ease both; }
   .bottom-zone { animation: fadeInUp 0.8s 0.4s ease both; }
+
+  /* PORTRAIT MODE (výška > šířka nebo ?portrait=1 v URL) */
+  .portrait .wrapper { flex-direction: column; }
+  
+  .portrait .top-zone { flex: 1; }
+  
+  .portrait .text-block {
+    left: 4vw; bottom: auto; top: 3vh;
+  }
+  .portrait .label-zmrzlina { font-size: 8vw; }
+  .portrait .label-tocena { font-size: 6vw; }
+
+  .portrait .ice-creams {
+    position: relative; left: auto; right: auto; top: auto;
+    width: 100% !important; height: 100%;
+    justify-content: center;
+    padding-top: 14vh;
+  }
+
+  .portrait .layout-3 .ice-creams { width: 100% !important; }
+  .portrait .layout-3 .ice-cream-slot { width: 33.33%; }
+  .portrait .layout-3 .flavor-name { font-size: 5vw; }
+
+  .portrait .layout-5 .ice-creams { width: 100% !important; }
+  .portrait .layout-5 .ice-cream-slot { width: 20%; }
+  .portrait .layout-5 .flavor-name { font-size: 3vw; }
+  .portrait .layout-5 .flavor-sub { font-size: 1.5vw; }
+
+  .portrait .ice-img { width: 90%; height: 55vh; }
+  .portrait .michana-wrap { width: 90%; height: 55vh; }
+
+  .portrait .slot-price { font-size: 4vw; bottom: 2vh; }
+  .portrait .layout-5 .slot-price { font-size: 2.5vw; }
+
+  .portrait .divider-v { height: 45vh; }
+
+  .portrait .bottom-zone {
+    height: 32vh;
+    flex-direction: row;
+  }
+
+  .portrait .pohar-name { font-size: 4.5vw; }
+  .portrait .pohar-desc { font-size: 2vw; }
+  .portrait .pohar-price { font-size: 4vw; }
+  .portrait .pohar-img { height: 26vh; }
+
 </style>
 </head>
 <body>
@@ -469,6 +500,16 @@ async function init() {
   await refresh();
   setInterval(refresh, REFRESH_MS);
 }
+
+
+// Portrait mode detection
+function checkOrientation() {
+  const urlPortrait = new URLSearchParams(window.location.search).get('portrait');
+  const isPortrait = urlPortrait === '1' || window.innerHeight > window.innerWidth;
+  document.body.classList.toggle('portrait', isPortrait);
+}
+checkOrientation();
+window.addEventListener('resize', checkOrientation);
 
 init();
 </script>
