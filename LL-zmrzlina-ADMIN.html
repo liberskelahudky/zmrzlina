@@ -505,6 +505,169 @@
     font-family: 'Barlow', sans-serif; cursor: pointer;
   }
 
+
+  /* STORIES GENERATOR */
+  .stories-btn {
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .stories-btn:hover { opacity: 0.9; transform: scale(1.02); }
+
+  .stories-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 300;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .stories-modal.open { opacity: 1; pointer-events: all; }
+
+  .stories-modal-inner {
+    background: var(--brown-mid);
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+    padding: 28px 32px;
+    width: 90vw; max-width: 700px;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .stories-modal-inner h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 1.4rem;
+    color: var(--gold); margin-bottom: 20px;
+  }
+
+  .stories-previews {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 20px;
+  }
+
+  .story-preview-wrap {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+
+  .story-canvas-wrap {
+    width: 180px; height: 320px;
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid rgba(223,189,149,0.3);
+  }
+
+  .story-download-btn {
+    background: var(--orange); color: white;
+    border: none; padding: 8px 16px; border-radius: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; letter-spacing: 0.06em;
+  }
+
+  .stories-close {
+    background: none; border: 1px solid rgba(223,189,149,0.3);
+    color: var(--gold); padding: 10px 20px; border-radius: 6px;
+    font-family: 'Barlow', sans-serif; cursor: pointer;
+    display: block; margin: 0 auto;
+  }
+
+
+  /* LINKS TAB */
+  .links-section { padding: 24px 32px; }
+  .links-section h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1.3rem;
+    color: var(--gold); margin-bottom: 6px;
+  }
+  .links-section p {
+    font-size: 0.85rem; color: rgba(223,189,149,0.6);
+    margin-bottom: 20px; line-height: 1.5;
+  }
+
+  .token-row {
+    display: flex; gap: 12px; align-items: center;
+    margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .token-row label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; color: var(--gold);
+    font-size: 0.95rem; white-space: nowrap;
+  }
+  .token-input-links {
+    flex: 1; min-width: 200px;
+    background: var(--brown);
+    border: 1px solid rgba(223,189,149,0.3);
+    color: var(--cream);
+    padding: 8px 14px; border-radius: 6px;
+    font-family: 'Barlow', sans-serif; font-size: 0.9rem;
+  }
+  .token-input-links:focus { outline: none; border-color: var(--gold); }
+  .gen-links-btn {
+    background: var(--orange); color: white;
+    border: none; padding: 8px 20px; border-radius: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.95rem;
+    cursor: pointer; white-space: nowrap;
+  }
+
+  .store-links-grid {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .store-links-card {
+    background: var(--brown-mid);
+    border: 1px solid rgba(223,189,149,0.2);
+    border-radius: 10px; overflow: hidden;
+  }
+
+  .store-links-header {
+    background: rgba(223,189,149,0.08);
+    padding: 10px 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    color: var(--gold); letter-spacing: 0.05em;
+    border-bottom: 1px solid rgba(223,189,149,0.15);
+  }
+
+  .store-links-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+  .link-row {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .link-label {
+    font-size: 0.75rem; color: rgba(223,189,149,0.6);
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    min-width: 80px; flex-shrink: 0;
+  }
+  .link-url {
+    flex: 1; background: var(--brown);
+    border: 1px solid rgba(223,189,149,0.15);
+    color: rgba(223,189,149,0.7);
+    padding: 6px 10px; border-radius: 4px;
+    font-family: monospace; font-size: 0.72rem;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .link-copy-btn {
+    background: none; border: 1px solid rgba(223,189,149,0.3);
+    color: var(--gold); padding: 5px 10px; border-radius: 4px;
+    font-size: 0.75rem; cursor: pointer; white-space: nowrap;
+    font-family: 'Barlow', sans-serif; flex-shrink: 0;
+  }
+  .link-copy-btn:hover { background: rgba(223,189,149,0.1); }
+  .link-copy-btn.copied { border-color: var(--green); color: var(--green); }
+  .link-wa-btn {
+    background: #25d366; color: white;
+    border: none; padding: 5px 10px; border-radius: 4px;
+    font-size: 0.75rem; cursor: pointer; white-space: nowrap;
+    font-family: 'Barlow', sans-serif; flex-shrink: 0;
+    text-decoration: none; display: inline-block;
+  }
+
 </style>
 </head>
 <body>
@@ -512,12 +675,14 @@
 <header>
   <h1>🍦 ZMRZLINA – správa TV</h1>
   <span>Libeřské lahůdky</span>
+  <button class="stories-btn" onclick="openStories()">📱 Generovat Stories</button>
   <button class="save-all-btn" onclick="saveAll()">💾 Uložit vše</button>
 </header>
 
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('prodejny')">🏪 Prodejny</button>
   <button class="tab-btn" onclick="switchTab('prichute')">🍦 Správa příchutí</button>
+  <button class="tab-btn" onclick="switchTab('odkazy')">🔗 Odkazy</button>
 </div>
 
 <div id="tab-prodejny" class="tab-content active">
@@ -569,6 +734,20 @@
       <button class="modal-cancel" onclick="closeModal()">Zrušit</button>
       <button class="modal-save" onclick="saveFlavor()">Uložit</button>
     </div>
+  </div>
+</div>
+
+
+<div id="tab-odkazy" class="tab-content">
+  <div class="links-section">
+    <h2>🔗 Správa odkazů</h2>
+    <p>Zadejte GitHub token pro vygenerování odkazů pro provozní. Token se uloží do prohlížeče – nemusíte ho zadávat znovu.</p>
+    <div class="token-row">
+      <label>GitHub Token:</label>
+      <input type="password" class="token-input-links" id="links-token" placeholder="ghp_xxxxxxxxxxxx" />
+      <button class="gen-links-btn" onclick="generateLinks()">Generovat odkazy</button>
+    </div>
+    <div class="store-links-grid" id="store-links-grid"></div>
   </div>
 </div>
 
@@ -1019,6 +1198,304 @@ function switchTab(tab) {
   if (tab === 'prichute') renderFlavorMgmt();
 }
 
+
+// ===== STORIES GENERATOR =====
+function openStories() {
+  generateStories();
+  document.getElementById('stories-modal').classList.add('open');
+}
+function closeStories() {
+  document.getElementById('stories-modal').classList.remove('open');
+}
+
+function getFlavorLabel(id) {
+  if (!id) return null;
+  const f = PRICHUTE.find(p => p.id === id);
+  return f ? f.label : null;
+}
+
+async function generateStories() {
+  const previews = document.getElementById('stories-previews');
+  previews.innerHTML = '<div style="color:rgba(223,189,149,0.5);font-size:0.9rem">Generuji...</div>';
+
+  // Collect store data
+  const stores = PRODEJNY.map(p => {
+    const d = storeData[p.id];
+    const flavorIds = [d?.slot1, d?.slot2, d?.slot3].filter(Boolean);
+    const flavors = flavorIds.map(id => getFlavorLabel(id)).filter(Boolean);
+    return { label: p.label, flavors, flavorIds };
+  }).filter(s => s.flavors.length > 0);
+
+  if (stores.length === 0) {
+    previews.innerHTML = '<div style="color:rgba(223,189,149,0.5)">Žádné příchutě nejsou nastaveny.</div>';
+    return;
+  }
+
+  // Split into 2 stories
+  const mid = Math.ceil(stores.length / 2);
+  const story1 = stores.slice(0, mid);
+  const story2 = stores.slice(mid);
+
+  previews.innerHTML = '';
+
+  const renderGroup = async (group, idx) => {
+    if (group.length === 0) return;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'story-preview-wrap';
+
+    const canvasWrap = document.createElement('div');
+    canvasWrap.className = 'story-canvas-wrap';
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1920;
+    canvas.style.width = '180px';
+    canvas.style.height = '320px';
+
+    canvasWrap.appendChild(canvas);
+    wrap.appendChild(canvasWrap);
+
+    const btn = document.createElement('button');
+    btn.className = 'story-download-btn';
+    btn.textContent = `⬇ Stáhnout story ${idx + 1}`;
+    btn.onclick = () => downloadStory(canvas, idx + 1);
+    wrap.appendChild(btn);
+    previews.appendChild(wrap);
+
+    await drawStory(canvas, group, idx + 1, stores.length);
+  };
+
+  await renderGroup(story1, 0);
+  await renderGroup(story2, 1);
+}
+
+async function loadImg(src) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      // Remove black background using offscreen canvas
+      const oc = document.createElement('canvas');
+      oc.width = img.naturalWidth;
+      oc.height = img.naturalHeight;
+      const octx = oc.getContext('2d');
+      octx.drawImage(img, 0, 0);
+      const id = octx.getImageData(0, 0, oc.width, oc.height);
+      const d = id.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const r = d[i], g = d[i+1], b = d[i+2];
+        const brightness = (r + g + b) / 3;
+        if (brightness < 30) {
+          d[i+3] = 0; // fully transparent
+        } else if (brightness < 80) {
+          d[i+3] = Math.round((brightness - 30) / 50 * 255); // fade edge
+        }
+      }
+      octx.putImageData(id, 0, 0);
+      resolve(oc);
+    };
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+async function drawStory(canvas, stores, storyNum, totalStores) {
+  const ctx = canvas.getContext('2d');
+  const W = 1080, H = 1920;
+
+  // Background gradient
+  const bg = ctx.createRadialGradient(W*0.6, H*0.35, 0, W*0.6, H*0.35, H*0.8);
+  bg.addColorStop(0, '#7a3515');
+  bg.addColorStop(0.35, '#4a2010');
+  bg.addColorStop(0.7, '#2a1008');
+  bg.addColorStop(1, '#1a0804');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Header
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 110px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('ZMRZLINA', W/2, 160);
+  ctx.fillStyle = '#dfbd95';
+  ctx.font = 'italic 80px Georgia';
+  ctx.fillText('točená', W/2, 255);
+
+  // Divider
+  ctx.fillStyle = 'rgba(223,189,149,0.3)';
+  ctx.fillRect(80, 295, W-160, 2);
+
+  // Date
+  const today = new Date().toLocaleDateString('cs-CZ', {day:'numeric', month:'long'});
+  ctx.fillStyle = 'rgba(223,189,149,0.6)';
+  ctx.font = '40px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(today.toUpperCase(), W/2, 358);
+
+  // Preload all images
+  const imgCache = {};
+  for (const store of stores) {
+    for (const fid of store.flavorIds) {
+      const f = PRICHUTE.find(p => p.id === fid);
+      if (f && f.img && !imgCache[f.img]) {
+        imgCache[f.img] = await loadImg(getImgUrl(f.img));
+      }
+    }
+  }
+
+  // Layout constants
+  const startY = 400;
+  const rowH = (H - startY - 120) / stores.length;
+  const PAD = 80;
+  const IMG_ZONE_W = 340; // fixed right zone for images
+  const TEXT_MAX_W = W - PAD*2 - IMG_ZONE_W - 20;
+  const imgH = Math.min(rowH - 20, 260);
+  const imgW = imgH * 0.65; // portrait ratio
+
+  for (let i = 0; i < stores.length; i++) {
+    const store = stores[i];
+    const y = startY + i * rowH;
+
+    // Row background
+    if (i % 2 === 0) {
+      ctx.fillStyle = 'rgba(255,255,255,0.05)';
+      ctx.beginPath();
+      ctx.roundRect(PAD - 20, y + 6, W - (PAD-20)*2, rowH - 12, 14);
+      ctx.fill();
+    }
+
+    // Store name - left side
+    ctx.fillStyle = '#dfbd95';
+    ctx.font = 'bold 50px Arial';
+    ctx.textAlign = 'left';
+    // Truncate if too long
+    let storeName = store.label.toUpperCase();
+    while (ctx.measureText(storeName).width > TEXT_MAX_W && storeName.length > 3) {
+      storeName = storeName.slice(0, -1);
+    }
+    ctx.fillText(storeName, PAD, y + rowH * 0.38);
+
+    // Flavor text - left side
+    ctx.fillStyle = 'rgba(255,255,255,0.82)';
+    ctx.font = '36px Arial';
+    let flavText = store.flavors.join(' · ');
+    while (ctx.measureText(flavText).width > TEXT_MAX_W && flavText.length > 3) {
+      flavText = flavText.slice(0, -1) + '…';
+    }
+    ctx.fillText(flavText, PAD, y + rowH * 0.65);
+
+    // Ice cream images - RIGHT zone, centered vertically
+    const numImgs = store.flavorIds.length;
+    // Calculate total width using actual aspect ratios
+    let totalW = 0;
+    for (const fid2 of store.flavorIds) {
+      const f2 = PRICHUTE.find(p => p.id === fid2);
+      if (f2 && f2.img && imgCache[f2.img]) {
+        const src2 = imgCache[f2.img];
+        totalW += (rowH - 16) * (src2.width / src2.height) + 8;
+      }
+    }
+    totalW -= 8;
+    let imgX = W - PAD - totalW; // align to right edge
+
+    for (const fid of store.flavorIds) {
+      const f = PRICHUTE.find(p => p.id === fid);
+      if (f && f.img && imgCache[f.img]) {
+        ctx.save();
+        const src = imgCache[f.img];
+        const ratio = src.width / src.height; // real aspect ratio from canvas
+        const imgHeight = rowH - 16;
+        const imgWidth = imgHeight * ratio;
+        const imgY = y + (rowH - imgHeight) / 2;
+        ctx.drawImage(src, imgX, imgY, imgWidth, imgHeight);
+        ctx.restore();
+      }
+      if (imgCache[f.img]) {
+        const src3 = imgCache[f.img];
+        imgX += (rowH - 16) * (src3.width / src3.height) + 8;
+      }
+    }
+
+    // Row divider
+    if (i < stores.length - 1) {
+      ctx.fillStyle = 'rgba(223,189,149,0.12)';
+      ctx.fillRect(PAD, y + rowH - 3, W - PAD*2, 1);
+    }
+  }
+
+
+}
+
+function downloadStory(canvas, num) {
+  const link = document.createElement('a');
+  const today = new Date().toISOString().slice(0,10);
+  link.download = `LL-zmrzlina-story${num}-${today}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+
+
+// ===== LINKS TAB =====
+const GIST_ID_LINKS = '9309f5a31eeb4e74cc849bab41707891';
+const BASE_URL_LINKS = 'https://liberskelahudky.github.io/zmrzlina';
+
+function generateLinks() {
+  const token = document.getElementById('links-token').value.trim();
+  if (token) localStorage.setItem('ll_gh_token', token);
+  const savedToken = token || localStorage.getItem('ll_gh_token') || '';
+  
+  const grid = document.getElementById('store-links-grid');
+  grid.innerHTML = PRODEJNY.map(p => {
+    const tvUrl = `${BASE_URL_LINKS}/LL-zmrzlina-TV.html?store=${p.id}&gist=${GIST_ID_LINKS}${p.id === 'dbk' ? '&portrait=1' : ''}`;
+    const provUrl = savedToken 
+      ? `${BASE_URL_LINKS}/LL-zmrzlina-PROVOZNI.html?store=${p.id}&gist=${GIST_ID_LINKS}&token=${savedToken}`
+      : '— zadejte token výše —';
+    
+    const waText = encodeURIComponent(`Dobrý den, posílám vám odkaz na správu zmrzlinové TV pro vaši prodejnu ${p.label}: ${provUrl}`);
+    
+    return `
+      <div class="store-links-card">
+        <div class="store-links-header">${p.label}${['dbk','krc'].includes(p.id) ? ' ⭐ 5-páka' : ''}</div>
+        <div class="store-links-body">
+          <div class="link-row">
+            <span class="link-label">📺 TV</span>
+            <div class="link-url" title="${tvUrl}">${tvUrl}</div>
+            <button class="link-copy-btn" onclick="copyLink(this, '${tvUrl.replace(/'/g, "\\'")}')">Kopírovat</button>
+          </div>
+          <div class="link-row">
+            <span class="link-label">📱 Provozní</span>
+            <div class="link-url" title="${provUrl}">${provUrl}</div>
+            ${savedToken ? `
+              <button class="link-copy-btn" onclick="copyLink(this, '${provUrl.replace(/'/g, "\\'")}')">Kopírovat</button>
+              <a class="link-wa-btn" href="https://wa.me/?text=${waText}" target="_blank">WhatsApp</a>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function copyLink(btn, url) {
+  navigator.clipboard.writeText(url).then(() => {
+    btn.textContent = '✓ Zkopírováno';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Kopírovat'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Auto-load links if token exists
+setTimeout(() => {
+  const saved = localStorage.getItem('ll_gh_token');
+  if (saved) {
+    document.getElementById('links-token').value = saved;
+    generateLinks();
+  }
+}, 500);
+
+
 // Init
 loadConfig();
 renderGrid();
@@ -1056,5 +1533,15 @@ if (local) {
 refreshFromGist();
 setInterval(refreshFromGist, 30000);
 </script>
+
+<!-- STORIES MODAL -->
+<div class="stories-modal" id="stories-modal" onclick="if(event.target===this)closeStories()">
+  <div class="stories-modal-inner">
+    <h3>📱 Instagram Stories – dnešní přehled</h3>
+    <div class="stories-previews" id="stories-previews"></div>
+    <button class="stories-close" onclick="closeStories()">Zavřít</button>
+  </div>
+</div>
+
 </body>
 </html>
