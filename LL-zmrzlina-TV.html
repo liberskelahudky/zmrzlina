@@ -4,96 +4,78 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zmrzlina – TV</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Ms+Madi&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Bebas+Neue" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 100%; height: 100%; overflow: hidden; background: #3d1e08; }
+  * { margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #3d1e08; font-family: Arial, sans-serif; }
 
   .bg {
-    position: fixed; top:0;left:0;right:0;bottom:0;
-    background: -webkit-radial-gradient(65% 40%, ellipse, #7a3515 0%, #4a2010 30%, #2a1008 70%, #1a0804 100%);
-    background: radial-gradient(ellipse at 65% 40%, #7a3515 0%, #4a2010 30%, #2a1008 70%, #1a0804 100%);
-  }
-
-  .wrapper {
-    position: relative; width: 100%; height: 100%;
-    display: -webkit-flex; display: flex;
-    -webkit-flex-direction: column; flex-direction: column;
-    z-index: 1;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: #2a1008;
+    background: -webkit-radial-gradient(65% 40%, ellipse, #7a3515, #4a2010 30%, #2a1008 70%, #1a0804);
   }
 
   .top-zone {
-    -webkit-flex: 1; flex: 1;
-    position: relative;
-    display: -webkit-flex; display: flex;
-    -webkit-align-items: stretch; align-items: stretch;
-    min-height: 0;
+    position: absolute; top: 0; left: 0; right: 0; bottom: 28%;
+    z-index: 2;
   }
 
-  .text-block { position: absolute; left: 3vw; bottom: 2vh; z-index: 10; }
+  .text-block {
+    position: absolute; left: 3%; bottom: 3%; z-index: 10;
+  }
   .label-zmrzlina {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bebas Neue', Arial, sans-serif;
     font-size: 5.5vw; color: #fff;
-    line-height: 0.9; white-space: nowrap; letter-spacing: 0.05em;
+    line-height: 0.9; letter-spacing: 0.05em;
   }
   .label-tocena {
-    font-family: 'Ms Madi', cursive;
-    font-size: 4.5vw; color: #dfbd95; line-height: 1.2;
+    font-family: Georgia, serif; font-style: italic;
+    font-size: 4vw; color: #dfbd95; line-height: 1.2;
   }
 
   .ice-creams {
-    position: absolute; top: 0; right: 0; height: 100%;
-    display: -webkit-flex; display: flex;
-    -webkit-align-items: stretch; align-items: stretch;
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: 75%;
   }
+
   .ice-cream-slot {
-    display: -webkit-flex; display: flex;
-    -webkit-flex-direction: column; flex-direction: column;
-    -webkit-align-items: center; align-items: center;
-    -webkit-justify-content: center; justify-content: center;
-    height: 100%; position: relative;
+    position: absolute; top: 0; bottom: 0;
+    text-align: center;
   }
-  .flavor-label { position: absolute; top: 3vh; text-align: center; z-index: 10; width: 100%; padding: 0 5px; }
+
+  .flavor-label {
+    position: absolute; top: 3%; left: 0; right: 0;
+    text-align: center; z-index: 10;
+  }
   .flavor-name {
-    font-family: 'Bebas Neue', sans-serif; color: white;
+    font-family: 'Bebas Neue', Arial, sans-serif; color: white;
     text-transform: uppercase; letter-spacing: 0.08em;
-    text-shadow: 0 2px 15px rgba(0,0,0,0.8); white-space: nowrap;
   }
   .flavor-sub {
-    font-family: 'Bebas Neue', sans-serif; color: rgba(255,255,255,0.7);
-    letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px;
-    font-size: 1.1vw;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-top: 4px; font-size: 1.1vw;
+  }
+
+  .ice-img-wrap {
+    position: absolute; top: 12%; bottom: 12%; left: 5%; right: 5%;
   }
   .ice-img {
-    width: 80%; height: 80%; object-fit: contain;
-    mix-blend-mode: lighten;
+    width: 100%; height: 100%;
+    border: 0;
   }
+
   .slot-price {
-    position: absolute; bottom: 5vh; right: 1.5vw;
-    font-family: 'Bebas Neue', sans-serif;
+    position: absolute; bottom: 3%; right: 10%;
+    font-family: 'Bebas Neue', Arial, sans-serif;
     font-size: 3vw; color: white;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
     z-index: 10;
   }
-  .divider-v {
-    width: 1px; height: 55vh; background: rgba(223,189,149,0.2);
-    -webkit-align-self: center; align-self: center;
-    -webkit-flex-shrink: 0; flex-shrink: 0;
-  }
-
-  .layout-3 .ice-creams { width: 72vw; left: 20vw; }
-  .layout-3 .ice-cream-slot { width: 33.33%; }
-  .layout-3 .flavor-name { font-size: 3.2vw; }
-
-  .layout-5 .ice-creams { width: 80vw; left: 16vw; }
-  .layout-5 .ice-cream-slot { width: 20%; }
-  .layout-5 .flavor-name { font-size: 2vw; }
-  .layout-5 .slot-price { font-size: 1.8vw; bottom: 3vh; }
-  .layout-5 .flavor-sub { font-size: 0.7vw; }
 
   .michana-wrap {
-    position: relative; overflow: hidden;
-    width: 80%; height: 80%;
+    position: absolute; top: 12%; bottom: 12%; left: 5%; right: 5%;
+    overflow: hidden;
   }
   .michana-half {
     position: absolute; top: 0; width: 50%; height: 100%;
@@ -102,140 +84,127 @@
   .michana-left { left: 0; }
   .michana-right { right: 0; }
   .michana-img {
-    position: absolute; top: 0; height: 100%; object-fit: contain;
-    mix-blend-mode: lighten;
+    position: absolute; top: 0; height: 100%;
     width: 200%;
+    border: 0;
   }
   .michana-left .michana-img { left: 0; }
   .michana-right .michana-img { right: 0; }
 
   /* BOTTOM ZONE */
   .bottom-zone {
-    height: 28vh;
-    -webkit-flex-shrink: 0; flex-shrink: 0;
-    display: -webkit-flex; display: flex;
+    position: absolute; left: 0; right: 0; bottom: 0; height: 28%;
     border-top: 1px solid rgba(223,189,149,0.25);
     background: rgba(0,0,0,0.35);
-    position: relative;
+    z-index: 2;
   }
-  .pohar-slot {
-    -webkit-flex: 1; flex: 1;
-    display: -webkit-flex; display: flex;
-    -webkit-align-items: center; align-items: center;
-    padding: 0 2.5vw; gap: 2vw;
-    position: relative; overflow: hidden;
-  }
-  .pohar-slot-left { border-right: 1px solid rgba(223,189,149,0.2); }
-  .pohar-img {
-    height: 22vh; object-fit: contain; mix-blend-mode: lighten;
-    -webkit-flex-shrink: 0; flex-shrink: 0;
-    position: relative; z-index: 2;
-  }
-  .pohar-info { -webkit-flex: 1; flex: 1; position: relative; z-index: 2; }
-  .pohar-name { font-family: 'Bebas Neue', sans-serif; font-size: 3vw; color: #dfbd95; letter-spacing: 0.05em; line-height: 1; }
-  .pohar-desc { font-family: 'Bebas Neue', sans-serif; font-size: 1.4vw; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; margin-top: 6px; line-height: 1.5; }
-  .pohar-price { font-family: 'Bebas Neue', sans-serif; font-size: 3vw; color: white; background: rgba(209,75,31,0.9); padding: 4px 18px; border-radius: 6px; margin-top: 10px; display: inline-block; }
 
-  .candy { position: absolute; pointer-events: none; z-index: 1; -webkit-animation: fallCandy linear infinite; animation: fallCandy linear infinite; }
+  .pohar-left {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 50%;
+    border-right: 1px solid rgba(223,189,149,0.2);
+    overflow: hidden;
+  }
+  .pohar-right {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 50%;
+    overflow: hidden;
+  }
+
+  .pohar-img {
+    position: absolute; left: 2%; top: 5%; height: 90%;
+    z-index: 2;
+  }
+  .pohar-info {
+    position: absolute; left: 30%; top: 10%; right: 5%;
+    z-index: 2;
+  }
+  .pohar-name { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 3vw; color: #dfbd95; }
+  .pohar-desc { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 1.4vw; color: rgba(255,255,255,0.6); margin-top: 6px; }
+  .pohar-price { font-family: 'Bebas Neue', Arial, sans-serif; font-size: 3vw; color: white; background: rgba(209,75,31,0.9); padding: 4px 18px; border-radius: 6px; margin-top: 10px; display: inline-block; }
+
+  .empty-msg {
+    position: absolute; top: 40%; left: 0; right: 0;
+    text-align: center;
+    color: rgba(255,255,255,0.3); font-family: 'Bebas Neue', Arial, sans-serif;
+    font-size: 2rem; z-index: 10;
+  }
+
+  /* Candy animation */
+  .candy {
+    position: absolute; pointer-events: none; z-index: 1;
+    -webkit-animation: fallCandy linear infinite;
+    animation: fallCandy linear infinite;
+  }
   @-webkit-keyframes fallCandy {
     0%   { -webkit-transform: translateY(-30px) rotate(0deg); opacity: 0; }
     8%   { opacity: 1; }
     92%  { opacity: 1; }
-    100% { -webkit-transform: translateY(30vh) rotate(600deg); opacity: 0; }
+    100% { -webkit-transform: translateY(200px) rotate(600deg); opacity: 0; }
   }
   @keyframes fallCandy {
     0%   { transform: translateY(-30px) rotate(0deg); opacity: 0; }
     8%   { opacity: 1; }
     92%  { opacity: 1; }
-    100% { transform: translateY(30vh) rotate(600deg); opacity: 0; }
+    100% { transform: translateY(200px) rotate(600deg); opacity: 0; }
   }
-
-  .empty-msg {
-    color: rgba(255,255,255,0.3); font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem; margin: auto; letter-spacing: 0.1em; position: relative; z-index: 10;
-  }
-
-  /* PORTRAIT */
-  .portrait .text-block { left: 4vw; bottom: auto; top: 3vh; }
-  .portrait .label-zmrzlina { font-size: 8vw; }
-  .portrait .label-tocena { font-size: 6vw; }
-  .portrait .ice-creams { position: relative; left: auto; right: auto; top: auto; width: 100%; height: 100%; -webkit-justify-content: center; justify-content: center; padding-top: 14vh; }
-  .portrait .layout-3 .ice-creams, .portrait .layout-5 .ice-creams { width: 100%; }
-  .portrait .layout-3 .flavor-name { font-size: 5vw; }
-  .portrait .layout-5 .flavor-name { font-size: 3vw; }
-  .portrait .ice-img { width: 90%; height: 55vh; }
-  .portrait .michana-wrap { width: 90%; height: 55vh; }
-  .portrait .slot-price { font-size: 4vw; bottom: 2vh; }
-  .portrait .divider-v { height: 45vh; }
-  .portrait .pohar-name { font-size: 4.5vw; }
-  .portrait .pohar-desc { font-size: 2vw; }
-  .portrait .pohar-price { font-size: 4vw; }
-  .portrait .pohar-img { height: 26vh; }
-  .portrait .bottom-zone { height: 32vh; }
 </style>
 </head>
 <body>
 <div class="bg"></div>
-<div class="wrapper">
-  <div class="top-zone" id="top-zone"></div>
-  <div class="bottom-zone">
-    <div class="pohar-slot pohar-slot-left" id="pohar-lentilky">
-      <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Poharek_lentilka.png" alt="Pohar lentilky" />
-      <div class="pohar-info">
-        <div class="pohar-name">POHÁR LENTILKY</div>
-        <div class="pohar-desc">Zmrzlina · poleva čokoláda · lentilky</div>
-        <div class="pohar-price">79 Kč</div>
-      </div>
+<div class="top-zone" id="top-zone"></div>
+<div class="bottom-zone">
+  <div class="pohar-left" id="pohar-lentilky">
+    <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Poharek_lentilka.png" alt="" />
+    <div class="pohar-info">
+      <div class="pohar-name">POHÁR LENTILKY</div>
+      <div class="pohar-desc">Zmrzlina · poleva čokoláda · lentilky</div>
+      <div class="pohar-price">79 Kč</div>
     </div>
-    <div class="pohar-slot" id="pohar-orisky">
-      <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Poharek_orisky.png" alt="Pohar orisky" />
-      <div class="pohar-info">
-        <div class="pohar-name">POHÁR OŘÍŠKY</div>
-        <div class="pohar-desc">Zmrzlina · poleva pistácie · lískové oříšky</div>
-        <div class="pohar-price">89 Kč</div>
-      </div>
+  </div>
+  <div class="pohar-right" id="pohar-orisky">
+    <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Poharek_orisky.png" alt="" />
+    <div class="pohar-info">
+      <div class="pohar-name">POHÁR OŘÍŠKY</div>
+      <div class="pohar-desc">Zmrzlina · poleva pistácie · lískové oříšky</div>
+      <div class="pohar-price">89 Kč</div>
     </div>
   </div>
 </div>
 
 <script>
 var BASE_URL = "https://liberskelahudky.github.io/zmrzlina";
-
 var PRICHUTE = [
-  { id: "vanilka",       label: "Vanilka",          img: "15_vanilka.png" },
-  { id: "cokolada",      label: "Čokoláda",         img: "16_cokolady.png" },
-  { id: "jogurt",        label: "Jogurt",            img: "17_jogurt.png" },
-  { id: "meloun",        label: "Červený meloun",    img: "1_meloun.png" },
-  { id: "mandarinka",    label: "Mandarinka",        img: "2_mandarinka.png" },
-  { id: "boruvka",       label: "Kan. borůvka",      img: "3_boruvka.png" },
-  { id: "jablko",        label: "Zelené jablko",     img: "18_zelenejablko.png" },
-  { id: "mango",         label: "Mango",             img: "4_mango.png" },
-  { id: "yuzu",          label: "Yuzu",              img: "5_yuzu.png" },
-  { id: "visen",         label: "Višeň",             img: "6_visen.png" },
-  { id: "jahoda",        label: "Jahoda",            img: "7_jahoda.png" },
-  { id: "rybiz",         label: "Černý rybíz",       img: "8_cernyrybiz.png" },
-  { id: "malina",        label: "Malina",            img: "9_malina.png" },
-  { id: "pomeranc",      label: "Pomeranč",          img: "10_pomeranc.png" },
-  { id: "ostruzina",     label: "Modrá ostružina",   img: "11_ostruzina.png" },
-  { id: "mrkev",         label: "Mrkev",             img: "12_mrkev.png" },
-  { id: "slany_karamel", label: "Slaný karamel",     img: "13_slanykaramel.png" },
-  { id: "pistacie",      label: "Pistácie",          img: "14_pistacie.png" },
-  { id: "rakytnik",      label: "Rakytník",          img: "19_rakytnik.png" },
-  { id: "misana",        label: "Míchaná",           img: null }
+  { id: "vanilka", label: "Vanilka", img: "15_vanilka.png" },
+  { id: "cokolada", label: "\u010cokol\u00e1da", img: "16_cokolady.png" },
+  { id: "jogurt", label: "Jogurt", img: "17_jogurt.png" },
+  { id: "meloun", label: "\u010cerven\u00fd meloun", img: "1_meloun.png" },
+  { id: "mandarinka", label: "Mandarinka", img: "2_mandarinka.png" },
+  { id: "boruvka", label: "Kan. bor\u016fvka", img: "3_boruvka.png" },
+  { id: "jablko", label: "Zelen\u00e9 jablko", img: "18_zelenejablko.png" },
+  { id: "mango", label: "Mango", img: "4_mango.png" },
+  { id: "yuzu", label: "Yuzu", img: "5_yuzu.png" },
+  { id: "visen", label: "Vi\u0161e\u0148", img: "6_visen.png" },
+  { id: "jahoda", label: "Jahoda", img: "7_jahoda.png" },
+  { id: "rybiz", label: "\u010cern\u00fd ryb\u00edz", img: "8_cernyrybiz.png" },
+  { id: "malina", label: "Malina", img: "9_malina.png" },
+  { id: "pomeranc", label: "Pomeran\u010d", img: "10_pomeranc.png" },
+  { id: "ostruzina", label: "Modr\u00e1 ostru\u017eina", img: "11_ostruzina.png" },
+  { id: "mrkev", label: "Mrkev", img: "12_mrkev.png" },
+  { id: "slany_karamel", label: "Slan\u00fd karamel", img: "13_slanykaramel.png" },
+  { id: "pistacie", label: "Pist\u00e1cie", img: "14_pistacie.png" },
+  { id: "rakytnik", label: "Rakytn\u00edk", img: "19_rakytnik.png" },
+  { id: "misana", label: "M\u00edchan\u00e1", img: null }
 ];
-
 var PETIPAKA = ["dbk", "krc"];
-var GIST_ID_KEY = "ll_gist_id";
-var CACHE_KEY = "ll_flavor_cache";
 var REFRESH_MS = 300000;
-var lastKnownData = null;
+var lastData = null;
 
 function getParam(name) {
-  var match = window.location.search.match(new RegExp("[?&]" + name + "=([^&#]*)"));
-  return match ? decodeURIComponent(match[1]) : null;
+  var r = new RegExp("[?&]" + name + "=([^&#]*)");
+  var m = window.location.search.match(r);
+  return m ? decodeURIComponent(m[1]) : null;
 }
 
-function getFlavorById(id) {
+function findFlavor(id) {
   if (!id) return null;
   for (var i = 0; i < PRICHUTE.length; i++) {
     if (PRICHUTE[i].id === id) return PRICHUTE[i];
@@ -243,220 +212,157 @@ function getFlavorById(id) {
   return null;
 }
 
-function getImgUrl(f) {
-  if (!f || !f.img) return null;
-  return BASE_URL + "/" + f.img;
+function imgUrl(f) {
+  return (f && f.img) ? BASE_URL + "/" + f.img : "";
 }
 
-function saveCache(storeId, data) {
-  try {
-    var all = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}");
-    all[storeId] = data;
-    localStorage.setItem(CACHE_KEY, JSON.stringify(all));
-  } catch(e) {}
+function saveCache(sid, d) {
+  try { var a = JSON.parse(localStorage.getItem("llc") || "{}"); a[sid] = d; localStorage.setItem("llc", JSON.stringify(a)); } catch(e) {}
+}
+function loadCache(sid) {
+  try { var a = JSON.parse(localStorage.getItem("llc") || "{}"); return a[sid] || null; } catch(e) { return null; }
 }
 
-function loadCache(storeId) {
-  try {
-    var all = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}");
-    return all[storeId] || null;
-  } catch(e) { return null; }
-}
-
-function isPetipaka(storeId) {
-  for (var i = 0; i < PETIPAKA.length; i++) {
-    if (PETIPAKA[i] === storeId) return true;
-  }
-  return false;
-}
-
-function renderMichanaHTML(f1, f2, nameSize) {
-  var img1 = getImgUrl(f1);
-  var img2 = getImgUrl(f2);
-  var label = (f1 ? f1.label : "?") + " + " + (f2 ? f2.label : "?");
-  var html = '<div class="flavor-label">' +
-    '<div class="flavor-name" style="font-size:' + nameSize + '">MÍCHANÁ</div>' +
-    '<div class="flavor-sub">' + label.toUpperCase() + '</div>' +
-    '</div>' +
-    '<div class="michana-wrap">' +
-    '<div class="michana-half michana-left">' +
-    (img1 ? '<img class="michana-img" src="' + img1 + '" />' : '') +
-    '</div>' +
-    '<div class="michana-half michana-right">' +
-    (img2 ? '<img class="michana-img" src="' + img2 + '" />' : '') +
-    '</div>' +
-    '</div>' +
-    '<div class="slot-price">45,-</div>';
-  return html;
-}
-
-function renderTop(storeId, data) {
+function renderTop(sid, data) {
   var zone = document.getElementById("top-zone");
-  var petipaka = isPetipaka(storeId);
+  var peti = false;
+  for (var p = 0; p < PETIPAKA.length; p++) { if (PETIPAKA[p] === sid) peti = true; }
 
-  var f1 = getFlavorById(data ? data.slot1 : null);
-  var f2 = getFlavorById(data ? data.slot2 : null);
-  var f3 = getFlavorById(data ? data.slot3 : null);
+  var f1 = findFlavor(data ? data.slot1 : null);
+  var f2 = findFlavor(data ? data.slot2 : null);
+  var f3 = findFlavor(data ? data.slot3 : null);
 
   if (!f1 && !f2) {
-    zone.className = "top-zone";
-    zone.innerHTML = '<div class="empty-msg">NASTAVTE PŘÍCHUTĚ V ADMIN PANELU</div>';
+    zone.innerHTML = '<div class="empty-msg">NASTAVTE P\u0158\u00cdCHUT\u011a</div>';
     return;
   }
 
-  var nameSize = petipaka ? "2vw" : "3.2vw";
-  zone.className = "top-zone layout-" + (petipaka ? "5" : "3");
+  // Build slots
+  var slots = [];
+  if (f1) slots.push({ t: "n", f: f1 });
+  if (f2) slots.push({ t: "n", f: f2 });
+  if (peti && f3) slots.push({ t: "n", f: f3 });
+  if (f1 && f2) slots.push({ t: "m", a: f1, b: f2 });
+  if (peti && f2 && f3) slots.push({ t: "m", a: f2, b: f3 });
+
+  var count = slots.length;
+  var nameSize = peti ? "2vw" : "3.2vw";
+  var iceW = peti ? 80 : 72;
+  var iceLeft = 100 - iceW;
 
   var html = '<div class="text-block">' +
     '<div class="label-zmrzlina">ZMRZLINA</div>' +
-    '<div class="label-tocena">točená</div>' +
-    '</div>';
+    '<div class="label-tocena">to\u010den\u00e1</div></div>' +
+    '<div class="ice-creams" style="width:' + iceW + '%;left:' + iceLeft + '%">';
 
-  var iceCreamsHTML = "";
-  var slotCount = 0;
+  for (var i = 0; i < count; i++) {
+    var s = slots[i];
+    var leftPct = (i / count * 100);
+    var widthPct = (100 / count);
 
-  function addDivider() {
-    iceCreamsHTML += '<div class="divider-v"></div>';
+    html += '<div class="ice-cream-slot" style="left:' + leftPct + '%;width:' + widthPct + '%">';
+
+    if (s.t === "n") {
+      html += '<div class="flavor-label">' +
+        '<div class="flavor-name" style="font-size:' + nameSize + '">' + s.f.label.toUpperCase() + '</div>' +
+        '<div class="flavor-sub">P\u0158\u00cdCHU\u0164</div></div>';
+      if (s.f.img) {
+        html += '<div class="ice-img-wrap"><img class="ice-img" src="' + imgUrl(s.f) + '" /></div>';
+      }
+      html += '<div class="slot-price">45,-</div>';
+    } else {
+      var label = s.a.label + " + " + s.b.label;
+      html += '<div class="flavor-label">' +
+        '<div class="flavor-name" style="font-size:' + nameSize + '">M\u00cdCHAN\u00c1</div>' +
+        '<div class="flavor-sub">' + label.toUpperCase() + '</div></div>';
+      html += '<div class="michana-wrap">' +
+        '<div class="michana-half michana-left">';
+      if (s.a.img) html += '<img class="michana-img" src="' + imgUrl(s.a) + '" />';
+      html += '</div><div class="michana-half michana-right">';
+      if (s.b.img) html += '<img class="michana-img" src="' + imgUrl(s.b) + '" />';
+      html += '</div></div>';
+      html += '<div class="slot-price">45,-</div>';
+    }
+
+    html += '</div>';
   }
 
-  function addNormalSlot(flavor) {
-    var imgSrc = getImgUrl(flavor);
-    iceCreamsHTML += '<div class="ice-cream-slot">' +
-      '<div class="flavor-label">' +
-      '<div class="flavor-name" style="font-size:' + nameSize + '">' + flavor.label.toUpperCase() + '</div>' +
-      '<div class="flavor-sub">PŘÍCHUŤ</div>' +
-      '</div>' +
-      '<div style="width:80%;height:80%;display:flex;align-items:center;justify-content:center">' +
-      (imgSrc ? '<img class="ice-img" src="' + imgSrc + '" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:lighten" />' : '') +
-      '</div>' +
-      '<div class="slot-price">45,-</div>' +
-      '</div>';
-  }
-
-  if (petipaka) {
-    if (f1) { addNormalSlot(f1); slotCount++; }
-    if (f2) { if(slotCount>0)addDivider(); addNormalSlot(f2); slotCount++; }
-    if (f3) { if(slotCount>0)addDivider(); addNormalSlot(f3); slotCount++; }
-    if (f1 && f2) {
-      if(slotCount>0)addDivider();
-      iceCreamsHTML += '<div class="ice-cream-slot">' + renderMichanaHTML(f1, f2, nameSize) + '</div>';
-      slotCount++;
-    }
-    if (f2 && f3) {
-      if(slotCount>0)addDivider();
-      iceCreamsHTML += '<div class="ice-cream-slot">' + renderMichanaHTML(f2, f3, nameSize) + '</div>';
-      slotCount++;
-    }
-  } else {
-    if (f1) { addNormalSlot(f1); slotCount++; }
-    if (f2) { if(slotCount>0)addDivider(); addNormalSlot(f2); slotCount++; }
-    if (f1 && f2) {
-      if(slotCount>0)addDivider();
-      iceCreamsHTML += '<div class="ice-cream-slot">' + renderMichanaHTML(f1, f2, nameSize) + '</div>';
-      slotCount++;
-    }
-  }
-
-  html += '<div class="ice-creams">' + iceCreamsHTML + '</div>';
+  html += '</div>';
   zone.innerHTML = html;
 }
 
-function loadFromGist(gistId, storeId, callback) {
+function loadGist(gistId, storeId, cb) {
   var token = getParam("token");
-  if (token) {
-    try { localStorage.setItem("ll_gh_token", token); } catch(e) {}
-  } else {
-    try { token = localStorage.getItem("ll_gh_token"); } catch(e) {}
-  }
+  if (token) { try { localStorage.setItem("llt", token); } catch(e) {} }
+  else { try { token = localStorage.getItem("llt"); } catch(e) {} }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://api.github.com/gists/" + gistId + "?t=" + Date.now(), true);
+  xhr.open("GET", "https://api.github.com/gists/" + gistId + "?t=" + new Date().getTime(), true);
   if (token) xhr.setRequestHeader("Authorization", "token " + token);
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         try {
-          var data = JSON.parse(xhr.responseText);
-          var file = data.files["lbrzlina.json"];
-          if (file && file.content) {
-            var parsed = JSON.parse(file.content);
-            var storeData = parsed[storeId] || null;
-            if (storeData) saveCache(storeId, storeData);
-            callback(storeData);
+          var d = JSON.parse(xhr.responseText);
+          var f = d.files["lbrzlina.json"];
+          if (f && f.content) {
+            var p = JSON.parse(f.content);
+            var sd = p[storeId] || null;
+            if (sd) saveCache(storeId, sd);
+            cb(sd);
             return;
           }
         } catch(e) {}
       }
-      callback(null);
+      cb(null);
     }
   };
   xhr.send();
 }
 
-function spawnCandies(containerId, type) {
-  var container = document.getElementById(containerId);
-  if (!container) return;
-  var colors = ["#e74c3c","#f1c40f","#3498db","#2ecc71","#e67e22","#9b59b6","#ff69b4","#00bfff","#ff4500","#32cd32"];
-  for (var i = 0; i < 25; i++) {
+function spawnCandies(cid, type) {
+  var c = document.getElementById(cid);
+  if (!c) return;
+  var cols = ["#e74c3c","#f1c40f","#3498db","#2ecc71","#e67e22","#9b59b6","#ff69b4","#00bfff"];
+  for (var i = 0; i < 20; i++) {
     var el = document.createElement("div");
     el.className = "candy";
-    if (type === "orisky") {
-      el.textContent = Math.random() < 0.6 ? "🥜" : "🌰";
-      el.style.fontSize = (0.8 + Math.random() * 0.7) + "rem";
+    if (type === "o") {
+      el.innerHTML = "&#x1F95C;";
+      el.style.fontSize = (0.8 + Math.random() * 0.5) + "rem";
     } else {
-      var color = colors[Math.floor(Math.random() * colors.length)];
-      var size = (7 + Math.random() * 9) + "px";
-      el.style.width = size;
-      el.style.height = size;
-      el.style.background = color;
+      var sz = (6 + Math.random() * 8) + "px";
+      el.style.width = sz; el.style.height = sz;
+      el.style.background = cols[Math.floor(Math.random() * cols.length)];
       el.style.borderRadius = "50%";
-      el.style.boxShadow = "0 1px 4px rgba(0,0,0,0.5)";
     }
-    el.style.left = (Math.random() * 95) + "%";
-    el.style.webkitAnimationDuration = (2.5 + Math.random() * 4) + "s";
-    el.style.animationDuration = (2.5 + Math.random() * 4) + "s";
-    el.style.webkitAnimationDelay = (Math.random() * -7) + "s";
-    el.style.animationDelay = (Math.random() * -7) + "s";
-    container.appendChild(el);
+    el.style.left = (Math.random() * 90) + "%";
+    var dur = (2.5 + Math.random() * 4) + "s";
+    var del = (Math.random() * -7) + "s";
+    el.style.webkitAnimationDuration = dur;
+    el.style.animationDuration = dur;
+    el.style.webkitAnimationDelay = del;
+    el.style.animationDelay = del;
+    c.appendChild(el);
   }
 }
 
-function checkOrientation() {
-  var urlPortrait = getParam("portrait");
-  var isPortrait = urlPortrait === "1" || window.innerHeight > window.innerWidth;
-  if (isPortrait) {
-    document.body.className = "portrait";
-  } else {
-    document.body.className = "";
-  }
-}
+function doRefresh() {
+  var sid = getParam("store");
+  var gid = getParam("gist");
+  if (!gid || !sid) return;
 
-function refresh() {
-  var storeId = getParam("store");
-  var gistId = getParam("gist");
-  if (gistId) { try { localStorage.setItem(GIST_ID_KEY, gistId); } catch(e) {} }
-  if (!gistId) { try { gistId = localStorage.getItem(GIST_ID_KEY); } catch(e) {} }
-
-  if (!gistId || !storeId) return;
-
-  loadFromGist(gistId, storeId, function(fresh) {
-    var data = fresh || loadCache(storeId);
-    if (data) lastKnownData = data;
-    renderTop(storeId, data || lastKnownData);
+  loadGist(gid, sid, function(fresh) {
+    var data = fresh || loadCache(sid);
+    if (data) lastData = data;
+    renderTop(sid, data || lastData);
   });
 }
 
-// Init
-checkOrientation();
-if (window.addEventListener) {
-  window.addEventListener("resize", checkOrientation);
-} else {
-  window.attachEvent("onresize", checkOrientation);
-}
-spawnCandies("pohar-lentilky", "lentilky");
-spawnCandies("pohar-orisky", "orisky");
-refresh();
-setInterval(refresh, REFRESH_MS);
+spawnCandies("pohar-lentilky", "l");
+spawnCandies("pohar-orisky", "o");
+doRefresh();
+setInterval(doRefresh, REFRESH_MS);
 </script>
 </body>
 </html>
