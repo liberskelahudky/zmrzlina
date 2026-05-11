@@ -3,31 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zmrzlina točená – TV</title>
+<title>Zmrzlina – TV</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Ms+Madi&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Ms+Madi&display=swap');
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 100%; height: 100%; overflow: hidden; background: #3d1e08; }
 
   .bg {
-    position: fixed; inset: 0;
+    position: fixed; top:0;left:0;right:0;bottom:0;
+    background: -webkit-radial-gradient(65% 40%, ellipse, #7a3515 0%, #4a2010 30%, #2a1008 70%, #1a0804 100%);
     background: radial-gradient(ellipse at 65% 40%, #7a3515 0%, #4a2010 30%, #2a1008 70%, #1a0804 100%);
   }
 
   .wrapper {
-    position: relative; width: 100vw; height: 100vh;
-    display: flex; flex-direction: column; z-index: 1;
+    position: relative; width: 100%; height: 100%;
+    display: -webkit-flex; display: flex;
+    -webkit-flex-direction: column; flex-direction: column;
+    z-index: 1;
   }
 
-  /* TOP ZONE */
   .top-zone {
-    flex: 1; position: relative; display: flex; align-items: stretch; min-height: 0;
+    -webkit-flex: 1; flex: 1;
+    position: relative;
+    display: -webkit-flex; display: flex;
+    -webkit-align-items: stretch; align-items: stretch;
+    min-height: 0;
   }
 
-  .text-block {
-    position: absolute; left: 3vw; bottom: 2vh; z-index: 10;
-  }
+  .text-block { position: absolute; left: 3vw; bottom: 2vh; z-index: 10; }
   .label-zmrzlina {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 5.5vw; color: #fff;
@@ -40,16 +43,17 @@
 
   .ice-creams {
     position: absolute; top: 0; right: 0; height: 100%;
-    display: flex; align-items: stretch;
+    display: -webkit-flex; display: flex;
+    -webkit-align-items: stretch; align-items: stretch;
   }
   .ice-cream-slot {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
+    display: -webkit-flex; display: flex;
+    -webkit-flex-direction: column; flex-direction: column;
+    -webkit-align-items: center; align-items: center;
+    -webkit-justify-content: center; justify-content: center;
     height: 100%; position: relative;
   }
-  .flavor-label {
-    position: absolute; top: 3vh; text-align: center; z-index: 10; width: 100%; padding: 0 5px;
-  }
+  .flavor-label { position: absolute; top: 3vh; text-align: center; z-index: 10; width: 100%; padding: 0 5px; }
   .flavor-name {
     font-family: 'Bebas Neue', sans-serif; color: white;
     text-transform: uppercase; letter-spacing: 0.08em;
@@ -58,25 +62,35 @@
   .flavor-sub {
     font-family: 'Bebas Neue', sans-serif; color: rgba(255,255,255,0.7);
     letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    font-size: 0.9vw; white-space: nowrap;
-  }
-  .flavor-sub::before, .flavor-sub::after {
-    content: ''; display: block; height: 1px; width: 15px; background: rgba(255,255,255,0.5);
-  }
-
-  /* ICE CREAM */
-  .ice-img-wrap {
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1vw;
   }
   .ice-img {
     width: 80%; height: 80%; object-fit: contain;
     mix-blend-mode: lighten;
-    filter: drop-shadow(0 10px 40px rgba(0,0,0,0.3));
+  }
+  .slot-price {
+    position: absolute; bottom: 5vh; right: 1.5vw;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3vw; color: white;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    z-index: 10;
+  }
+  .divider-v {
+    width: 1px; height: 55vh; background: rgba(223,189,149,0.2);
+    -webkit-align-self: center; align-self: center;
+    -webkit-flex-shrink: 0; flex-shrink: 0;
   }
 
-  /* MICHANA – půl na půl */
+  .layout-3 .ice-creams { width: 72vw; left: 20vw; }
+  .layout-3 .ice-cream-slot { width: 33.33%; }
+  .layout-3 .flavor-name { font-size: 3.2vw; }
+
+  .layout-5 .ice-creams { width: 80vw; left: 16vw; }
+  .layout-5 .ice-cream-slot { width: 20%; }
+  .layout-5 .flavor-name { font-size: 2vw; }
+  .layout-5 .slot-price { font-size: 1.8vw; bottom: 3vh; }
+  .layout-5 .flavor-sub { font-size: 0.7vw; }
+
   .michana-wrap {
     position: relative; overflow: hidden;
     width: 80%; height: 80%;
@@ -90,81 +104,44 @@
   .michana-img {
     position: absolute; top: 0; height: 100%; object-fit: contain;
     mix-blend-mode: lighten;
-    filter: drop-shadow(0 10px 40px rgba(0,0,0,0.3));
-    width: 200% !important;
+    width: 200%;
   }
   .michana-left .michana-img { left: 0; }
   .michana-right .michana-img { right: 0; }
 
-  .slot-price {
-    position: absolute; bottom: 5vh; right: 1.5vw;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3vw; color: white;
-    letter-spacing: 0.05em;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-    z-index: 10;
-  }
-
-  .divider-v {
-    width: 1px; height: 55vh; background: rgba(223,189,149,0.2); align-self: center; flex-shrink: 0;
-  }
-
-  /* LAYOUTS – 3-páka */
-  .layout-3 .ice-creams { width: 72vw; left: 20vw; }
-  .layout-3 .ice-cream-slot { width: 33.33%; }
-  .layout-3 .flavor-name { font-size: 3.2vw; }
-  .layout-3 .slot-price { font-size: 2.5vw; }
-
-  /* LAYOUTS – 5-páka */
-  .layout-5 .ice-creams { width: 80vw; left: 16vw; }
-  .layout-5 .ice-cream-slot { width: 20%; }
-  .layout-5 .flavor-name { font-size: 2vw; }
-  .layout-5 .slot-price { font-size: 1.8vw; bottom: 3vh; }
-  .layout-5 .ice-img { width: 90%; height: 90%; }
-  .layout-5 .michana-wrap { width: 90%; height: 90%; }
-  .layout-5 .flavor-sub { font-size: 0.7vw; }
-
   /* BOTTOM ZONE */
   .bottom-zone {
-    height: 28vh; flex-shrink: 0; display: flex;
+    height: 28vh;
+    -webkit-flex-shrink: 0; flex-shrink: 0;
+    display: -webkit-flex; display: flex;
     border-top: 1px solid rgba(223,189,149,0.25);
     background: rgba(0,0,0,0.35);
     position: relative;
   }
   .pohar-slot {
-    flex: 1; display: flex; align-items: center;
+    -webkit-flex: 1; flex: 1;
+    display: -webkit-flex; display: flex;
+    -webkit-align-items: center; align-items: center;
     padding: 0 2.5vw; gap: 2vw;
     position: relative; overflow: hidden;
   }
-  .pohar-slot:first-child { border-right: 1px solid rgba(223,189,149,0.2); }
+  .pohar-slot-left { border-right: 1px solid rgba(223,189,149,0.2); }
   .pohar-img {
     height: 22vh; object-fit: contain; mix-blend-mode: lighten;
-    filter: drop-shadow(0 4px 15px rgba(0,0,0,0.4));
-    flex-shrink: 0; position: relative; z-index: 2;
+    -webkit-flex-shrink: 0; flex-shrink: 0;
+    position: relative; z-index: 2;
   }
-  .pohar-info { flex: 1; position: relative; z-index: 2; }
-  .pohar-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3vw; color: #dfbd95; letter-spacing: 0.05em; line-height: 1;
-  }
-  .pohar-desc {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4vw; color: rgba(255,255,255,0.6);
-    letter-spacing: 0.08em; margin-top: 6px; line-height: 1.5;
-  }
-  .pohar-price {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3vw; color: white;
-    background: rgba(209,75,31,0.9);
-    padding: 4px 18px; border-radius: 6px;
-    margin-top: 10px; display: inline-block;
-    letter-spacing: 0.05em;
-  }
+  .pohar-info { -webkit-flex: 1; flex: 1; position: relative; z-index: 2; }
+  .pohar-name { font-family: 'Bebas Neue', sans-serif; font-size: 3vw; color: #dfbd95; letter-spacing: 0.05em; line-height: 1; }
+  .pohar-desc { font-family: 'Bebas Neue', sans-serif; font-size: 1.4vw; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; margin-top: 6px; line-height: 1.5; }
+  .pohar-price { font-family: 'Bebas Neue', sans-serif; font-size: 3vw; color: white; background: rgba(209,75,31,0.9); padding: 4px 18px; border-radius: 6px; margin-top: 10px; display: inline-block; }
 
-  /* FALLING CANDIES */
-  .candy {
-    position: absolute; pointer-events: none; z-index: 1;
-    animation: fallCandy linear infinite;
+  .candy { position: absolute; pointer-events: none; z-index: 1; -webkit-animation: fallCandy linear infinite; animation: fallCandy linear infinite; }
+  @-webkit-keyframes fallCandy {
+    0%   { -webkit-transform: translateY(-30px) rotate(0deg); opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { -webkit-transform: translateY(30vh) rotate(600deg); opacity: 0; }
   }
   @keyframes fallCandy {
     0%   { transform: translateY(-30px) rotate(0deg); opacity: 0; }
@@ -178,59 +155,23 @@
     font-size: 2rem; margin: auto; letter-spacing: 0.1em; position: relative; z-index: 10;
   }
 
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .text-block  { animation: fadeInUp 0.8s ease forwards; }
-  .ice-cream-slot { animation: fadeInUp 0.7s ease both; }
-  .bottom-zone { animation: fadeInUp 0.8s 0.4s ease both; }
-
-  /* PORTRAIT MODE (výška > šířka nebo ?portrait=1 v URL) */
-  .portrait .wrapper { flex-direction: column; }
-  
-  .portrait .top-zone { flex: 1; }
-  
-  .portrait .text-block {
-    left: 4vw; bottom: auto; top: 3vh;
-  }
+  /* PORTRAIT */
+  .portrait .text-block { left: 4vw; bottom: auto; top: 3vh; }
   .portrait .label-zmrzlina { font-size: 8vw; }
   .portrait .label-tocena { font-size: 6vw; }
-
-  .portrait .ice-creams {
-    position: relative; left: auto; right: auto; top: auto;
-    width: 100% !important; height: 100%;
-    justify-content: center;
-    padding-top: 14vh;
-  }
-
-  .portrait .layout-3 .ice-creams { width: 100% !important; }
-  .portrait .layout-3 .ice-cream-slot { width: 33.33%; }
+  .portrait .ice-creams { position: relative; left: auto; right: auto; top: auto; width: 100%; height: 100%; -webkit-justify-content: center; justify-content: center; padding-top: 14vh; }
+  .portrait .layout-3 .ice-creams, .portrait .layout-5 .ice-creams { width: 100%; }
   .portrait .layout-3 .flavor-name { font-size: 5vw; }
-
-  .portrait .layout-5 .ice-creams { width: 100% !important; }
-  .portrait .layout-5 .ice-cream-slot { width: 20%; }
   .portrait .layout-5 .flavor-name { font-size: 3vw; }
-  .portrait .layout-5 .flavor-sub { font-size: 1.5vw; }
-
   .portrait .ice-img { width: 90%; height: 55vh; }
   .portrait .michana-wrap { width: 90%; height: 55vh; }
-
   .portrait .slot-price { font-size: 4vw; bottom: 2vh; }
-  .portrait .layout-5 .slot-price { font-size: 2.5vw; }
-
   .portrait .divider-v { height: 45vh; }
-
-  .portrait .bottom-zone {
-    height: 32vh;
-    flex-direction: row;
-  }
-
   .portrait .pohar-name { font-size: 4.5vw; }
   .portrait .pohar-desc { font-size: 2vw; }
   .portrait .pohar-price { font-size: 4vw; }
   .portrait .pohar-img { height: 26vh; }
-
+  .portrait .bottom-zone { height: 32vh; }
 </style>
 </head>
 <body>
@@ -238,8 +179,8 @@
 <div class="wrapper">
   <div class="top-zone" id="top-zone"></div>
   <div class="bottom-zone">
-    <div class="pohar-slot" id="pohar-lentilky">
-      <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Poharek_lentilka.png" alt="Pohár lentilky" />
+    <div class="pohar-slot pohar-slot-left" id="pohar-lentilky">
+      <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Poharek_lentilka.png" alt="Pohar lentilky" />
       <div class="pohar-info">
         <div class="pohar-name">POHÁR LENTILKY</div>
         <div class="pohar-desc">Zmrzlina · poleva čokoláda · lentilky</div>
@@ -247,7 +188,7 @@
       </div>
     </div>
     <div class="pohar-slot" id="pohar-orisky">
-      <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Poharek_orisky.png" alt="Pohár oříšky" />
+      <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Poharek_orisky.png" alt="Pohar orisky" />
       <div class="pohar-info">
         <div class="pohar-name">POHÁR OŘÍŠKY</div>
         <div class="pohar-desc">Zmrzlina · poleva pistácie · lískové oříšky</div>
@@ -258,104 +199,58 @@
 </div>
 
 <script>
+var BASE_URL = "https://liberskelahudky.github.io/zmrzlina";
 
-const BASE_URL = "https://liberskelahudky.github.io/zmrzlina";
-
-const PRICHUTE = [
-  { id: "vanilka",        label: "Vanilka",           img: "15_vanilka.png" },
-  { id: "cokolada",       label: "Čokoláda",          img: "16_cokolady.png" },
-  { id: "jogurt",         label: "Jogurt",             img: "17_jogurt.png" },
-  { id: "meloun",         label: "Červený meloun",     img: "1_meloun.png" },
-  { id: "mandarinka",     label: "Mandarinka",         img: "2_mandarinka.png" },
-  { id: "boruvka",        label: "Kan. borůvka",       img: "3_boruvka.png" },
-  { id: "jablko",         label: "Zelené jablko",      img: "18_zelenejablko.png" },
-  { id: "mango",          label: "Mango",              img: "4_mango.png" },
-  { id: "yuzu",           label: "Yuzu",               img: "5_yuzu.png" },
-  { id: "visen",          label: "Višeň",              img: "6_visen.png" },
-  { id: "jahoda",         label: "Jahoda",             img: "7_jahoda.png" },
-  { id: "rybiz",          label: "Černý rybíz",        img: "8_cernyrybiz.png" },
-  { id: "malina",         label: "Malina",             img: "9_malina.png" },
-  { id: "pomeranc",       label: "Pomeranč",           img: "10_pomeranc.png" },
-  { id: "ostružina",      label: "Modrá ostružina",    img: "11_ostruzina.png" },
-  { id: "mrkev",          label: "Mrkev",              img: "12_mrkev.png" },
-  { id: "slany_karamel",  label: "Slaný karamel",      img: "13_slanykaramel.png" },
-  { id: "pistacie",       label: "Pistácie",           img: "14_pistacie.png" },
-  { id: "rakytnik",       label: "Rakytník",           img: "19_rakytnik.png" },
-  { id: "misana",         label: "Míchaná",             img: null },
+var PRICHUTE = [
+  { id: "vanilka",       label: "Vanilka",          img: "15_vanilka.png" },
+  { id: "cokolada",      label: "Čokoláda",         img: "16_cokolady.png" },
+  { id: "jogurt",        label: "Jogurt",            img: "17_jogurt.png" },
+  { id: "meloun",        label: "Červený meloun",    img: "1_meloun.png" },
+  { id: "mandarinka",    label: "Mandarinka",        img: "2_mandarinka.png" },
+  { id: "boruvka",       label: "Kan. borůvka",      img: "3_boruvka.png" },
+  { id: "jablko",        label: "Zelené jablko",     img: "18_zelenejablko.png" },
+  { id: "mango",         label: "Mango",             img: "4_mango.png" },
+  { id: "yuzu",          label: "Yuzu",              img: "5_yuzu.png" },
+  { id: "visen",         label: "Višeň",             img: "6_visen.png" },
+  { id: "jahoda",        label: "Jahoda",            img: "7_jahoda.png" },
+  { id: "rybiz",         label: "Černý rybíz",       img: "8_cernyrybiz.png" },
+  { id: "malina",        label: "Malina",            img: "9_malina.png" },
+  { id: "pomeranc",      label: "Pomeranč",          img: "10_pomeranc.png" },
+  { id: "ostruzina",     label: "Modrá ostružina",   img: "11_ostruzina.png" },
+  { id: "mrkev",         label: "Mrkev",             img: "12_mrkev.png" },
+  { id: "slany_karamel", label: "Slaný karamel",     img: "13_slanykaramel.png" },
+  { id: "pistacie",      label: "Pistácie",          img: "14_pistacie.png" },
+  { id: "rakytnik",      label: "Rakytník",          img: "19_rakytnik.png" },
+  { id: "misana",        label: "Míchaná",           img: null }
 ];
 
-const PRODEJNY = [
-  { id: "naporic",    label: "Na Poříčí" },
-  { id: "holesovice", label: "Holešovice" },
-  { id: "vodicova",   label: "Vodičkova" },
-  { id: "krc",        label: "Krč" },
-  { id: "letna",      label: "Letná" },
-  { id: "palmovka",   label: "Palmovka" },
-  { id: "ruzyne", label: "Ruzyně" },
-  { id: "smichov",    label: "Smíchov" },
-  { id: "haje",       label: "Háje" },
-  { id: "dbk",        label: "DBK" },
-  { id: "dejvice",    label: "Dejvice" },
-  { id: "cb",         label: "České Budějovice" },
-  { id: "ipp",        label: "I.P. Pavlova" },
-];
+var PETIPAKA = ["dbk", "krc"];
+var GIST_ID_KEY = "ll_gist_id";
+var CACHE_KEY = "ll_flavor_cache";
+var REFRESH_MS = 300000;
+var lastKnownData = null;
 
-function getImgUrl(imgFile) {
-  if (!imgFile) return null;
-  return BASE_URL + '/' + imgFile;
+function getParam(name) {
+  var match = window.location.search.match(new RegExp("[?&]" + name + "=([^&#]*)"));
+  return match ? decodeURIComponent(match[1]) : null;
 }
 
-const PETIPAKA = ['dbk', 'krc']; // 5-páka prodejny
-
-function isPetipaka(storeId) {
-  return PETIPAKA.includes(storeId);
+function getFlavorById(id) {
+  if (!id) return null;
+  for (var i = 0; i < PRICHUTE.length; i++) {
+    if (PRICHUTE[i].id === id) return PRICHUTE[i];
+  }
+  return null;
 }
 
-// Michana slot = combined image of two flavors
-function renderMichana(flavor1, flavor2, size) {
-  const img1 = getImgSrc(flavor1);
-  const img2 = getImgSrc(flavor2);
-  const label = `${flavor1 ? flavor1.label : '?'} + ${flavor2 ? flavor2.label : '?'}`;
-  
-  return `
-    <div class="flavor-label">
-      <div class="flavor-name" style="font-size:${size}">MÍCHANÁ</div>
-      <div class="flavor-sub">${label.toUpperCase()}</div>
-    </div>
-    <div class="ice-img-wrap michana-wrap">
-      <div class="michana-half michana-left">
-        ${img1 ? `<img class="ice-img michana-img" src="${img1}" />` : '<div class="no-img">🍦</div>'}
-      </div>
-      <div class="michana-half michana-right">
-        ${img2 ? `<img class="ice-img michana-img" src="${img2}" />` : '<div class="no-img">🍦</div>'}
-      </div>
-    </div>
-    <div class="slot-price">45,-</div>
-  `;
+function getImgUrl(f) {
+  if (!f || !f.img) return null;
+  return BASE_URL + "/" + f.img;
 }
-
-
-const GIST_ID_KEY = 'll_gist_id';
-const CACHE_KEY = 'll_flavor_cache';
-const REFRESH_MS = 300000;
-
-function getURLParams() {
-  const p = new URLSearchParams(window.location.search);
-  return { store: p.get('store'), gistId: p.get('gist') || localStorage.getItem(GIST_ID_KEY) };
-}
-
-function getToken() {
-  const t = new URLSearchParams(window.location.search).get('token');
-  if (t) localStorage.setItem('ll_gh_token', t);
-  return localStorage.getItem('ll_gh_token');
-}
-
-function getFlavorById(id) { return id ? PRICHUTE.find(f => f.id === id) : null; }
-function getImgSrc(flavor) { return (flavor && flavor.img) ? getImgUrl(flavor.img) : null; }
 
 function saveCache(storeId, data) {
   try {
-    const all = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+    var all = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}");
     all[storeId] = data;
     localStorage.setItem(CACHE_KEY, JSON.stringify(all));
   } catch(e) {}
@@ -363,155 +258,205 @@ function saveCache(storeId, data) {
 
 function loadCache(storeId) {
   try {
-    const all = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+    var all = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}");
     return all[storeId] || null;
   } catch(e) { return null; }
 }
 
-function renderTop(storeId, data) {
-  const zone = document.getElementById('top-zone');
-  const petipaka = isPetipaka(storeId);
+function isPetipaka(storeId) {
+  for (var i = 0; i < PETIPAKA.length; i++) {
+    if (PETIPAKA[i] === storeId) return true;
+  }
+  return false;
+}
 
-  const f1 = getFlavorById(data?.slot1);
-  const f2 = getFlavorById(data?.slot2);
-  const f3 = getFlavorById(data?.slot3);
+function renderMichanaHTML(f1, f2, nameSize) {
+  var img1 = getImgUrl(f1);
+  var img2 = getImgUrl(f2);
+  var label = (f1 ? f1.label : "?") + " + " + (f2 ? f2.label : "?");
+  var html = '<div class="flavor-label">' +
+    '<div class="flavor-name" style="font-size:' + nameSize + '">MÍCHANÁ</div>' +
+    '<div class="flavor-sub">' + label.toUpperCase() + '</div>' +
+    '</div>' +
+    '<div class="michana-wrap">' +
+    '<div class="michana-half michana-left">' +
+    (img1 ? '<img class="michana-img" src="' + img1 + '" />' : '') +
+    '</div>' +
+    '<div class="michana-half michana-right">' +
+    (img2 ? '<img class="michana-img" src="' + img2 + '" />' : '') +
+    '</div>' +
+    '</div>' +
+    '<div class="slot-price">45,-</div>';
+  return html;
+}
+
+function renderTop(storeId, data) {
+  var zone = document.getElementById("top-zone");
+  var petipaka = isPetipaka(storeId);
+
+  var f1 = getFlavorById(data ? data.slot1 : null);
+  var f2 = getFlavorById(data ? data.slot2 : null);
+  var f3 = getFlavorById(data ? data.slot3 : null);
 
   if (!f1 && !f2) {
-    zone.className = 'top-zone';
+    zone.className = "top-zone";
     zone.innerHTML = '<div class="empty-msg">NASTAVTE PŘÍCHUTĚ V ADMIN PANELU</div>';
     return;
   }
 
-  const nameSize = petipaka ? '2vw' : '3.2vw';
-  const priceSize = petipaka ? '1.8vw' : '2.5vw';
+  var nameSize = petipaka ? "2vw" : "3.2vw";
+  zone.className = "top-zone layout-" + (petipaka ? "5" : "3");
 
-  zone.className = `top-zone layout-${petipaka ? 5 : 3}`;
-  zone.innerHTML = `
-    <div class="text-block">
-      <div class="label-zmrzlina">ZMRZLINA</div>
-      <div class="label-tocena">točená</div>
-    </div>
-  `;
+  var html = '<div class="text-block">' +
+    '<div class="label-zmrzlina">ZMRZLINA</div>' +
+    '<div class="label-tocena">točená</div>' +
+    '</div>';
 
-  const iceCreams = document.createElement('div');
-  iceCreams.className = 'ice-creams';
+  var iceCreamsHTML = "";
+  var slotCount = 0;
 
   function addDivider() {
-    const d = document.createElement('div');
-    d.className = 'divider-v';
-    iceCreams.appendChild(d);
+    iceCreamsHTML += '<div class="divider-v"></div>';
   }
 
-  function addSlot(html) {
-    const slot = document.createElement('div');
-    slot.className = 'ice-cream-slot';
-    slot.innerHTML = html;
-    iceCreams.appendChild(slot);
-  }
-
-  function normalSlot(flavor) {
-    const imgSrc = getImgSrc(flavor);
-    return `
-      <div class="flavor-label">
-        <div class="flavor-name" style="font-size:${nameSize}">${flavor.label.toUpperCase()}</div>
-        <div class="flavor-sub">PŘÍCHUŤ</div>
-      </div>
-      <div class="ice-img-wrap">
-        ${imgSrc ? `<img class="ice-img" src="${imgSrc}" alt="${flavor.label}" />` : '<div style="font-size:4rem;opacity:0.3">🍦</div>'}
-      </div>
-      <div class="slot-price" style="font-size:${priceSize}">45,-</div>
-    `;
+  function addNormalSlot(flavor) {
+    var imgSrc = getImgUrl(flavor);
+    iceCreamsHTML += '<div class="ice-cream-slot">' +
+      '<div class="flavor-label">' +
+      '<div class="flavor-name" style="font-size:' + nameSize + '">' + flavor.label.toUpperCase() + '</div>' +
+      '<div class="flavor-sub">PŘÍCHUŤ</div>' +
+      '</div>' +
+      '<div style="width:80%;height:80%;display:flex;align-items:center;justify-content:center">' +
+      (imgSrc ? '<img class="ice-img" src="' + imgSrc + '" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:lighten" />' : '') +
+      '</div>' +
+      '<div class="slot-price">45,-</div>' +
+      '</div>';
   }
 
   if (petipaka) {
-    // 5-páka: f1, f2, f3 jsou základní příchutě (nikdy míšená)
-    // zobrazení: f1, f2, f3, míšená(f1+f2), míšená(f2+f3)
-    if (f1) addSlot(normalSlot(f1));
-    if (f2) { addDivider(); addSlot(normalSlot(f2)); }
-    if (f3) { addDivider(); addSlot(normalSlot(f3)); }
-    if (f1 && f2) { addDivider(); addSlot(renderMichana(f1, f2, nameSize)); }
-    if (f2 && f3) { addDivider(); addSlot(renderMichana(f2, f3, nameSize)); }
+    if (f1) { addNormalSlot(f1); slotCount++; }
+    if (f2) { if(slotCount>0)addDivider(); addNormalSlot(f2); slotCount++; }
+    if (f3) { if(slotCount>0)addDivider(); addNormalSlot(f3); slotCount++; }
+    if (f1 && f2) {
+      if(slotCount>0)addDivider();
+      iceCreamsHTML += '<div class="ice-cream-slot">' + renderMichanaHTML(f1, f2, nameSize) + '</div>';
+      slotCount++;
+    }
+    if (f2 && f3) {
+      if(slotCount>0)addDivider();
+      iceCreamsHTML += '<div class="ice-cream-slot">' + renderMichanaHTML(f2, f3, nameSize) + '</div>';
+      slotCount++;
+    }
   } else {
-    // 3-páka: f1, f2, míšená(f1+f2)
-    if (f1) addSlot(normalSlot(f1));
-    if (f2) { addDivider(); addSlot(normalSlot(f2)); }
-    if (f1 && f2) { addDivider(); addSlot(renderMichana(f1, f2, nameSize)); }
+    if (f1) { addNormalSlot(f1); slotCount++; }
+    if (f2) { if(slotCount>0)addDivider(); addNormalSlot(f2); slotCount++; }
+    if (f1 && f2) {
+      if(slotCount>0)addDivider();
+      iceCreamsHTML += '<div class="ice-cream-slot">' + renderMichanaHTML(f1, f2, nameSize) + '</div>';
+      slotCount++;
+    }
   }
 
-  zone.appendChild(iceCreams);
+  html += '<div class="ice-creams">' + iceCreamsHTML + '</div>';
+  zone.innerHTML = html;
+}
+
+function loadFromGist(gistId, storeId, callback) {
+  var token = getParam("token");
+  if (token) {
+    try { localStorage.setItem("ll_gh_token", token); } catch(e) {}
+  } else {
+    try { token = localStorage.getItem("ll_gh_token"); } catch(e) {}
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://api.github.com/gists/" + gistId + "?t=" + Date.now(), true);
+  if (token) xhr.setRequestHeader("Authorization", "token " + token);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        try {
+          var data = JSON.parse(xhr.responseText);
+          var file = data.files["lbrzlina.json"];
+          if (file && file.content) {
+            var parsed = JSON.parse(file.content);
+            var storeData = parsed[storeId] || null;
+            if (storeData) saveCache(storeId, storeData);
+            callback(storeData);
+            return;
+          }
+        } catch(e) {}
+      }
+      callback(null);
+    }
+  };
+  xhr.send();
 }
 
 function spawnCandies(containerId, type) {
-  const container = document.getElementById(containerId);
+  var container = document.getElementById(containerId);
   if (!container) return;
-  const lentilkyColors = ['#e74c3c','#f1c40f','#3498db','#2ecc71','#e67e22','#9b59b6','#ff69b4','#00bfff','#ff4500','#32cd32'];
-  for (let i = 0; i < 25; i++) {
-    const el = document.createElement('div');
-    el.className = 'candy';
-    if (type === 'orisky') {
-      el.textContent = Math.random() < 0.6 ? '🥜' : '🌰';
-      el.style.fontSize = (0.8 + Math.random() * 0.7) + 'rem';
+  var colors = ["#e74c3c","#f1c40f","#3498db","#2ecc71","#e67e22","#9b59b6","#ff69b4","#00bfff","#ff4500","#32cd32"];
+  for (var i = 0; i < 25; i++) {
+    var el = document.createElement("div");
+    el.className = "candy";
+    if (type === "orisky") {
+      el.textContent = Math.random() < 0.6 ? "🥜" : "🌰";
+      el.style.fontSize = (0.8 + Math.random() * 0.7) + "rem";
     } else {
-      const color = lentilkyColors[Math.floor(Math.random() * lentilkyColors.length)];
-      const size = (7 + Math.random() * 9) + 'px';
-      el.style.width = size; el.style.height = size;
-      el.style.background = color; el.style.borderRadius = '50%';
-      el.style.boxShadow = '0 1px 4px rgba(0,0,0,0.5)';
+      var color = colors[Math.floor(Math.random() * colors.length)];
+      var size = (7 + Math.random() * 9) + "px";
+      el.style.width = size;
+      el.style.height = size;
+      el.style.background = color;
+      el.style.borderRadius = "50%";
+      el.style.boxShadow = "0 1px 4px rgba(0,0,0,0.5)";
     }
-    el.style.left = (Math.random() * 95) + '%';
-    el.style.animationDuration = (2.5 + Math.random() * 4) + 's';
-    el.style.animationDelay = (Math.random() * -7) + 's';
+    el.style.left = (Math.random() * 95) + "%";
+    el.style.webkitAnimationDuration = (2.5 + Math.random() * 4) + "s";
+    el.style.animationDuration = (2.5 + Math.random() * 4) + "s";
+    el.style.webkitAnimationDelay = (Math.random() * -7) + "s";
+    el.style.animationDelay = (Math.random() * -7) + "s";
     container.appendChild(el);
   }
 }
 
-async function loadFromGist(gistId, storeId) {
-  try {
-    const token = getToken();
-    const headers = token ? { Authorization: `token ${token}` } : {};
-    const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`, { headers });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    const file = data.files['lbrzlina.json'];
-    if (!file) return null;
-    const parsed = JSON.parse(file.content)[storeId];
-    if (parsed) saveCache(storeId, parsed);
-    return parsed || null;
-  } catch(e) {
-    console.warn('API error, using cache');
-    return null;
-  }
-}
-
-async function init() {
-  const { store, gistId } = getURLParams();
-  if (gistId) localStorage.setItem(GIST_ID_KEY, gistId);
-
-  spawnCandies('pohar-lentilky', 'lentilky');
-  spawnCandies('pohar-orisky', 'orisky');
-
-  async function refresh() {
-    if (!gistId || !store) return;
-    const fresh = await loadFromGist(gistId, store);
-    const data = fresh || loadCache(store);
-    renderTop(store, data);
-  }
-
-  await refresh();
-  setInterval(refresh, REFRESH_MS);
-}
-
-
-// Portrait mode detection
 function checkOrientation() {
-  const urlPortrait = new URLSearchParams(window.location.search).get('portrait');
-  const isPortrait = urlPortrait === '1' || window.innerHeight > window.innerWidth;
-  document.body.classList.toggle('portrait', isPortrait);
+  var urlPortrait = getParam("portrait");
+  var isPortrait = urlPortrait === "1" || window.innerHeight > window.innerWidth;
+  if (isPortrait) {
+    document.body.className = "portrait";
+  } else {
+    document.body.className = "";
+  }
 }
-checkOrientation();
-window.addEventListener('resize', checkOrientation);
 
-init();
+function refresh() {
+  var storeId = getParam("store");
+  var gistId = getParam("gist");
+  if (gistId) { try { localStorage.setItem(GIST_ID_KEY, gistId); } catch(e) {} }
+  if (!gistId) { try { gistId = localStorage.getItem(GIST_ID_KEY); } catch(e) {} }
+
+  if (!gistId || !storeId) return;
+
+  loadFromGist(gistId, storeId, function(fresh) {
+    var data = fresh || loadCache(storeId);
+    if (data) lastKnownData = data;
+    renderTop(storeId, data || lastKnownData);
+  });
+}
+
+// Init
+checkOrientation();
+if (window.addEventListener) {
+  window.addEventListener("resize", checkOrientation);
+} else {
+  window.attachEvent("onresize", checkOrientation);
+}
+spawnCandies("pohar-lentilky", "lentilky");
+spawnCandies("pohar-orisky", "orisky");
+refresh();
+setInterval(refresh, REFRESH_MS);
 </script>
 </body>
 </html>
