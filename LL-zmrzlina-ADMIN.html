@@ -201,6 +201,21 @@
   }
   .dbk-export-btn:hover { background: var(--brown-light); }
 
+
+  .store-section-header {
+    grid-column: 1 / -1;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    padding: 16px 0 4px;
+    border-bottom: 1px solid rgba(223,189,149,0.2);
+    margin-bottom: 4px;
+  }
+  .store-section-header.manual {
+    color: var(--orange);
+  }
 </style>
 </head>
 <body>
@@ -209,7 +224,7 @@
   <h1>🍦 ZMRZLINA – správa TV</h1>
   <span>Libeřské lahůdky</span>
   <button class="stories-btn" onclick="openStories()">📱 Generovat Stories</button>
-  <button class="dbk-export-btn" onclick="exportStore('dbk')">📺 DBK</button>
+  <button class="dbk-export-btn" onclick="exportStore('dbk')">📺 DBK Olbrachtova</button>
   <button class="dbk-export-btn" onclick="exportStore('naporic')">📺 Na Poříčí</button>
   <button class="dbk-export-btn" onclick="exportStore('dejvice')">📺 Dejvice</button>
   <button class="dbk-export-btn" onclick="exportStore('palmovka')">📺 Palmovka</button>
@@ -325,14 +340,15 @@ const PRODEJNY = [
   { id: "naporic",    label: "Na Poříčí" },
   { id: "holesovice", label: "Holešovice" },
   { id: "vodicova",   label: "Vodičkova" },
-  { id: "krc",        label: "Krč" },
+  { id: "krc",        label: "Krč – Thomayerova" },
   { id: "letna",      label: "Letná" },
   { id: "palmovka",   label: "Palmovka" },
   { id: "ruzyne",     label: "Hlavní nádraží" },
-  { id: "smichov",    label: "Smíchov" },
+  { id: "smichov",    label: "Anděl – Ostrovského" },
   { id: "haje",       label: "Háje" },
-  { id: "dbk",        label: "DBK" },
+  { id: "dbk",        label: "DBK Olbrachtova" },
   { id: "dejvice",    label: "Dejvice" },
+  { id: "budejovicka", label: "Poliklinika Budějovická" },
   { id: "cb",         label: "České Budějovice" },
   { id: "ipp",        label: "I.P. Pavlova" },
 ];
@@ -399,7 +415,20 @@ function buildStoreCard(store) {
 }
 
 function renderGrid() {
-  document.getElementById('store-grid').innerHTML = PRODEJNY.map(p => buildStoreCard(p)).join('');
+  var autoStores = ['naporic','vodicova','budejovicka','krc','letna','holesovice','smichov','cb','ipp','ruzyne'];
+  var manualStores = ['haje','dbk','dejvice','palmovka'];
+  
+  var html = '<div class="store-section-header">✅ FUNGUJÍCÍ TV – automatická aktualizace</div>';
+  PRODEJNY.forEach(function(p) {
+    if (autoStores.indexOf(p.id) >= 0) html += buildStoreCard(p);
+  });
+  
+  html += '<div class="store-section-header manual">📸 RUČNÍ EXPORT – starší TV</div>';
+  PRODEJNY.forEach(function(p) {
+    if (manualStores.indexOf(p.id) >= 0) html += buildStoreCard(p);
+  });
+  
+  document.getElementById('store-grid').innerHTML = html;
 }
 
 function openTVPreview(storeId) {
