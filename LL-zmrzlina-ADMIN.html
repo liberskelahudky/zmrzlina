@@ -210,8 +210,10 @@
   <span>Libeřské lahůdky</span>
   <button class="stories-btn" onclick="openStories()">📱 Generovat Stories</button>
   <button class="dbk-export-btn" onclick="exportStore('dbk')">📺 DBK</button>
+  <button class="dbk-export-btn" onclick="exportStore('naporic')">📺 Na Poříčí</button>
   <button class="dbk-export-btn" onclick="exportStore('dejvice')">📺 Dejvice</button>
   <button class="dbk-export-btn" onclick="exportStore('palmovka')">📺 Palmovka</button>
+  <button class="dbk-export-btn" onclick="exportStore('haje')">📺 Háje</button>
   <button class="save-all-btn" onclick="saveAll()">💾 Uložit vše</button>
 </header>
 
@@ -326,7 +328,7 @@ const PRODEJNY = [
   { id: "krc",        label: "Krč" },
   { id: "letna",      label: "Letná" },
   { id: "palmovka",   label: "Palmovka" },
-  { id: "ruzyne",     label: "Ruzyně" },
+  { id: "ruzyne",     label: "Hlavní nádraží" },
   { id: "smichov",    label: "Smíchov" },
   { id: "haje",       label: "Háje" },
   { id: "dbk",        label: "DBK" },
@@ -404,7 +406,7 @@ function openTVPreview(storeId) {
   const base = 'https://liberskelahudky.github.io/zmrzlina/LL-zmrzlina-TV.html';
   const gist = '9309f5a31eeb4e74cc849bab41707891';
   let url = base + '?store=' + storeId + '&gist=' + gist;
-  if (storeId === 'dbk') url += '&portrait=1';
+  if (storeId === 'dbk' || storeId === 'naporic') url += '&portrait=1';
   const token = localStorage.getItem('ll_gh_token');
   if (token) url += '&token=' + token;
   window.open(url, '_blank');
@@ -721,7 +723,7 @@ async function exportStore(storeId) {
     return;
   }
   const store = PRODEJNY.find(p => p.id === storeId);
-  const isPortrait = (storeId === 'dbk');
+  const isPortrait = (storeId === 'dbk' || storeId === 'naporic');
   showToast('Generuji obrázek pro ' + store.label + '...');
 
   const canvas = document.createElement('canvas');
@@ -990,7 +992,7 @@ function generateLinks() {
   const savedToken = token || localStorage.getItem('ll_gh_token') || '';
   const grid = document.getElementById('store-links-grid');
   grid.innerHTML = PRODEJNY.map(p => {
-    const tvUrl = `${BASE_URL_LINKS}/LL-zmrzlina-TV.html?store=${p.id}&gist=${GIST_ID_LINKS}${p.id==='dbk'?'&portrait=1':''}`;
+    const tvUrl = `${BASE_URL_LINKS}/LL-zmrzlina-TV.html?store=${p.id}&gist=${GIST_ID_LINKS}${(p.id==='dbk'||p.id==='naporic')?'&portrait=1':''}`;
     const provUrl = savedToken ? `${BASE_URL_LINKS}/LL-zmrzlina-PROVOZNI.html?store=${p.id}&gist=${GIST_ID_LINKS}&token=${savedToken}` : '— zadejte token výše —';
     const waText = encodeURIComponent(`Dobrý den, posílám vám odkaz na správu zmrzlinové TV pro vaši prodejnu ${p.label}: ${provUrl}`);
     return `<div class="store-links-card"><div class="store-links-header">${p.label}${['dbk','krc'].includes(p.id)?' ⭐ 5-páka':''}</div><div class="store-links-body"><div class="link-row"><span class="link-label">📺 TV</span><div class="link-url" title="${tvUrl}">${tvUrl}</div><button class="link-copy-btn" onclick="copyLink(this,'${tvUrl.replace(/'/g,"\'")}')">Kopírovat</button></div><div class="link-row"><span class="link-label">📱 Provozní</span><div class="link-url">${provUrl}</div>${savedToken?`<button class="link-copy-btn" onclick="copyLink(this,'${provUrl.replace(/'/g,"\'")}')" >Kopírovat</button><a class="link-wa-btn" href="https://wa.me/?text=${waText}" target="_blank">WhatsApp</a>`:''}</div></div></div>`;
