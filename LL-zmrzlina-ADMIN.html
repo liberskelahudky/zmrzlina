@@ -224,11 +224,7 @@
   <h1>🍦 ZMRZLINA – správa TV</h1>
   <span>Libeřské lahůdky</span>
   <button class="stories-btn" onclick="openStories()">📱 Generovat Stories</button>
-  <button class="dbk-export-btn" onclick="exportStore('dbk')">📺 DBK Olbrachtova</button>
-  <button class="dbk-export-btn" onclick="exportStore('naporic')">📺 Na Poříčí</button>
-  <button class="dbk-export-btn" onclick="exportStore('dejvice')">📺 Dejvice</button>
-  <button class="dbk-export-btn" onclick="exportStore('palmovka')">📺 Palmovka</button>
-  <button class="dbk-export-btn" onclick="exportStore('haje')">📺 Háje</button>
+  <span id="manual-export-buttons"></span>
   <button class="save-all-btn" onclick="saveAll()">💾 Uložit vše</button>
 </header>
 
@@ -358,22 +354,27 @@ const PRICHUTE = [
 ];
 
 const PRODEJNY = [
-  { id: "naporic",    label: "Na Poříčí" },
-  { id: "holesovice", label: "Holešovice" },
-  { id: "vodicova",   label: "Vodičkova" },
-  { id: "krc",        label: "Krč – Thomayerova" },
-  { id: "letna",      label: "Letná" },
-  { id: "palmovka",   label: "Palmovka" },
-  { id: "ruzyne",     label: "Hlavní nádraží" },
-  { id: "smichov",    label: "Anděl – Ostrovského" },
-  { id: "haje",       label: "Háje" },
-  { id: "dbk",        label: "DBK Olbrachtova" },
-  { id: "dejvice",    label: "Dejvice" },
-  { id: "budejovicka", label: "Poliklinika Budějovická" },
-  { id: "cb",         label: "České Budějovice" },
-  { id: "ipp",        label: "I.P. Pavlova" },
-  { id: "arkady",     label: "Arkády Pankrác" },
+  { id: "naporic",     label: "Na Poříčí",                display: "tv",     paky: 3, portrait: true },
+  { id: "holesovice",  label: "Holešovice",               display: "tv",     paky: 3 },
+  { id: "vodicova",    label: "Vodičkova",                display: "tv",     paky: 3 },
+  { id: "krc",         label: "Krč – Thomayerova",        display: "tv",     paky: 5 },
+  { id: "letna",       label: "Letná",                    display: "tv",     paky: 3 },
+  { id: "palmovka",    label: "Palmovka",                 display: "manual", paky: 3 },
+  { id: "ruzyne",      label: "Hlavní nádraží",           display: "tv",     paky: 3 },
+  { id: "smichov",     label: "Anděl – Ostrovského",      display: "tv",     paky: 3 },
+  { id: "haje",        label: "Háje",                     display: "manual", paky: 3 },
+  { id: "dbk",         label: "DBK Olbrachtova",          display: "manual", paky: 5, portrait: true },
+  { id: "dejvice",     label: "Dejvice",                  display: "manual", paky: 3 },
+  { id: "budejovicka", label: "Poliklinika Budějovická",  display: "tv",     paky: 3 },
+  { id: "cb",          label: "České Budějovice",         display: "tv",     paky: 3 },
+  { id: "ipp",         label: "I.P. Pavlova",             display: "tv",     paky: 3 },
+  { id: "arkady",      label: "Arkády Pankrác",           display: "tv",     paky: 3 },
 ];
+
+// Helpers derived from PRODEJNY metadata (single source of truth)
+function getStore(storeId) { return PRODEJNY.find(s => s.id === storeId); }
+function isPetipaka(storeId) { const s = getStore(storeId); return s && s.paky === 5; }
+function isPortraitStore(storeId) { const s = getStore(storeId); return s && s.portrait === true; }
 
 function getImgUrl(imgFile) {
   if (!imgFile) return null;
@@ -406,11 +407,11 @@ function updatePreview(storeId, slotNum) {
 }
 
 function buildStoreCard(store) {
-  const isPetipaka = ['dbk', 'krc'].includes(store.id);
-  const slots = isPetipaka ? [1, 2, 3] : [1, 2];
+  const is5p = isPetipaka(store.id);
+  const slots = is5p ? [1, 2, 3] : [1, 2];
   const slotsHTML = slots.map(n => `
     <div class="slot">
-      <label>${isPetipaka ? 'Příchuť ' + n : (n===3 ? 'Příchuť 3 (volitelná)' : 'Příchuť ' + n)}</label>
+      <label>${is5p ? 'Příchuť ' + n : (n===3 ? 'Příchuť 3 (volitelná)' : 'Příchuť ' + n)}</label>
       <select id="${store.id}_slot${n}" onchange="updatePreview('${store.id}', ${n})">
         <option value="">— žádná —</option>
         ${PRICHUTE.filter(p => p.id !== 'misana').map(p => `<option value="${p.id}">${p.label}${!p.img?' *':''}</option>`).join('')}
@@ -437,17 +438,16 @@ function buildStoreCard(store) {
 }
 
 function renderGrid() {
-  var autoStores = ['naporic','vodicova','budejovicka','krc','letna','holesovice','smichov','cb','ipp','ruzyne'];
-  var manualStores = ['haje','dbk','dejvice','palmovka'];
-  
+  // Sekce se odvozují z metadata v PRODEJNY (display: "tv" vs "manual")
+  // Jediný zdroj pravdy = pole PRODEJNY nahoře, nemusí se synchronizovat 7 míst
   var html = '<div class="store-section-header">✅ FUNGUJÍCÍ TV – automatická aktualizace</div>';
   PRODEJNY.forEach(function(p) {
-    if (autoStores.indexOf(p.id) >= 0) html += buildStoreCard(p);
+    if (p.display === 'tv') html += buildStoreCard(p);
   });
   
   html += '<div class="store-section-header manual">📸 RUČNÍ EXPORT – starší TV</div>';
   PRODEJNY.forEach(function(p) {
-    if (manualStores.indexOf(p.id) >= 0) html += buildStoreCard(p);
+    if (p.display === 'manual') html += buildStoreCard(p);
   });
   
   document.getElementById('store-grid').innerHTML = html;
@@ -457,7 +457,7 @@ function openTVPreview(storeId) {
   const base = 'https://liberskelahudky.github.io/zmrzlina/LL-zmrzlina-TV.html';
   const gist = '9309f5a31eeb4e74cc849bab41707891';
   let url = base + '?store=' + storeId + '&gist=' + gist;
-  if (storeId === 'dbk' || storeId === 'naporic') url += '&portrait=1';
+  if (isPortraitStore(storeId)) url += '&portrait=1';
   const token = localStorage.getItem('ll_gh_token');
   if (token) url += '&token=' + token;
   window.open(url, '_blank');
@@ -542,15 +542,40 @@ function applyLoadedData() {
   });
 }
 
-async function pushToGist(data) {
+// RACE CONDITION FIX: pushToGist nejprve načte čerstvý Gist, mergne POUZE
+// předané `updates` (klíče prodejen), a teprve potom uloží PATCH. Bez tohoto
+// kroku by admin nebo provozní mohli přepsat změny od jiné prodejny, která
+// mezitím uložila svoji aktualizaci. Návratová hodnota: true/false.
+async function pushToGist(updates) {
   const { token, gistId } = getGistConfig();
   if (!token || !gistId) { showToast('Nastavení Gist chybí', true); return false; }
-  const res = await fetch(`https://api.github.com/gists/${gistId}`, {
-    method: 'PATCH',
-    headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ files: { 'lbrzlina.json': { content: JSON.stringify(data, null, 2) } } })
-  });
-  return res.ok;
+  try {
+    // GET čerstvá data
+    const getRes = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`, {
+      headers: { Authorization: `token ${token}` }
+    });
+    if (!getRes.ok) { console.warn('[Admin] pushToGist GET failed:', getRes.status); return false; }
+    const gistData = await getRes.json();
+    let serverData = {};
+    if (gistData.files && gistData.files['lbrzlina.json']) {
+      try { serverData = JSON.parse(gistData.files['lbrzlina.json'].content) || {}; }
+      catch(e) { serverData = {}; }
+    }
+    // Merge jen ty klíče, které admin upravoval
+    Object.keys(updates || {}).forEach(function(k) { serverData[k] = updates[k]; });
+    // Aktualizovat lokální zrcadlo, ať admin vidí celý čerstvý stav
+    storeData = serverData;
+
+    const res = await fetch(`https://api.github.com/gists/${gistId}`, {
+      method: 'PATCH',
+      headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ files: { 'lbrzlina.json': { content: JSON.stringify(serverData, null, 2) } } })
+    });
+    return res.ok;
+  } catch(e) {
+    console.warn('[Admin] pushToGist error:', e);
+    return false;
+  }
 }
 
 async function saveStore(storeId) {
@@ -558,17 +583,22 @@ async function saveStore(storeId) {
   const info = document.getElementById(`saved_${storeId}`);
   btn.textContent = 'Ukládám...';
   localStorage.setItem('ll_zmrzlina', JSON.stringify(storeData));
-  const ok = await pushToGist(storeData);
+  // Posíláme JEN tuto prodejnu, pushToGist mergne s aktuálním serverem
+  const updates = {};
+  updates[storeId] = storeData[storeId];
+  const ok = await pushToGist(updates);
   const now = new Date().toLocaleTimeString('cs-CZ', {hour:'2-digit', minute:'2-digit'});
   btn.className = 'save-store-btn saved';
   btn.textContent = '✓ Uloženo';
   info.textContent = `Uloženo v ${now}`;
   setTimeout(() => { btn.className = 'save-store-btn'; btn.textContent = 'Uložit prodejnu'; }, 2000);
   if (ok) showToast('✓ Uloženo na GitHub');
+  else showToast('Uloženo lokálně, GitHub nedostupný', true);
 }
 
 async function saveAll() {
   localStorage.setItem('ll_zmrzlina', JSON.stringify(storeData));
+  // Pro "uložit vše" pošleme všechny prodejny současně - explicitní úmysl uživatele
   const ok = await pushToGist(storeData);
   if (ok) {
     showToast('✓ Vše uloženo na GitHub');
@@ -715,19 +745,39 @@ async function generateStories() {
 async function loadImg(src) {
   return new Promise((resolve) => {
     const img = new Image(); img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      const oc = document.createElement('canvas');
-      oc.width = img.naturalWidth; oc.height = img.naturalHeight;
-      const octx = oc.getContext('2d'); octx.drawImage(img, 0, 0);
-      const id = octx.getImageData(0, 0, oc.width, oc.height); const d = id.data;
-      for (let i = 0; i < d.length; i += 4) {
-        const br = (d[i]+d[i+1]+d[i+2])/3;
-        if (br < 30) d[i+3] = 0;
-        else if (br < 80) d[i+3] = Math.round((br-30)/50*255);
+    let done = false;
+    const finish = (result) => { if (done) return; done = true; resolve(result); };
+    // Timeout: pokud se obrázek nenahraje do 5s, vzdáme ho a pokračujeme
+    const timer = setTimeout(function() {
+      console.warn('[Stories] loadImg timeout (5s):', src);
+      finish(null);
+    }, 5000);
+    img.onload = function() {
+      clearTimeout(timer);
+      try {
+        const oc = document.createElement('canvas');
+        oc.width = img.naturalWidth; oc.height = img.naturalHeight;
+        const octx = oc.getContext('2d'); octx.drawImage(img, 0, 0);
+        const id = octx.getImageData(0, 0, oc.width, oc.height); const d = id.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const br = (d[i]+d[i+1]+d[i+2])/3;
+          if (br < 30) d[i+3] = 0;
+          else if (br < 80) d[i+3] = Math.round((br-30)/50*255);
+        }
+        octx.putImageData(id, 0, 0); finish(oc);
+      } catch (e) {
+        // SecurityError = canvas tainted by CORS. Nepoužijeme obrázek vůbec,
+        // jinak by se ztaintoval i finální Stories canvas a stažení by selhalo.
+        console.warn('[Stories] loadImg CORS/processing error:', src, e);
+        finish(null);
       }
-      octx.putImageData(id, 0, 0); resolve(oc);
     };
-    img.onerror = () => resolve(null); img.src = src;
+    img.onerror = function() {
+      clearTimeout(timer);
+      console.warn('[Stories] loadImg load error:', src);
+      finish(null);
+    };
+    img.src = src;
   });
 }
 
@@ -788,7 +838,7 @@ async function exportStore(storeId) {
     return;
   }
   const store = PRODEJNY.find(p => p.id === storeId);
-  const isPortrait = (storeId === 'dbk' || storeId === 'naporic');
+  const isPortrait = isPortraitStore(storeId);
   showToast('Generuji obrázek pro ' + store.label + '...');
 
   const canvas = document.createElement('canvas');
@@ -808,7 +858,7 @@ async function exportStore(storeId) {
   ctx.fillRect(0, 0, W, H);
 
   // Get flavors
-  const isPetipaka = ['dbk', 'krc'].includes(storeId);
+  const is5p = isPetipaka(storeId);
   const f1 = data.slot1 ? PRICHUTE.find(p => p.id === data.slot1) : null;
   const f2 = data.slot2 ? PRICHUTE.find(p => p.id === data.slot2) : null;
   const f3 = data.slot3 ? PRICHUTE.find(p => p.id === data.slot3) : null;
@@ -826,7 +876,7 @@ async function exportStore(storeId) {
   const slots = [];
   baseFlavors.forEach(f => slots.push({ type: 'normal', flavor: f }));
   if (f1 && f2) slots.push({ type: 'michana', fa: f1, fb: f2 });
-  if (isPetipaka && f2 && f3) slots.push({ type: 'michana', fa: f2, fb: f3 });
+  if (is5p && f2 && f3) slots.push({ type: 'michana', fa: f2, fb: f3 });
 
   if (isPortrait) {
     // ===== PORTRAIT (DBK) – 2 řady: základní nahoře, míšené dole =====
@@ -1057,10 +1107,10 @@ function generateLinks() {
   const savedToken = token || localStorage.getItem('ll_gh_token') || '';
   const grid = document.getElementById('store-links-grid');
   grid.innerHTML = PRODEJNY.map(p => {
-    const tvUrl = `${BASE_URL_LINKS}/LL-zmrzlina-TV.html?store=${p.id}&gist=${GIST_ID_LINKS}${(p.id==='dbk'||p.id==='naporic')?'&portrait=1':''}`;
+    const tvUrl = `${BASE_URL_LINKS}/LL-zmrzlina-TV.html?store=${p.id}&gist=${GIST_ID_LINKS}${isPortraitStore(p.id)?'&portrait=1':''}`;
     const provUrl = savedToken ? `${BASE_URL_LINKS}/LL-zmrzlina-PROVOZNI.html?store=${p.id}&gist=${GIST_ID_LINKS}&token=${savedToken}` : '— zadejte token výše —';
     const waText = encodeURIComponent(`Dobrý den, posílám vám odkaz na správu zmrzlinové TV pro vaši prodejnu ${p.label}: ${provUrl}`);
-    return `<div class="store-links-card"><div class="store-links-header">${p.label}${['dbk','krc'].includes(p.id)?' ⭐ 5-páka':''}</div><div class="store-links-body"><div class="link-row"><span class="link-label">📺 TV</span><div class="link-url" title="${tvUrl}">${tvUrl}</div><button class="link-copy-btn" onclick="copyLink(this,'${tvUrl.replace(/'/g,"\'")}')">Kopírovat</button></div><div class="link-row"><span class="link-label">📱 Provozní</span><div class="link-url">${provUrl}</div>${savedToken?`<button class="link-copy-btn" onclick="copyLink(this,'${provUrl.replace(/'/g,"\'")}')" >Kopírovat</button><a class="link-wa-btn" href="https://wa.me/?text=${waText}" target="_blank">WhatsApp</a>`:''}</div></div></div>`;
+    return `<div class="store-links-card"><div class="store-links-header">${p.label}${isPetipaka(p.id)?' ⭐ 5-páka':''}</div><div class="store-links-body"><div class="link-row"><span class="link-label">📺 TV</span><div class="link-url" title="${tvUrl}">${tvUrl}</div><button class="link-copy-btn" onclick="copyLink(this,'${tvUrl.replace(/'/g,"\'")}')">Kopírovat</button></div><div class="link-row"><span class="link-label">📱 Provozní</span><div class="link-url">${provUrl}</div>${savedToken?`<button class="link-copy-btn" onclick="copyLink(this,'${provUrl.replace(/'/g,"\'")}')" >Kopírovat</button><a class="link-wa-btn" href="https://wa.me/?text=${waText}" target="_blank">WhatsApp</a>`:''}</div></div></div>`;
   }).join('');
 }
 
@@ -1079,6 +1129,20 @@ setTimeout(() => {
 // INIT
 loadConfig();
 renderGrid();
+
+// Auto-generate ruční export buttony z PRODEJNY metadata
+// (žádný hardcoded seznam - nová ruční prodejna se přidá jen do PRODEJNY pole nahoře)
+(function buildManualExportButtons() {
+  var host = document.getElementById('manual-export-buttons');
+  if (!host) return;
+  var html = '';
+  PRODEJNY.forEach(function(p) {
+    if (p.display === 'manual') {
+      html += '<button class="dbk-export-btn" onclick="exportStore(\'' + p.id + '\')">📺 ' + p.label + '</button>';
+    }
+  });
+  host.innerHTML = html;
+})();
 
 async function refreshFromGist() {
   const { token, gistId } = getGistConfig();
