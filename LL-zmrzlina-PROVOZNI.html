@@ -87,24 +87,26 @@ const PRICHUTE = [
 ];
 
 const PRODEJNY = [
-  { id: "naporic",    label: "Na Poříčí" },
-  { id: "holesovice", label: "Holešovice" },
-  { id: "vodicova",   label: "Vodičkova" },
-  { id: "krc",        label: "Krč – Thomayerova" },
-  { id: "letna",      label: "Letná" },
-  { id: "palmovka",   label: "Palmovka" },
-  { id: "ruzyne", label: "Hlavní nádraží" },
-  { id: "smichov",    label: "Anděl – Ostrovského" },
-  { id: "haje",       label: "Háje" },
-  { id: "dbk",        label: "DBK Olbrachtova" },
-  { id: "dejvice",    label: "Dejvice" },
-  { id: "budejovicka", label: "Poliklinika Budějovická" },
-  { id: "cb",         label: "České Budějovice" },
-  { id: "ipp",        label: "I.P. Pavlova" },
-  { id: "arkady",     label: "Arkády Pankrác" },
+  { id: "naporic",     label: "Na Poříčí",                display: "tv",     paky: 3, portrait: true },
+  { id: "holesovice",  label: "Holešovice",               display: "tv",     paky: 3 },
+  { id: "vodicova",    label: "Vodičkova",                display: "tv",     paky: 3 },
+  { id: "krc",         label: "Krč – Thomayerova",        display: "tv",     paky: 5 },
+  { id: "letna",       label: "Letná",                    display: "tv",     paky: 3 },
+  { id: "palmovka",    label: "Palmovka",                 display: "manual", paky: 3 },
+  { id: "ruzyne",      label: "Hlavní nádraží",           display: "tv",     paky: 3 },
+  { id: "smichov",     label: "Anděl – Ostrovského",      display: "tv",     paky: 3 },
+  { id: "haje",        label: "Háje",                     display: "manual", paky: 3 },
+  { id: "dbk",         label: "DBK Olbrachtova",          display: "manual", paky: 5, portrait: true },
+  { id: "dejvice",     label: "Dejvice",                  display: "manual", paky: 3 },
+  { id: "budejovicka", label: "Poliklinika Budějovická",  display: "tv",     paky: 3 },
+  { id: "cb",          label: "České Budějovice",         display: "tv",     paky: 3 },
+  { id: "ipp",         label: "I.P. Pavlova",             display: "tv",     paky: 3 },
+  { id: "arkady",      label: "Arkády Pankrác",           display: "tv",     paky: 3 },
 ];
 
-const PETIPAKA = ['dbk', 'krc'];
+// Helpers
+function getStore(storeId) { return PRODEJNY.find(s => s.id === storeId); }
+function isPetipaka(storeId) { const s = getStore(storeId); return s && s.paky === 5; }
 
 function getImgUrl(imgFile) {
   if (!imgFile) return null;
@@ -148,8 +150,8 @@ function renderApp() {
 
   document.title = `${store.label} – zmrzlina`;
 
-  const isPetipaka = PETIPAKA.includes(STORE_ID);
-  const slotNums = isPetipaka ? [1,2,3] : [1,2];
+  const isPet = isPetipaka(STORE_ID);
+  const slotNums = isPet ? [1,2,3] : [1,2];
   const slotCards = slotNums.map(n => {
     const flavorId = currentSlots[`slot${n}`];
     const flavor = flavorId ? PRICHUTE.find(f => f.id === flavorId) : null;
@@ -171,7 +173,7 @@ function renderApp() {
         <div class="slot-top" onclick="toggleSlot(${n})">
           <div class="slot-num">${n}</div>
           <div class="slot-info">
-            <div class="slot-label">Příchuť ${n}${n===3 && !isPetipaka?' (volitelná)':''}</div>
+            <div class="slot-label">Příchuť ${n}${n===3 && !isPet?' (volitelná)':''}</div>
             <div class="slot-selected${!flavor?' empty':''}">
               ${flavor ? flavor.label : '— klikni pro výběr —'}
             </div>
@@ -248,8 +250,6 @@ async function saveData() {
   btn.textContent = 'Ukládám...';
   btn.disabled = true;
 
-  allStoreData[STORE_ID] = { ...currentSlots };
-
   const token = localStorage.getItem(GH_TOKEN_KEY);
   if (!token) {
     btn.textContent = '⚠️ Chybí přihlášení';
@@ -259,10 +259,29 @@ async function saveData() {
   }
 
   try {
+    // RACE CONDITION FIX: před PATCH vždy načíst čerstvá data z Gistu,
+    // mergovat pouze SVOJI prodejnu, a teprve potom uložit.
+    // Bez toho by tato stránka mohla přepsat změny, které mezitím udělala
+    // jiná prodejna ze své provozní stránky.
+    const getRes = await fetch(`https://api.github.com/gists/${GIST_ID}?t=${Date.now()}`, {
+      headers: { Authorization: `token ${token}` }
+    });
+    if (!getRes.ok) throw new Error('GET HTTP ' + getRes.status);
+    const gistData = await getRes.json();
+    let serverData = {};
+    if (gistData.files && gistData.files['lbrzlina.json']) {
+      try { serverData = JSON.parse(gistData.files['lbrzlina.json'].content) || {}; }
+      catch(e) { serverData = {}; }
+    }
+    // Mergeneme jen svoji prodejnu - nic jiného
+    serverData[STORE_ID] = { ...currentSlots };
+    // Pro lokální cache uložíme celý merged stav
+    allStoreData = serverData;
+
     const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
       method: 'PATCH',
       headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ files: { 'lbrzlina.json': { content: JSON.stringify(allStoreData, null, 2) } } })
+      body: JSON.stringify({ files: { 'lbrzlina.json': { content: JSON.stringify(serverData, null, 2) } } })
     });
 
     if (res.ok) {
@@ -272,9 +291,10 @@ async function saveData() {
       btn.className = 'save-btn success';
       setTimeout(() => { btn.textContent = 'ULOŽIT NA TV'; btn.className = 'save-btn'; btn.disabled = false; renderApp(); }, 2000);
     } else {
-      throw new Error('HTTP ' + res.status);
+      throw new Error('PATCH HTTP ' + res.status);
     }
   } catch(e) {
+    console.warn('[Provozni] Save error:', e);
     btn.textContent = '✗ Chyba – zkus znovu';
     btn.className = 'save-btn';
     btn.disabled = false;
