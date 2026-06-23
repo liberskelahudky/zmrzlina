@@ -136,11 +136,19 @@
     padding: 0 2.5vw; gap: 2vw;
     position: relative; overflow: hidden;
   }
-  .pohar-slot:first-child { border-right: 1px solid rgba(223,189,149,0.2); }
+  .pohar-slot:not(:last-child) { border-right: 1px solid rgba(223,189,149,0.2); }
   .pohar-img {
     height: 22vh; object-fit: contain; mix-blend-mode: lighten;
     filter: drop-shadow(0 4px 15px rgba(0,0,0,0.4));
     flex-shrink: 0; position: relative; z-index: 2;
+  }
+  /* Ledová káva má průhledné PNG (RGBA), lighten ji schová – proto override */
+  /* Zároveň ji děláme větší a necháme přesahovat nahoru přes border */
+  #pohar-kava { overflow: visible; }
+  #pohar-kava .pohar-img {
+    mix-blend-mode: normal;
+    height: 32vh;
+    align-self: flex-end;
   }
   .pohar-info { flex: 1; position: relative; z-index: 2; }
   .pohar-name {
@@ -254,6 +262,14 @@
         <div class="pohar-price">89 Kč</div>
       </div>
     </div>
+    <div class="pohar-slot" id="pohar-kava">
+      <img class="pohar-img" src="https://liberskelahudky.github.io/zmrzlina/Ledovakava.png" alt="Ledová káva" />
+      <div class="pohar-info">
+        <div class="pohar-name">LEDOVÁ KÁVA</div>
+        <div class="pohar-desc">Káva · zmrzlina · šlehačka · topping</div>
+        <div class="pohar-price">89 Kč</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -299,6 +315,7 @@ const PRODEJNY = [
   { id: "budejovicka", label: "Poliklinika Budějovická" },
   { id: "cb",         label: "České Budějovice" },
   { id: "ipp",        label: "I.P. Pavlova" },
+  { id: "arkady",     label: "Arkády Pankrác" },
 ];
 
 function getImgUrl(imgFile) {
@@ -452,6 +469,9 @@ function spawnCandies(containerId, type) {
     if (type === 'orisky') {
       el.textContent = Math.random() < 0.6 ? '🥜' : '🌰';
       el.style.fontSize = (0.8 + Math.random() * 0.7) + 'rem';
+    } else if (type === 'kava') {
+      el.textContent = Math.random() < 0.5 ? '🫘' : '🧊';
+      el.style.fontSize = (1.0 + Math.random() * 0.8) + 'rem';
     } else {
       const color = lentilkyColors[Math.floor(Math.random() * lentilkyColors.length)];
       const size = (7 + Math.random() * 9) + 'px';
@@ -490,6 +510,7 @@ async function init() {
 
   spawnCandies('pohar-lentilky', 'lentilky');
   spawnCandies('pohar-orisky', 'orisky');
+  spawnCandies('pohar-kava', 'kava');
 
   async function refresh() {
     if (!gistId || !store) return;
