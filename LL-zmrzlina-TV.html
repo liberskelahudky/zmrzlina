@@ -301,32 +301,31 @@ const PRICHUTE = [
 ];
 
 const PRODEJNY = [
-  { id: "naporic",    label: "Na Poříčí" },
-  { id: "holesovice", label: "Holešovice" },
-  { id: "vodicova",   label: "Vodičkova" },
-  { id: "krc",        label: "Krč – Thomayerova" },
-  { id: "letna",      label: "Letná" },
-  { id: "palmovka",   label: "Palmovka" },
-  { id: "ruzyne", label: "Hlavní nádraží" },
-  { id: "smichov",    label: "Anděl – Ostrovského" },
-  { id: "haje",       label: "Háje" },
-  { id: "dbk",        label: "DBK Olbrachtova" },
-  { id: "dejvice",    label: "Dejvice" },
-  { id: "budejovicka", label: "Poliklinika Budějovická" },
-  { id: "cb",         label: "České Budějovice" },
-  { id: "ipp",        label: "I.P. Pavlova" },
-  { id: "arkady",     label: "Arkády Pankrác" },
+  { id: "naporic",     label: "Na Poříčí",                display: "tv",     paky: 3, portrait: true },
+  { id: "holesovice",  label: "Holešovice",               display: "tv",     paky: 3 },
+  { id: "vodicova",    label: "Vodičkova",                display: "tv",     paky: 3 },
+  { id: "krc",         label: "Krč – Thomayerova",        display: "tv",     paky: 5 },
+  { id: "letna",       label: "Letná",                    display: "tv",     paky: 3 },
+  { id: "palmovka",    label: "Palmovka",                 display: "manual", paky: 3 },
+  { id: "ruzyne",      label: "Hlavní nádraží",           display: "tv",     paky: 3 },
+  { id: "smichov",     label: "Anděl – Ostrovského",      display: "tv",     paky: 3 },
+  { id: "haje",        label: "Háje",                     display: "manual", paky: 3 },
+  { id: "dbk",         label: "DBK Olbrachtova",          display: "manual", paky: 5, portrait: true },
+  { id: "dejvice",     label: "Dejvice",                  display: "manual", paky: 3 },
+  { id: "budejovicka", label: "Poliklinika Budějovická",  display: "tv",     paky: 3 },
+  { id: "cb",          label: "České Budějovice",         display: "tv",     paky: 3 },
+  { id: "ipp",         label: "I.P. Pavlova",             display: "tv",     paky: 3 },
+  { id: "arkady",      label: "Arkády Pankrác",           display: "tv",     paky: 3 },
 ];
+
+// Helper functions derived from PRODEJNY metadata (single source of truth)
+function getStore(storeId) { return PRODEJNY.find(s => s.id === storeId); }
+function isPetipaka(storeId) { const s = getStore(storeId); return s && s.paky === 5; }
+function isPortraitStore(storeId) { const s = getStore(storeId); return s && s.portrait === true; }
 
 function getImgUrl(imgFile) {
   if (!imgFile) return null;
   return BASE_URL + '/' + imgFile;
-}
-
-const PETIPAKA = ['dbk', 'krc']; // 5-páka prodejny
-
-function isPetipaka(storeId) {
-  return PETIPAKA.includes(storeId);
 }
 
 // Michana slot = combined image of two flavors
@@ -487,21 +486,40 @@ function spawnCandies(containerId, type) {
 }
 
 async function loadFromGist(gistId, storeId) {
-  try {
-    const token = getToken();
-    const headers = token ? { Authorization: `token ${token}` } : {};
-    const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`, { headers });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    const file = data.files['lbrzlina.json'];
-    if (!file) return null;
-    const parsed = JSON.parse(file.content)[storeId];
-    if (parsed) saveCache(storeId, parsed);
-    return parsed || null;
-  } catch(e) {
-    console.warn('API error, using cache');
-    return null;
+  // Retry s exponential backoff: 3 pokusy s prodlevou 0s, 2s, 4s
+  // Důvod: GitHub má občas krátkodobé výpadky nebo rate limit splašky
+  const MAX_ATTEMPTS = 3;
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    try {
+      const token = getToken();
+      const headers = token ? { Authorization: `token ${token}` } : {};
+      const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`, { headers });
+      if (!res.ok) {
+        // 401/403/404 = nemá smysl opakovat; 429/5xx = retry
+        if (res.status < 500 && res.status !== 429) throw new Error('HTTP ' + res.status);
+        if (attempt < MAX_ATTEMPTS - 1) {
+          await new Promise(r => setTimeout(r, 2000 * Math.pow(2, attempt)));
+          continue;
+        }
+        throw new Error('HTTP ' + res.status + ' (after ' + MAX_ATTEMPTS + ' retries)');
+      }
+      const data = await res.json();
+      const file = data.files['lbrzlina.json'];
+      if (!file) return null;
+      const parsed = JSON.parse(file.content)[storeId];
+      if (parsed) saveCache(storeId, parsed);
+      return parsed || null;
+    } catch(e) {
+      if (attempt < MAX_ATTEMPTS - 1) {
+        console.warn('[TV] Gist fetch attempt ' + (attempt+1) + ' failed:', e.message);
+        await new Promise(r => setTimeout(r, 2000 * Math.pow(2, attempt)));
+        continue;
+      }
+      console.warn('[TV] Gist fetch failed after ' + MAX_ATTEMPTS + ' attempts, using cache');
+      return null;
+    }
   }
+  return null;
 }
 
 async function init() {
