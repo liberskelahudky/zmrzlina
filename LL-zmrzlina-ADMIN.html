@@ -707,71 +707,82 @@ function switchTab(tab) {
 }
 
 // STORIES
-function openStories() { generateStories(); document.getElementById('stories-modal').classList.add('open'); }
+function openStories() {
+  // Modal otevřeme PRVNÍ, aby uživatel hned viděl, že se něco děje
+  document.getElementById('stories-modal').classList.add('open');
+  // Generování spustíme až potom (async, neblokuje)
+  generateStories();
+}
 function closeStories() { document.getElementById('stories-modal').classList.remove('open'); }
 function getFlavorLabel(id) { const f = PRICHUTE.find(p => p.id === id); return f ? f.label : null; }
 
 async function generateStories() {
+  console.log('[Stories] generateStories called');
   const previews = document.getElementById('stories-previews');
-  previews.innerHTML = '<div style="color:rgba(223,189,149,0.5);font-size:0.9rem">Generuji...</div>';
+  previews.innerHTML = '<div style="color:rgba(223,189,149,0.5);font-size:0.9rem">Generuji…</div>';
   try {
+    // 1. Sestavit pole prodejen s nastavenými příchutěmi
     const stores = PRODEJNY.map(p => {
       const d = storeData[p.id];
-      const flavorIds = [d?.slot1, d?.slot2, d?.slot3].filter(Boolean);
+      const flavorIds = [d && d.slot1, d && d.slot2, d && d.slot3].filter(Boolean);
       const flavors = flavorIds.map(id => getFlavorLabel(id)).filter(Boolean);
       return { label: p.label, flavors, flavorIds };
     }).filter(s => s.flavors.length > 0);
-    if (stores.length === 0) { previews.innerHTML = '<div style="color:rgba(223,189,149,0.5)">Žádné příchutě nejsou nastaveny.</div>'; return; }
+    console.log('[Stories] stores with flavors: ' + stores.length);
+
+    if (stores.length === 0) {
+      previews.innerHTML = '<div style="color:rgba(223,189,149,0.7);font-size:0.95rem;text-align:center;line-height:1.5">⚠ Žádné příchutě nejsou nastaveny.<br><span style="font-size:0.85rem;color:rgba(223,189,149,0.5)">Nejdřív nastavte příchutě v záložce Prodejny a klikněte Uložit, pak se Stories vygenerují.</span></div>';
+      return;
+    }
+
+    // 2. Rozdělit na 2 skupiny (Instagram Stories – max 5-7 prodejen per obrázek)
     const mid = Math.ceil(stores.length / 2);
+    const groups = [stores.slice(0, mid), stores.slice(mid)].filter(g => g.length > 0);
+    console.log('[Stories] split into ' + groups.length + ' groups');
+
+    // 3. Vytvořit DOM strukturu OKAMŽITĚ (uživatel vidí karty s prázdným canvasem)
     previews.innerHTML = '';
-    const renderGroup = async (group, idx) => {
-      if (group.length === 0) return;
+    const canvases = [];
+    groups.forEach(function(group, idx) {
       const wrap = document.createElement('div'); wrap.className = 'story-preview-wrap';
       const cw = document.createElement('div'); cw.className = 'story-canvas-wrap';
-      const canvas = document.createElement('canvas'); canvas.width = 1080; canvas.height = 1920; canvas.style.width = '180px'; canvas.style.height = '320px';
+      const canvas = document.createElement('canvas');
+      canvas.width = 1080; canvas.height = 1920;
+      canvas.style.width = '180px'; canvas.style.height = '320px';
       cw.appendChild(canvas); wrap.appendChild(cw);
-      const btn = document.createElement('button'); btn.className = 'story-download-btn'; btn.textContent = `⬇ Stáhnout story ${idx + 1}`; btn.onclick = () => downloadStory(canvas, idx + 1);
+      const btn = document.createElement('button');
+      btn.className = 'story-download-btn';
+      btn.textContent = '⬇ Stáhnout story ' + (idx + 1);
+      btn.onclick = () => downloadStory(canvas, idx + 1);
       wrap.appendChild(btn); previews.appendChild(wrap);
-      await drawStory(canvas, group, idx + 1);
-    };
-    await renderGroup(stores.slice(0, mid), 0);
-    await renderGroup(stores.slice(mid), 1);
+      canvases.push({ canvas: canvas, group: group, idx: idx });
+    });
+
+    // 4. Vykreslit canvases paralelně - každý drawStory si paralelně načítá obrázky
+    console.log('[Stories] starting parallel render of ' + canvases.length + ' canvases');
+    await Promise.all(canvases.map(c => drawStory(c.canvas, c.group, c.idx + 1)));
+    console.log('[Stories] all canvases done');
   } catch (e) {
-    console.error('Stories error:', e);
-    previews.innerHTML = '<div style="color:#ff8080;font-size:0.9rem;line-height:1.5">⚠ Chyba při generování Stories:<br><code style="color:#ffb0b0;font-size:0.8rem">' + (e.message || e) + '</code><br><br>Otevři DevTools (F12) → Console pro detail a pošli screenshot Claudovi.</div>';
+    console.error('[Stories] generateStories error:', e);
+    previews.innerHTML = '<div style="color:#ff8080;font-size:0.9rem;line-height:1.5">⚠ Chyba při generování Stories:<br><code style="color:#ffb0b0;font-size:0.8rem">' + (e && e.message || e) + '</code><br><br>Otevři DevTools (F12) → Console pro detail a pošli screenshot Claudovi.</div>';
   }
 }
 
+// Jednoduchý loader: jen načte Image, žádný canvas processing.
+// Černé pozadí obrázků zmrzliny řešíme na úrovni drawImage přes
+// ctx.globalCompositeOperation = 'lighten' (nativní Canvas API,
+// nepotřebuje getImageData → žádný CORS taint problém).
 async function loadImg(src) {
   return new Promise((resolve) => {
-    const img = new Image(); img.crossOrigin = 'anonymous';
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
     let done = false;
-    const finish = (result) => { if (done) return; done = true; resolve(result); };
-    // Timeout: pokud se obrázek nenahraje do 5s, vzdáme ho a pokračujeme
+    const finish = (r) => { if (done) return; done = true; resolve(r); };
     const timer = setTimeout(function() {
       console.warn('[Stories] loadImg timeout (5s):', src);
       finish(null);
     }, 5000);
-    img.onload = function() {
-      clearTimeout(timer);
-      try {
-        const oc = document.createElement('canvas');
-        oc.width = img.naturalWidth; oc.height = img.naturalHeight;
-        const octx = oc.getContext('2d'); octx.drawImage(img, 0, 0);
-        const id = octx.getImageData(0, 0, oc.width, oc.height); const d = id.data;
-        for (let i = 0; i < d.length; i += 4) {
-          const br = (d[i]+d[i+1]+d[i+2])/3;
-          if (br < 30) d[i+3] = 0;
-          else if (br < 80) d[i+3] = Math.round((br-30)/50*255);
-        }
-        octx.putImageData(id, 0, 0); finish(oc);
-      } catch (e) {
-        // SecurityError = canvas tainted by CORS. Nepoužijeme obrázek vůbec,
-        // jinak by se ztaintoval i finální Stories canvas a stažení by selhalo.
-        console.warn('[Stories] loadImg CORS/processing error:', src, e);
-        finish(null);
-      }
-    };
+    img.onload = function() { clearTimeout(timer); finish(img); };
     img.onerror = function() {
       clearTimeout(timer);
       console.warn('[Stories] loadImg load error:', src);
@@ -781,8 +792,17 @@ async function loadImg(src) {
   });
 }
 
+// Stories vykreslujeme ve 2 fázích pro maximální spolehlivost:
+// FÁZE 1: pozadí, hlavička a text všech prodejen (synchronně, ~50ms)
+//         → uživatel vidí výsledek HNED, i kdyby obrázky selhaly
+// FÁZE 2: obrázky paralelně přes Promise.all s timeoutem
+//         → každý obrázek má 5s timeout, paralelně tedy max ~5s celkem
+//         → ctx.globalCompositeOperation = 'lighten' odstraní černé pozadí (jako CSS mix-blend-mode)
 async function drawStory(canvas, stores, storyNum) {
+  console.log('[Stories] drawStory start, ' + stores.length + ' prodejen');
   const ctx = canvas.getContext('2d'); const W = 1080, H = 1920;
+
+  // === FÁZE 1: text okamžitě ===
   const bg = ctx.createRadialGradient(W*0.6,H*0.35,0,W*0.6,H*0.35,H*0.8);
   bg.addColorStop(0,'#7a3515'); bg.addColorStop(0.35,'#4a2010'); bg.addColorStop(0.7,'#2a1008'); bg.addColorStop(1,'#1a0804');
   ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
@@ -791,27 +811,81 @@ async function drawStory(canvas, stores, storyNum) {
   ctx.fillStyle='rgba(223,189,149,0.3)'; ctx.fillRect(80,295,W-160,2);
   ctx.fillStyle='rgba(223,189,149,0.6)'; ctx.font='40px Arial';
   ctx.fillText(new Date().toLocaleDateString('cs-CZ',{day:'numeric',month:'long'}).toUpperCase(),W/2,358);
-  const imgCache = {};
-  for (const s of stores) for (const fid of s.flavorIds) { const f=PRICHUTE.find(p=>p.id===fid); if(f&&f.img&&!imgCache[f.img]) imgCache[f.img]=await loadImg(getImgUrl(f.img)); }
+
   const startY=400, rowH=(H-startY-120)/stores.length, PAD=80, TEXT_MAX_W=W-PAD*2-360;
   for (let i=0; i<stores.length; i++) {
-    const store=stores[i], y=startY+i*rowH, imgH=Math.min(rowH-20,260);
-    if(i%2===0){ctx.fillStyle='rgba(255,255,255,0.05)';ctx.beginPath();ctx.roundRect(PAD-20,y+6,W-(PAD-20)*2,rowH-12,14);ctx.fill();}
+    const store=stores[i], y=startY+i*rowH;
+    if(i%2===0){
+      ctx.fillStyle='rgba(255,255,255,0.05)';
+      ctx.beginPath();
+      ctx.roundRect(PAD-20,y+6,W-(PAD-20)*2,rowH-12,14);
+      ctx.fill();
+    }
     ctx.fillStyle='#dfbd95'; ctx.font='bold 50px Arial'; ctx.textAlign='left';
-    let sn=store.label.toUpperCase(); while(ctx.measureText(sn).width>TEXT_MAX_W&&sn.length>3) sn=sn.slice(0,-1);
+    let sn=store.label.toUpperCase();
+    while(ctx.measureText(sn).width>TEXT_MAX_W&&sn.length>3) sn=sn.slice(0,-1);
     ctx.fillText(sn,PAD,y+rowH*0.38);
     ctx.fillStyle='rgba(255,255,255,0.82)'; ctx.font='36px Arial';
-    let ft=store.flavors.join(' · '); while(ctx.measureText(ft).width>TEXT_MAX_W&&ft.length>3) ft=ft.slice(0,-1)+'…';
+    let ft=store.flavors.join(' · ');
+    while(ctx.measureText(ft).width>TEXT_MAX_W&&ft.length>3) ft=ft.slice(0,-1)+'…';
     ctx.fillText(ft,PAD,y+rowH*0.65);
-    let totalW=0;
-    for(const fid of store.flavorIds){const f2=PRICHUTE.find(p=>p.id===fid);if(f2&&f2.img&&imgCache[f2.img]){const s2=imgCache[f2.img];totalW+=(rowH-16)*(s2.width/s2.height)+8;}}
-    totalW-=8; let imgX=W-PAD-totalW;
-    for(const fid of store.flavorIds){
-      const f=PRICHUTE.find(p=>p.id===fid);
-      if(f&&f.img&&imgCache[f.img]){const src=imgCache[f.img];const ratio=src.width/src.height;const iH=rowH-16;const iW=iH*ratio;ctx.save();ctx.drawImage(src,imgX,y+(rowH-iH)/2,iW,iH);ctx.restore();imgX+=iW+8;}
+    if(i<stores.length-1){
+      ctx.fillStyle='rgba(223,189,149,0.12)';
+      ctx.fillRect(PAD,y+rowH-3,W-PAD*2,1);
     }
-    if(i<stores.length-1){ctx.fillStyle='rgba(223,189,149,0.12)';ctx.fillRect(PAD,y+rowH-3,W-PAD*2,1);}
   }
+  console.log('[Stories] text done');
+
+  // === FÁZE 2: obrázky paralelně ===
+  // Sestavíme unikátní seznam obrázků k načtení
+  const uniqueImgs = {};
+  for (const s of stores) {
+    for (const fid of s.flavorIds) {
+      const f = PRICHUTE.find(p => p.id === fid);
+      if (f && f.img && !uniqueImgs[f.img]) uniqueImgs[f.img] = getImgUrl(f.img);
+    }
+  }
+  const imgKeys = Object.keys(uniqueImgs);
+  console.log('[Stories] loading ' + imgKeys.length + ' images in parallel');
+
+  // Paralelní načtení s Promise.all - max čekání = 5s (timeout v loadImg)
+  const loadedImgs = {};
+  const loadPromises = imgKeys.map(function(key) {
+    return loadImg(uniqueImgs[key]).then(function(img) { loadedImgs[key] = img; });
+  });
+  await Promise.all(loadPromises);
+  console.log('[Stories] images loaded, drawing');
+
+  // Vykreslíme obrázky nad textem. lighten blend mode odstraní černé pozadí.
+  for (let i=0; i<stores.length; i++) {
+    const store = stores[i], y = startY+i*rowH;
+    // Spočítáme celkovou šířku obrázků pro tuto prodejnu
+    let totalW = 0;
+    for (const fid of store.flavorIds) {
+      const f2 = PRICHUTE.find(p => p.id === fid);
+      if (f2 && f2.img && loadedImgs[f2.img]) {
+        const s2 = loadedImgs[f2.img];
+        totalW += (rowH-16) * (s2.naturalWidth / s2.naturalHeight) + 8;
+      }
+    }
+    totalW -= 8;
+    let imgX = W - PAD - totalW;
+    for (const fid of store.flavorIds) {
+      const f = PRICHUTE.find(p => p.id === fid);
+      if (f && f.img && loadedImgs[f.img]) {
+        const src = loadedImgs[f.img];
+        const ratio = src.naturalWidth / src.naturalHeight;
+        const iH = rowH - 16;
+        const iW = iH * ratio;
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighten'; // jako CSS mix-blend-mode: lighten
+        ctx.drawImage(src, imgX, y+(rowH-iH)/2, iW, iH);
+        ctx.restore();
+        imgX += iW + 8;
+      }
+    }
+  }
+  console.log('[Stories] drawStory complete');
 }
 
 function downloadStory(canvas, num) {
